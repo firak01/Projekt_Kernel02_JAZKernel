@@ -3558,7 +3558,7 @@ MeinTestParameter=blablaErgebnis
 				//### Proof the existance of the file
 				//#######################################
 				String sFileTotal = FileEasyZZZ.joinFilePathName(sDirectoryname, sFilename);				
-				if(this.getLogObject()!=null) this.getLogObject().WriteLineDateWithPosition("sFileTotal = " +  sFileTotal);
+				if(this.getLogObject()!=null) this.getLogObject().writeLineDateWithPosition("sFileTotal = " +  sFileTotal);
 				File objFile = new File(sFileTotal);//Wichtig: Damit sollte diese Datei nicht autmatisch erstellt sein!!!
 				
 				//Mache das neue Ini-Objekt
@@ -3634,7 +3634,7 @@ MeinTestParameter=blablaErgebnis
 				//### Proof the existance of the file
 				//#######################################
 				String sFileTotal = FileEasyZZZ.joinFilePathNameForWorkspace(sDirectoryname, sFilename);
-				if(this.getLogObject()!=null) this.getLogObject().WriteLineDate(ReflectCodeZZZ.getMethodCurrentName() + "#sFileTotal = " +  sFileTotal);
+				if(this.getLogObject()!=null) this.getLogObject().writeLineDate(ReflectCodeZZZ.getMethodCurrentName() + "#sFileTotal = " +  sFileTotal);
 				File objFile = new File(sFileTotal);//Wichtig: Damit sollte diese Datei nicht autmatisch erstellt sein!!!
 				
 				//Mache das neue Ini-Objekt
@@ -5618,12 +5618,12 @@ MeinTestParameter=blablaErgebnis
 			if(objFile!=null){
 				sFilePath = objFile.getAbsolutePath();
 				if(objFile.length()>0){					
-					this.getLogObject().WriteLineDate("Absoluter Pfad für das ImageIcon: " + sFilePath);
+					this.getLogObject().writeLineDate("Absoluter Pfad für das ImageIcon: " + sFilePath);
 					iconReturn = new ImageIcon(sFilePath);					
 				}else{
 					String sLog = "Parameter wrong configured. ImageSize = 0 '" + sProperty + "' (File may not exist: '" + sFilePath + "')";
 					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": " + sLog);
-					this.getLogObject().WriteLineDate(sLog);
+					this.getLogObject().writeLineDate(sLog);
 				}						
 			}else{
 				ExceptionZZZ ez = new ExceptionZZZ("No parameter configured '" + sProperty + "'", iERROR_CONFIGURATION_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());				
@@ -5655,12 +5655,12 @@ MeinTestParameter=blablaErgebnis
 			if(objFile!=null){
 				sFilePath = objFile.getAbsolutePath();
 				if(objFile.length()>0){					
-					this.getLogObject().WriteLineDate("Absoluter Pfad für das ImageIcon: " + sFilePath);
+					this.getLogObject().writeLineDate("Absoluter Pfad für das ImageIcon: " + sFilePath);
 					iconReturn = new ImageIcon(sFilePath);					
 				}else{					
 					String sLog = "Parameter wrong configured. ImageSize = 0 '" + sProperty + "' (File may not exist: '" + sFilePath + "')";
 					System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": " + sLog);
-					this.getLogObject().WriteLineDate(sLog);					
+					this.getLogObject().writeLineDate(sLog);					
 				}		
 			}else{
 				ExceptionZZZ ez = new ExceptionZZZ("No parameter configured '" + sProperty + "'", iERROR_CONFIGURATION_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());				
@@ -7031,9 +7031,9 @@ MeinTestParameter=blablaErgebnis
 			IniFile objFile = this.getFileConfigModuleAsIni(sModule, bIncludeSystemSectionInSearch); //false Schliesst die Suche über den SystemKey aus.
 			if(objFile!=null) {
 				bReturn = FileEasyZZZ.exists(objFile.getFileName());
-				if(this.getLogObject()!=null) this.getLogObject().WriteLineDate(ReflectCodeZZZ.getMethodCurrentName() + "#FileExists = " + bReturn);
+				if(this.getLogObject()!=null) this.getLogObject().writeLineDate(ReflectCodeZZZ.getMethodCurrentName() + "#FileExists = " + bReturn);
 			}else {
-				if(this.getLogObject()!=null) this.getLogObject().WriteLineDate(ReflectCodeZZZ.getMethodCurrentName() + "#FileExists (null case) = " + bReturn);
+				if(this.getLogObject()!=null) this.getLogObject().writeLineDate(ReflectCodeZZZ.getMethodCurrentName() + "#FileExists (null case) = " + bReturn);
 			}
 		}//end main:
 		return bReturn;
@@ -7609,7 +7609,7 @@ MeinTestParameter=blablaErgebnis
 			
 			System.out.println(sTemp);
 		}else {
-			objLog.WriteLineDate(sLog);
+			objLog.writeLineDate(sLog);
 		}			
 	}
 	
@@ -7633,7 +7633,7 @@ MeinTestParameter=blablaErgebnis
 			
 			System.out.println(sLine);
 		}else {
-			objLog.WriteLineDateWithPosition(this, 1, sLog);
+			objLog.writeLineDateWithPosition(this, 1, sLog);
 		}			
 	}
 	

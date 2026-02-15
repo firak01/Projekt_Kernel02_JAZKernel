@@ -357,11 +357,11 @@ public class KernelFileTextCopyZZZ   extends AbstractKernelUseObjectZZZ{
 				   	    
 				   	    //TODO erzeugen dieses fehlenden Verzeichnisses statt, ignorieren der Verarbeitung
 				   	    if(objDirTemp.exists()==false){
-				   	        objLog.WriteLineDate("target directory defined by File-Name-Array Property does not exist, skipping file: '" +saFileTarget[i]);
+				   	        objLog.writeLineDate("target directory defined by File-Name-Array Property does not exist, skipping file: '" +saFileTarget[i]);
 				   	    	break handlefile;
 				   	    }
 				   	    if(objDirTemp.isDirectory()==false){
-				   	    	objLog.WriteLineDate("target directory defined by File-Name-Array Property is not a directory, skipping file: '" + saFileTarget[i]);
+				   	    	objLog.writeLineDate("target directory defined by File-Name-Array Property is not a directory, skipping file: '" + saFileTarget[i]);
 				   	    	break handlefile;
 				   	    }
 					sDirectoryTargetFinal = objFileTemp.getPath();
@@ -378,11 +378,11 @@ public class KernelFileTextCopyZZZ   extends AbstractKernelUseObjectZZZ{
 					   	stemp = objFileTemp.getParent();
 						objDirTemp = new File(stemp); 					
 					   if(objDirTemp.exists()==false){
-						   this.getLogObject().WriteLineDate("source directory defined by File-Name-Array Property does not exist, skipping file: '" +saFileSource[i]);
+						   this.getLogObject().writeLineDate("source directory defined by File-Name-Array Property does not exist, skipping file: '" +saFileSource[i]);
 						   break handlefile;
 					   }
 					   if(objDirTemp.isDirectory()==false){
-						   this.getLogObject().WriteLineDate("source directory defined by File-Name-Array Property is not a directory, skipping file: '" + saFileSource[i]);
+						   this.getLogObject().writeLineDate("source directory defined by File-Name-Array Property is not a directory, skipping file: '" + saFileSource[i]);
 						   break handlefile;
 					   }
 						sDirectorySourceFinal = objDirTemp.getPath();
@@ -421,7 +421,7 @@ public class KernelFileTextCopyZZZ   extends AbstractKernelUseObjectZZZ{
         						FileZZZ objFileTarget = new FileZZZ(sDirectoryTargetFinal, sFileTargetBasis, objFileExpansion, null);
         						sFileTargetExpanded = objFileTarget.PathNameTotalExpandedNextCompute();
         						
-        						objLog.WriteLineDate("Kopiere Datei '" + sFileSourceExpanded + "' --> '" + sFileTargetExpanded + "'");
+        						objLog.writeLineDate("Kopiere Datei '" + sFileSourceExpanded + "' --> '" + sFileTargetExpanded + "'");
 						 
 	        
 	        
@@ -449,23 +449,23 @@ public class KernelFileTextCopyZZZ   extends AbstractKernelUseObjectZZZ{
 	 				 			//WAS soll mit der Ausgangsdatei geschehen ?
 	 				 			if(getFlag("source_rename")==true){
 	 				 				boolean btemp = FileSourceRename((FileZZZ)objFileSourceExpanded, sDirectorySource, sFileSourceExpanded);
-									if(btemp == false) objLog.WriteLineDate("Error renaming Source-File: " + objFileSource.getPath());
+									if(btemp == false) objLog.writeLineDate("Error renaming Source-File: " + objFileSource.getPath());
 	 				 			}else if(getFlag("source_remove")==true){
 	 				 				boolean btemp = objFileSourceExpanded.delete();
-									if(btemp == false) objLog.WriteLineDate("Error deleting Source-File: " + objFileSource.getPath());
+									if(btemp == false) objLog.writeLineDate("Error deleting Source-File: " + objFileSource.getPath());
 	 				 			}
 	 				 
 								
 							   }
 							   //Dateibehandlung - Exceptions 				 
 							   catch(FileNotFoundException e){
-							   		objLog.WriteLine(e.getMessage());
+							   		objLog.writeLine(e.getMessage());
 							   		//Es soll weitergehen, darum nicht !!! System.exit(0);
 							   }
 					
 							   //Schreib-/LeseExceptions
 							   catch(IOException e){
-									objLog.WriteLine(e.getMessage());
+									objLog.writeLine(e.getMessage());
 									//Es soll weitergehen, darum nicht !!! System.exit(0);
 							   }	
         				}//end if sFileExpandedLast != sFileExpanded
@@ -475,7 +475,7 @@ public class KernelFileTextCopyZZZ   extends AbstractKernelUseObjectZZZ{
 						bFlagAnyFileProcessed = true;
 				  }//end handlefile:
 				  }//end for �ber alle Dateien
-				  if(bFlagAnyFileProcessed==false) objLog.WriteLineDate("No file found to process.");
+				  if(bFlagAnyFileProcessed==false) objLog.writeLineDate("No file found to process.");
 		}//end main:
 		return bFunction;
 	}

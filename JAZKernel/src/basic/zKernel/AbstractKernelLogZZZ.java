@@ -36,6 +36,7 @@ import java.util.GregorianCalendar;
 
 import custom.zKernel.ConfigZZZ;
 import custom.zKernel.ILogZZZ;
+import custom.zKernel.LogZZZ;
 import custom.zUtil.io.FileExpansionZZZ;
 import custom.zUtil.io.FileZZZ;
 
@@ -137,7 +138,7 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 		
 		FileTextWriterZZZ objFileTextWriter = this.getFileTextWriterObject();
 		if(objFileTextWriter!=null) {
-			this.WriteLineDate("Log created");
+			this.writeLineDate("Log created");
 		}else {
 			sDirectoryName=this.getDirectory();
 			sLogFile = this.getFilename();
@@ -278,48 +279,60 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 	//### Da PositionCurrent - XML ist, kann das hier nicht vorkommen.
 	//#######################################################
 	
-	//+++ als moeglichst einfacher String.  
-	public synchronized static String computeLine(String sLog) throws ExceptionZZZ {	
-		String[]saLog = new String[1];
-		saLog[0] = sLog;
-		
-		return computeLine__(null, saLog);
-	}
+	//+++ als moeglichst einfacher String. 
+	//Merke: Diese Methode liefert als static ein Problem, da dann keine Klasse vorhanden ist.
+	//public synchronized static String computeLine(String sLog) throws ExceptionZZZ {	
+//	public synchronized String computeLine(String sLog) throws ExceptionZZZ {
+//		String[]saLog = new String[1];
+//		saLog[0] = sLog;
+//		
+//		return computeLine__(this.getClass(), saLog);
+//	}
 	
-	public synchronized static String computeLine(IEnumSetMappedStringFormatZZZ[]iaFormat, String sLog) throws ExceptionZZZ{		
-		String[]saLog = new String[1];
-		saLog[0] = sLog;
-		
-		return computeLine__(null, 1, iaFormat, saLog);
-	}
+	//Merke: Diese Methode liefert als static ein Problem, da dann keine Klasse vorhanden ist.
+	//public synchronized static String computeLine(IEnumSetMappedStringFormatZZZ[]iaFormat, String sLog) throws ExceptionZZZ{		
+//	public synchronized String computeLine(IEnumSetMappedStringFormatZZZ[]iaFormat, String sLog) throws ExceptionZZZ{
+//		String[]saLog = new String[1];
+//		saLog[0] = sLog;
+//		
+//		return computeLine__(this.getClass(), 1, iaFormat, saLog);
+//	}
 	
 
-	//Merke: ohne diese sLog1, sLog2 Methode würde sLog1 nur als Object verwendet werden
-	public synchronized static String computeLine(String sLog1, String sLog2) throws ExceptionZZZ { 
-		String[]saLog = new String[2];
-		saLog[0] = sLog1;
-		saLog[0] = sLog2;
-		
-		return computeLine__(null, saLog);
-	}
+	//Merke1: ohne diese sLog1, sLog2 Methode würde sLog1 nur als Object verwendet werden
+	//Merke2: Diese Methode liefert als static ein Problem, da dann keine Klasse vorhanden ist.
+	//public synchronized static String computeLine(String sLog1, String sLog2) throws ExceptionZZZ { 
+//	public synchronized String computeLine(String sLog1, String sLog2) throws ExceptionZZZ {
+//		String[]saLog = new String[2];
+//		saLog[0] = sLog1;
+//		saLog[0] = sLog2;
+//		
+//		return computeLine__(this.getClass(), saLog);
+//	}
 	
-	public synchronized static String computeLine(IEnumSetMappedStringFormatZZZ[]iaFormat, String sLog1, String sLog2) throws ExceptionZZZ {
-		String[]saLog = new String[2];
-		saLog[0] = sLog1;
-		saLog[0] = sLog2;
-		
-		return computeLine__(null, 1, iaFormat, saLog);
-	}
+	//Merke: Diese Methode liefert als static ein Problem, da dann keine Klasse vorhanden ist.
+	//public synchronized static String computeLine(IEnumSetMappedStringFormatZZZ[]iaFormat, String sLog1, String sLog2) throws ExceptionZZZ {
+//	public synchronized String computeLine(IEnumSetMappedStringFormatZZZ[]iaFormat, String sLog1, String sLog2) throws ExceptionZZZ {
+//		String[]saLog = new String[2];
+//		saLog[0] = sLog1;
+//		saLog[0] = sLog2;
+//		
+//		return computeLine__(this.getClass(), 1, iaFormat, saLog);
+//	}
 	
-	public synchronized static String computeLine(String... sLogs) throws ExceptionZZZ {	
-		String[]saLog = sLogs;
-		return computeLine__(null, saLog);
-	}
+	//Merke: Diese Methode liefert als static ein Problem, da dann keine Klasse vorhanden ist.
+	//public synchronized static String computeLine(String... sLogs) throws ExceptionZZZ {	
+//	public synchronized String computeLine(String... sLogs) throws ExceptionZZZ {	
+//		String[]saLog = sLogs;
+//		return computeLine__(this.getClass(), saLog);
+//	}
 	
-	public synchronized static String computeLine(IEnumSetMappedStringFormatZZZ[]iaFormat, String... sLogs) throws ExceptionZZZ {		
-		String[]saLog = sLogs;
-		return computeLine__(null, 1, iaFormat, saLog);
-	}
+	//Merke: Diese Methode liefert als static ein Problem, da dann keine Klasse vorhanden ist.
+	//public synchronized static String computeLine(IEnumSetMappedStringFormatZZZ[]iaFormat, String... sLogs) throws ExceptionZZZ {		
+//	public synchronized String computeLine(IEnumSetMappedStringFormatZZZ[]iaFormat, String... sLogs) throws ExceptionZZZ {
+//		String[]saLog = sLogs;
+//		return computeLine__(this.getClass(), 1, iaFormat, saLog);
+//	}
 	
 	public synchronized static String computeLine(Object objIn, String sLog) throws ExceptionZZZ {
 		Object obj=null;
@@ -428,29 +441,39 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 	//##################################################################################
 	
 	//+++ mit Datum
-	public synchronized static String computeLineDate() throws ExceptionZZZ {			
-		return computeLineDate__(null, null);
-	}
+	
+	//Merke: Diese Methode liefert als static ein Problem, da dann keine Klasse vorhanden ist.
+	//public synchronized static String computeLineDate() throws ExceptionZZZ {			
+//	public synchronized String computeLineDate() throws ExceptionZZZ {
+//		return computeLineDate__(this.getClass(), null);
+//	}
 
-	public synchronized static String computeLineDate(String sLog) throws ExceptionZZZ {	
-		String[] saLog = new String[1];
-		saLog[0]=sLog;
-		return computeLineDate__(null, saLog);
-	}
+	//Merke: Diese Methode liefert als static ein Problem, da dann keine Klasse vorhanden ist.
+	//public synchronized static String computeLineDate(String sLog) throws ExceptionZZZ {
+//	public synchronized String computeLineDate(String sLog) throws ExceptionZZZ {
+//		String[] saLog = new String[1];
+//		saLog[0]=sLog;
+//		return computeLineDate__(this.getClass(), saLog);
+//	}
 	
 	//Merke: ohne diese sLog1, sLog2 Methode würde sLog1 nur als Object verwendet werden
-	public synchronized static String computeLineDate(String sLog1, String sLog2) throws ExceptionZZZ {
-		String[] saLog = new String[2];
-		saLog[0]=sLog1;
-		saLog[1]=sLog2;
-		return computeLineDate__(null, saLog);
-	}
+	//Merke: Diese Methode liefert als static ein Problem, da dann keine Klasse vorhanden ist.
+	//public synchronized static String computeLineDate(String sLog1, String sLog2) throws ExceptionZZZ {
+//	public synchronized String computeLineDate(String sLog1, String sLog2) throws ExceptionZZZ {
+//		String[] saLog = new String[2];
+//		saLog[0]=sLog1;
+//		saLog[1]=sLog2;
+//		return computeLineDate__(this.getClass(), saLog);
+//	}
 	
-	
-	public synchronized static String computeLineDate(String... sLogs) throws ExceptionZZZ {	
-		String[]saLog = sLogs;
-		return computeLineDate__(null, saLog);
-	}
+	//Merke: ohne diese sLog1, sLog2 Methode würde sLog1 nur als Object verwendet werden
+	//Merke: Diese Methode liefert als static ein Problem, da dann keine Klasse vorhanden ist.
+	//public synchronized static String computeLineDate(String... sLogs) throws ExceptionZZZ {	
+// public synchronized String computeLineDate(String... sLogs) throws
+// ExceptionZZZ {
+// String[]saLog = sLogs;
+// return computeLineDate__(this.getClass(), saLog);
+// }
 	
 	public synchronized static String computeLineDate(Object objIn) throws ExceptionZZZ {	
 		Object obj=null;
@@ -518,20 +541,23 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 	//### Merke2: Zeilennummer, etc aus der CodePosition kann nur als XML Wert zur Vefuegung gestellt werden.
 	//#######################################################
 
-	//Merke: ohne diese sLog1, sLog2 Methode würde sLog1 nur als Object verwendet werden
-	public synchronized static String computeLineDateWithPosition(String sLog1) throws ExceptionZZZ {	
-		String[] saLog = new String[1];
-		saLog[0]=sLog1;		
-		return computeLineDateWithPosition__(AbstractKernelLogZZZ.class, 1, saLog);
-	}
+	//Merke: Diese Methode liefert als static ein Problem, da dann keine Klasse vorhanden ist.
+	//public synchronized static String computeLineDateWithPosition(String sLog1) throws ExceptionZZZ {	
+//	public synchronized String computeLineDateWithPosition(String sLog1) throws ExceptionZZZ {
+//		String[] saLog = new String[1];
+//		saLog[0]=sLog1;		
+//		return computeLineDateWithPosition__(this.getClass(), 1, saLog);
+//	}
 	
 	//Merke: ohne diese sLog1, sLog2 Methode würde sLog1 nur als Object verwendet werden
-	public synchronized static String computeLineDateWithPosition(String sLog1, String sLog2) throws ExceptionZZZ {	
-		String[] saLog = new String[2];
-		saLog[0]=sLog1;
-		saLog[1]=sLog2;
-		return computeLineDateWithPosition__(AbstractKernelLogZZZ.class, 1, saLog);
-	}
+	//Merke: Diese Methode liefert als static ein Problem, da dann keine Klasse vorhanden ist.
+	//public synchronized static String computeLineDateWithPosition(String sLog1, String sLog2) throws ExceptionZZZ {	
+//	public synchronized String computeLineDateWithPosition(String sLog1, String sLog2) throws ExceptionZZZ {
+//		String[] saLog = new String[2];
+//		saLog[0]=sLog1;
+//		saLog[1]=sLog2;
+//		return computeLineDateWithPosition__(this.getClass(), 1, saLog);
+//	}
 	
 	public synchronized static String computeLineDateWithPosition(Object objIn, String sLog) throws ExceptionZZZ {	
 		Object obj=null;
@@ -714,25 +740,29 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 	//+++++++++++++++++++++++++++++++++++++++++++++++
 	//+++ Biete die Log-Methoden auch static an, siehe ILogZZZ, bzw. AbstractObjectZZZ fuer den Code
 	//+++++++++++++++++++++++++++++++++++++++++++++++
-	public synchronized static void logProtocolStringStatic(String... sLogs) throws ExceptionZZZ{
-		AbstractKernelLogZZZ.logProtocolStringStatic(null, sLogs);//Merke: In der aehnlichen Methode von abstract Object (also nicht static) "this" statt null.
-	}
 	
-	public synchronized static void logProtocolStringStatic(String sLog) throws ExceptionZZZ{
-		AbstractKernelLogZZZ.logProtocolStringStatic(null, sLog);//Merke: In der aehnlichen Methode von abstract Object (also nicht static) "this" statt null.
-	}
-	
+	//Merke: Diese Methode liefert als static ein Problem, da dann keine Klasse vorhanden ist.
+	//public synchronized static void logProtocolStringStatic(String... sLogs) throws ExceptionZZZ{
+//	public synchronized void logProtocolStringStatic(String... sLogs) throws ExceptionZZZ{
+//		AbstractKernelLogZZZ.logProtocolStringStatic(this.getClass(), sLogs);//Merke: In der aehnlichen Methode von abstract Object (also nicht static) "this" statt null.
+//	}
+//	
+//	//Merke: Diese Methode liefert als static ein Problem, da dann keine Klasse vorhanden ist.
+//	//public synchronized static void logProtocolStringStatic(String sLog) throws ExceptionZZZ{
+//	public synchronized void logProtocolStringStatic(String sLog) throws ExceptionZZZ{
+//		AbstractKernelLogZZZ.logProtocolStringStatic(this.getClass(), sLog);//Merke: In der aehnlichen Methode von abstract Object (also nicht static) "this" statt null.
+//	}
+//	
 	public synchronized static void logProtocolStringStatic(Object obj, String... sLogs) throws ExceptionZZZ{
 		main:{
 			if(ArrayUtilZZZ.isNull(sLogs)) break main;
 			
 			if(obj==null) {
-				for(String sLog : sLogs) {
-					AbstractKernelLogZZZ.logProtocolStringStatic(sLog);
-				}
+				ExceptionZZZ ez = new ExceptionZZZ("Object", iERROR_PARAMETER_MISSING, AbstractKernelLogZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;	
 			}else {
 				for(String sLog : sLogs) {
-					AbstractKernelLogZZZ.logProtocolStringStatic(obj, sLog);
+					logProtocolStringStatic(obj, sLog);
 				}	
 			}
 			
@@ -744,21 +774,21 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 		sLogUsed = StringFormatManagerZZZ.getInstance().compute(obj, sLog);
 		System.out.println(sLogUsed);
 	}
-	
-	//++++++++++++++++++++++++++++++++++	
-	public synchronized static void logProtocolStringStatic(IEnumSetMappedStringFormatZZZ[] ienumaMappedLogString, String... sLogs) throws ExceptionZZZ {
-		AbstractKernelLogZZZ.logProtocolStringStatic(null, ienumaMappedLogString, sLogs);//Merke: In der aehnlichen Methode von abstract Object (also nicht static) "this" statt null.
-	}
-	
-	public synchronized static void logProtocolStringStatic(IEnumSetMappedStringFormatZZZ ienumMappedLogString, String sLog) throws ExceptionZZZ {
-		AbstractKernelLogZZZ.logProtocolStringStatic(null, ienumMappedLogString, sLog);//Merke: In der aehnlichen Methode von abstract Object (also nicht static) "this" statt null.
-	}
-		
+//	
+//	//++++++++++++++++++++++++++++++++++	
+//	public synchronized static void logProtocolStringStatic(IEnumSetMappedStringFormatZZZ[] ienumaMappedLogString, String... sLogs) throws ExceptionZZZ {
+//		AbstractKernelLogZZZ.logProtocolStringStatic(null, ienumaMappedLogString, sLogs);//Merke: In der aehnlichen Methode von abstract Object (also nicht static) "this" statt null.
+//	}
+//	
+//	public synchronized static void logProtocolStringStatic(IEnumSetMappedStringFormatZZZ ienumMappedLogString, String sLog) throws ExceptionZZZ {
+//		AbstractKernelLogZZZ.logProtocolStringStatic(null, ienumMappedLogString, sLog);//Merke: In der aehnlichen Methode von abstract Object (also nicht static) "this" statt null.
+//	}
+//		
 	public synchronized static void logProtocolStringStatic(Object obj, IEnumSetMappedStringFormatZZZ[] ienumaMappedLogString, String... sLogs) throws ExceptionZZZ {
 		main:{
 		if(ArrayUtilZZZ.isNull(sLogs)) break main;
 		if(ArrayUtilZZZ.isNull(ienumaMappedLogString)){
-			AbstractKernelLogZZZ.logProtocolStringStatic(sLogs);
+			AbstractKernelLogZZZ.logProtocolStringStatic(obj, sLogs);
 			break main;
 		}
 		
@@ -784,7 +814,7 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 		}
 	}//end main:
 	}
-	
+
 	public synchronized static void logProtocolStringStatic(Object obj, IEnumSetMappedStringFormatZZZ ienumMappedLogString, String sLog) throws ExceptionZZZ {
 		String sLogUsed;
 		if(obj==null) {
@@ -795,6 +825,56 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 		System.out.println(sLogUsed);
 	}
 	
+	//++++++++++++++++++++++++
+	public synchronized static void logProtocolStringStatic(Class classObj, String... sLogs) throws ExceptionZZZ{
+		main:{
+		if(classObj==null) {			
+			ExceptionZZZ ez = new ExceptionZZZ("Class-Object", iERROR_PARAMETER_MISSING, AbstractKernelLogZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+			throw ez;
+		}
+
+		String sLogUsed = StringFormatManagerZZZ.getInstance().compute(classObj, sLogs);
+		System.out.println(sLogUsed);
+			
+		}//end main:
+	}
+		
+	public synchronized static void logProtocolStringStatic(Class classObj, String sLog) throws ExceptionZZZ{		
+		if(classObj==null) {			
+			ExceptionZZZ ez = new ExceptionZZZ("Class-Object", iERROR_PARAMETER_MISSING, AbstractKernelLogZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+			throw ez;
+		}
+
+		String sLogUsed = StringFormatManagerZZZ.getInstance().compute(classObj, sLog);
+		System.out.println(sLogUsed);
+	}
+
+	public synchronized static void logProtocolStringStatic(Class classObj, IEnumSetMappedStringFormatZZZ[] ienumaMappedLogString, String... sLogs) throws ExceptionZZZ {
+		main:{
+			if(classObj==null) {			
+				ExceptionZZZ ez = new ExceptionZZZ("Class-Object", iERROR_PARAMETER_MISSING, AbstractKernelLogZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+	
+			if(ArrayUtilZZZ.isNull(ienumaMappedLogString)){
+				LogZZZ.logProtocolStringStatic(classObj, sLogs);
+				break main;
+			}
+			
+			String sLogUsed = StringFormatManagerZZZ.getInstance().compute(classObj, ienumaMappedLogString, sLogs);		
+			System.out.println(sLogUsed);
+		}//end main:
+	}
+
+	public synchronized static void logProtocolStringStatic(Class classObj, IEnumSetMappedStringFormatZZZ ienumMappedLogString, String sLog) throws ExceptionZZZ {
+		if(classObj==null) {
+			ExceptionZZZ ez = new ExceptionZZZ("Class-Object", iERROR_PARAMETER_MISSING, AbstractKernelLogZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+			throw ez;	
+		}
+			
+		String sLogUsed = StringFormatManagerZZZ.getInstance().compute(classObj, ienumMappedLogString, sLog);		
+		System.out.println(sLogUsed);
+	}
 	
 	
 		
@@ -819,7 +899,7 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 	}
 
 	@Override
-	public synchronized boolean WriteLine(String stemp){
+	public synchronized boolean writeLine(String stemp){
 		boolean bReturn = false;
 		FileTextWriterZZZ objFileWriter;
 		try {
@@ -832,54 +912,85 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 		}	
 		return bReturn;
 	}
+	
+	//#####################################################################################
+	public synchronized boolean WriteLine(Object obj, String sLine) throws ExceptionZZZ{
+		String[]saLine = new String[0];
+		saLine[0]=sLine;
+		return WriteLine__(obj.getClass(), saLine);
+	}
+	
+	
+	public synchronized boolean WriteLine(Class classObj, String sLine) throws ExceptionZZZ{
+		String[]saLine = new String[0];
+		saLine[0]=sLine;
+		return WriteLine__(classObj, saLine);
+	}
+	
+	synchronized private boolean WriteLine__(Class classObj, String... sLogs) throws ExceptionZZZ{
+		boolean bReturn = false;	
+		
+		String sLine = LogZZZ.computeLine(classObj, sLogs); //Darin wird die Zeile schon "bündig gemacht".		
+		bReturn = writeLine(sLine);
+				
+		return bReturn;
+	}
 
 	//##################################################################################################
 	
 	@Override
-	synchronized public boolean WriteLineDate(String sLog) throws ExceptionZZZ{
+	synchronized public boolean writeLineDate(String sLog) throws ExceptionZZZ{
 		return WriteLineDate_(this, sLog);
 	}
 	
 	@Override
-	synchronized public boolean WriteLineDate(String... sLogs) throws ExceptionZZZ{
+	synchronized public boolean writeLineDate(String... sLogs) throws ExceptionZZZ{
 		return WriteLineDate_(this, sLogs);
 	}
 	
 	@Override
-	synchronized public boolean WriteLineDate(Object obj, String sLog) throws ExceptionZZZ{
+	synchronized public boolean writeLineDate(String sLog1, String sLog2) throws ExceptionZZZ{
+		String[]saLog = new String[2];
+		saLog[0]=sLog1;
+		saLog[1]=sLog2;
+		return WriteLineDate_(this, saLog);
+	}
+	
+	@Override
+	synchronized public boolean writeLineDate(Object obj, String sLog) throws ExceptionZZZ{
 		return WriteLineDate_(obj, sLog);
 	}
 	
 	synchronized private boolean WriteLineDate_(Object obj, String... sLogs) throws ExceptionZZZ{
 		boolean bReturn = false;	
 		
-		String sLine = AbstractKernelLogZZZ.computeLineDate(obj, sLogs); //Darin wird die Zeile schon "bündig gemacht".		
-		bReturn = WriteLine(sLine);
+		String sLine = LogZZZ.computeLineDate(obj, sLogs); //Darin wird die Zeile schon "bündig gemacht".		
+		bReturn = writeLine(sLine);
 				
 		return bReturn;
 	}
 	
 	//######################################
 	@Override
-	synchronized public boolean WriteLineDateWithPosition(String sLog) throws ExceptionZZZ{
+	synchronized public boolean writeLineDateWithPosition(String sLog) throws ExceptionZZZ{
 		return WriteLineDateWithPosition__(this.getClass(), 1, sLog);
 	}
 	
 	@Override
-	synchronized public boolean WriteLineDateWithPosition(Class classObj, String sLog) throws ExceptionZZZ{
+	synchronized public boolean writeLineDateWithPosition(Class classObj, String sLog) throws ExceptionZZZ{
 		return WriteLineDateWithPosition__(classObj, 1, sLog);
 	}
 	
 	private boolean WriteLineDateWithPosition__(Class classObj, int iStackTraceLevelIn, String sLog) throws ExceptionZZZ{
 		int iStackTraceLevel = iStackTraceLevelIn + 1;
 		String sLine = computeLineDateWithPosition(classObj, iStackTraceLevel, sLog);
-		return WriteLine(sLine);
+		return writeLine(sLine);
 	}
 	
 
 	//############################################
 	@Override
-	synchronized public boolean WriteLineDateWithPosition(Object objIn, String sLog) throws ExceptionZZZ{
+	synchronized public boolean writeLineDateWithPosition(Object objIn, String sLog) throws ExceptionZZZ{
 		Object obj;
 		if(objIn==null) {
 			obj=this;
@@ -891,7 +1002,7 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 	}
 	
 	@Override
-	synchronized public boolean WriteLineDateWithPosition(Object objIn, int iStackTraceLevelIn, String sLog) throws ExceptionZZZ{
+	synchronized public boolean writeLineDateWithPosition(Object objIn, int iStackTraceLevelIn, String sLog) throws ExceptionZZZ{
 		int iStackTraceLevel = iStackTraceLevelIn +1;
 		
 		Object obj;
@@ -914,7 +1025,7 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 	 * @author Fritz Lindhauer, 25.11.2025, 20:26:58
 	 */
 	@Override
-	synchronized public boolean WriteLineDateWithPositionXml(String stemp) throws ExceptionZZZ{
+	synchronized public boolean writeLineDateWithPositionXml(String stemp) throws ExceptionZZZ{
 		Class classObj = this.getClass();
 		return WriteLineDateWithPositionXml__(classObj, 1, stemp);
 	}
@@ -927,7 +1038,7 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 	 * @author Fritz Lindhauer, 25.11.2025, 20:26:58
 	 */
 	@Override
-	synchronized public boolean WriteLineDateWithPositionXml(Class classObj, String stemp) throws ExceptionZZZ{
+	synchronized public boolean writeLineDateWithPositionXml(Class classObj, String stemp) throws ExceptionZZZ{
 		return WriteLineDateWithPositionXml__(classObj, 1, stemp);
 	}
 	
@@ -939,7 +1050,7 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 	 * @author Fritz Lindhauer, 25.11.2025, 20:26:58
 	 */
 	@Override
-	synchronized public boolean WriteLineDateWithPositionXml(Object objIn, String stemp) throws ExceptionZZZ{		
+	synchronized public boolean writeLineDateWithPositionXml(Object objIn, String stemp) throws ExceptionZZZ{		
 		Object obj;
 		if(objIn==null) {
 			obj=this;
@@ -959,7 +1070,7 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 	 * @author Fritz Lindhauer, 25.11.2025, 20:26:58
 	 */
 	@Override
-	synchronized public boolean WriteLineDateWithPositionXml(Object objIn, int iStackTraceLevelIn, String stemp) throws ExceptionZZZ{
+	synchronized public boolean writeLineDateWithPositionXml(Object objIn, int iStackTraceLevelIn, String stemp) throws ExceptionZZZ{
 		int iStackTraceLevel = iStackTraceLevelIn + 1;
 		
 		Object obj;
@@ -977,7 +1088,7 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 		int iStackTraceLevel = iStackTraceLevelIn + 1;
 		
 		String sLine = AbstractKernelLogZZZ.computeLineDateWithPositionXml(classObj, iStackTraceLevel, stemp);
-		bReturn = WriteLine(sLine);
+		bReturn = writeLine(sLine);
 		
 		return bReturn;
 	}
@@ -1028,7 +1139,7 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 	 * @see basic.zKernel.IKernelLogZZZ#Write(java.lang.String)
 	 */
 	@Override
-	public synchronized boolean Write(String stemp) throws ExceptionZZZ{
+	public synchronized boolean write(String stemp) throws ExceptionZZZ{
 		boolean bReturn = false;
 		FileTextWriterZZZ objFileWriter;
 //		try {

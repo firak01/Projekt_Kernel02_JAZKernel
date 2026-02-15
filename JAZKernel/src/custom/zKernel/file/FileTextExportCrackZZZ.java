@@ -86,7 +86,7 @@ public class FileTextExportCrackZZZ extends KernelFileTextExportCrackZZZ {
 			
 						} catch (ExceptionZZZ ez) {
 							if(objLog!=null){
-								objLog.WriteLineDate(ez.getDetailAllLast());	
+								objLog.writeLineDate(ez.getDetailAllLast());	
 								bReturn = false;
 							}else{
 								System.out.println(ez.getDetailAllLast());

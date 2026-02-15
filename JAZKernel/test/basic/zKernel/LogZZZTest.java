@@ -58,7 +58,7 @@ public class LogZZZTest extends TestCase{
 			//Zeile mit 1x Logstring
 			sLog1 = "XXXTESTLAENGERXXX";			
 			iLine = ReflectCodeZZZ.getMethodCurrentLine()+1;//+1, weil halt die naechste Zeile im Code.			
-			sValue = objLogTest.computeLine(sLog1);
+			sValue = objLogTest.computeLine(this, sLog1);
 			System.out.println("LogZZZTest.testComputeLine_CUSTOM(): Logausgabe in nächster Zeile.\n" + sValue);
 						
 			//Nur 1x den LogString
@@ -193,7 +193,7 @@ public class LogZZZTest extends TestCase{
 			
 			//Da man die Anzahl der zum Buendigmachen verwendeten Leerzeichen nicht kennt: Anfang und Ende vergleichen.
 			sValueExpectedStart = "[A00/]"; //ohne Datum, darum geht es mit dem Thread los
-			sValueExpectedMid1 = "^[T][Thread: 1][/T][CF]File:" + sClassFilePath + "][/CF][A00/]" ;
+			sValueExpectedMid = "^[T][Thread: 1][/T][CF][File:" + sClassFilePath + "][/CF][A00/]" ;
 			sValueExpectedEnd = IStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + "[A01]" + sLog1 + "[/A01]";
 			bStartsWith = StringZZZ.startsWith(sValue, sValueExpectedStart);
 			assertTrue(bStartsWith);
@@ -203,37 +203,31 @@ public class LogZZZTest extends TestCase{
 			
 			sMid = StringZZZ.mid(sValue, sValueExpectedStart, sValueExpectedEnd);
 			sMid = sMid.trim();
-			bMidFound = sMid.equals(sValueExpectedMid);
-			assertTrue(bMidFound);
+			assertEquals(sValueExpectedMid, sMid);
 			
 			
 			//###############################################
 			//Zeile mit 2x Logstring
 			sLog2 = "ZZZTESTZZZ";
 			
-			sValue = objLogTest.computeLine(sLog1, sLog2);
+			sValue = objLogTest.computeLine(this, sLog1, sLog2);
+			//sValue = objLogTest.computeLine(this, sLog1, sLog2);
 			System.out.println("LogZZZTest.testComputeLine_DEFAULT(): Logausgabe in nächster Zeile.\n" + sValue);
 			
 			//Da man die Anzahl der zum Buendigmachen verwendeten Leerzeichen nicht kennt: Anfang und Ende vergleichen.
-			sValueExpectedStart = "[T][Thread: 1][/T]";
-			sValueExpectedMid1 = ("[A00/]");
-			sValueExpectedMid2 = (IStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + "[A01]"+ sLog1 +"[/A01][A00/]").trim();
-			sValueExpectedEnd = IStringFormatZZZ.sSEPARATOR_01_DEFAULT + "[A01]"+ sLog2 +"[/A01]";
+			sValueExpectedStart = "[A00/]";
+			sValueExpectedMid = ("^[T][Thread: 1][/T][CF][File:" + sClassFilePath + "][/CF][A00/]");
+			sValueExpectedEnd = IStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + "[A01]" + sLog2 + "[/A01]";
+			
 			bStartsWith = StringZZZ.startsWith(sValue, sValueExpectedStart);
 			assertTrue(bStartsWith);
 			
 			bEndsWith = StringZZZ.endsWith(sValue, sValueExpectedEnd);
 			assertTrue(bEndsWith);
 			
-			sMid1 = StringZZZ.mid(sValue, sValueExpectedStart, sValueExpectedMid2);
-			sMid1 = sMid1.trim();
-			bMid1found = sMid1.equals(sValueExpectedMid1);
-			assertTrue(bMid1found);
-			
-			sMid2 = StringZZZ.mid(sValue, sValueExpectedMid1, sValueExpectedEnd);
-			sMid2 = sMid2.trim();
-			bMid2found = sMid2.equals(sValueExpectedMid2);
-			assertTrue(bMid2found);
+			sMid = StringZZZ.mid(sValue, sValueExpectedStart, sValueExpectedEnd);
+			sMid = sMid.trim();
+			assertEquals(sValueExpectedMid, sMid);
 		} catch (ExceptionZZZ ez) {
 			ez.printStackTrace();
 			fail("Method throws an exception." + ez.getMessageLast());
@@ -301,7 +295,7 @@ public class LogZZZTest extends TestCase{
 			
 			//################################################
 			iLine = ReflectCodeZZZ.getMethodCurrentLine()+1;//+1, weil halt die naechste Zeile im Code.
-			sValue = objLogTest.computeLineDate(sLog1); //Darin wird die Zeile schon "bündig gemacht".
+			sValue = objLogTest.computeLineDate(this, sLog1); //Darin wird die Zeile schon "bündig gemacht".
 			assertNotNull(sValue);
 			System.out.println("LogZZZTest.testComputeLineDate(): (1) In der nächsten Zeile steht der Testergebnis-String\n" + sValue);
 			
@@ -321,7 +315,7 @@ public class LogZZZTest extends TestCase{
 			
 			
 			//################################################
-			sValue = objLogTest.computeLineDate(sLog1, sLog2); //Darin wird die Zeile schon "bündig gemacht".
+			sValue = objLogTest.computeLineDate(this, sLog1, sLog2); //Darin wird die Zeile schon "bündig gemacht".
 			assertNotNull(sValue);
 			System.out.println("LogZZZTest.testComputeLineDate(): (1) In der nächsten Zeile steht der Testergebnis-String\n" + sValue);
 			
@@ -390,7 +384,7 @@ public class LogZZZTest extends TestCase{
 			
 			//########################################
 			iLine = ReflectCodeZZZ.getMethodCurrentLine()+1;//+1, weil halt die naechste Zeile im Code.
-			sValue = objLogTest.computeLineDateWithPosition(sLog1); //Darin wird die Zeile schon "bündig gemacht".
+			sValue = objLogTest.computeLineDateWithPosition(this, sLog1); //Darin wird die Zeile schon "bündig gemacht".
 			assertNotNull(sValue);
 			System.out.println("LogZZZTest.testComputeLineDateWithPosition(): (1) In der nächsten Zeile steht der Testergebnis-String\n" + sValue);
 			
@@ -411,7 +405,7 @@ public class LogZZZTest extends TestCase{
 			//#########################################
 			
 			iLine = ReflectCodeZZZ.getMethodCurrentLine()+1;//+1, weil halt die naechste Zeile im Code.
-			sValue = objLogTest.computeLineDateWithPosition(sLog1, sLog2); //Darin wird die Zeile schon "bündig gemacht".
+			sValue = objLogTest.computeLineDateWithPosition(this, sLog1, sLog2); //Darin wird die Zeile schon "bündig gemacht".
 			assertNotNull(sValue);
 			System.out.println("LogZZZTest.testComputeLineDateWithPosition(): (1) In der nächsten Zeile steht der Testergebnis-String\n" + sValue);
 			
@@ -448,7 +442,7 @@ public class LogZZZTest extends TestCase{
 			//### Bei speziellen Anweisungen kein Formatierung-Style-Array uebergeben. 			
 			//##################################################################################
 		
-			bValue = objLogTest.WriteLineDate(strTEST_ENTRY01_DEFAULT);
+			bValue = objLogTest.writeLineDate(strTEST_ENTRY01_DEFAULT);
 			assertTrue(bValue);
 		} catch (ExceptionZZZ ez) {
 			ez.printStackTrace();
@@ -464,7 +458,7 @@ public class LogZZZTest extends TestCase{
 			//### Bei speziellen Anweisungen kein Formatierung-Style-Array uebergeben. 			
 			//##################################################################################
 			
-			bValue = objLogTest.WriteLineDateWithPosition(strTEST_ENTRY01_DEFAULT);
+			bValue = objLogTest.writeLineDateWithPosition(strTEST_ENTRY01_DEFAULT);
 			assertTrue(bValue);
 			
 		} catch (ExceptionZZZ ez) {
@@ -481,10 +475,10 @@ public class LogZZZTest extends TestCase{
 			//### Bei speziellen Anweisungen kein Formatierung-Style-Array uebergeben. 			
 			//##################################################################################
 			
-			bValue = objLogTest.WriteLineDateWithPositionXml("");
+			bValue = objLogTest.writeLineDateWithPositionXml("");
 			assertTrue(bValue);
 			
-			bValue = objLogTest.WriteLineDateWithPositionXml(strTEST_ENTRY01_DEFAULT); 
+			bValue = objLogTest.writeLineDateWithPositionXml(strTEST_ENTRY01_DEFAULT); 
 			assertTrue(bValue);
 		} catch (ExceptionZZZ ez) {
 			ez.printStackTrace();
@@ -503,7 +497,7 @@ public class LogZZZTest extends TestCase{
 			saArg[3]="testLog_Constructor01.txt";
 			IKernelConfigZZZ objConfig = new ConfigZZZ(saArg);
 			LogZZZ objLog01 = new LogZZZ(objConfig);
-			bValue=objLog01.WriteLineDateWithPosition(this, strTEST_ENTRY01_DEFAULT);
+			bValue=objLog01.writeLineDateWithPosition(this, strTEST_ENTRY01_DEFAULT);
 			assertTrue(bValue);
 			
 		} catch (ExceptionZZZ ez) {

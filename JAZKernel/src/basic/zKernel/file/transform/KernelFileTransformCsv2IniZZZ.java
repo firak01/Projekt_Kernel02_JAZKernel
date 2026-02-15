@@ -274,7 +274,7 @@ public class KernelFileTransformCsv2IniZZZ  extends AbstractKernelUseObjectZZZ{
 								if (objsHashLine.containsKey("CC")){
 									sColumntemp = (String)objsHashLine.get("CC");								
 									//System.out.println(sColumntemp);
-									objLog.WriteLine(sColumntemp);								
+									objLog.writeLine(sColumntemp);								
 													
 									if (sColumntemp.equals(sCCHeader)==true){																														
 										//saving the last ini-file																			
@@ -294,7 +294,7 @@ public class KernelFileTransformCsv2IniZZZ  extends AbstractKernelUseObjectZZZ{
 											objFileExpanded = new FileZZZ(this.getDirectoryTarget(), sFileEnd, "");
 											sFileExpanded = objFileExpanded.getNameExpandedNext();
 											sFileEnd = this.getDirectoryTarget() + File.separator + sFileExpanded;
-											objLog.WriteLineDate("Saving data in file: '" + sFileEnd + "'");
+											objLog.writeLineDate("Saving data in file: '" + sFileEnd + "'");
 											objIni.save(sFileEnd);
 										}
 									
@@ -331,7 +331,7 @@ public class KernelFileTransformCsv2IniZZZ  extends AbstractKernelUseObjectZZZ{
 								 					sSection=sSectionBase;						
 								 				}
 												//System.out.println("Section: [" + sSection + "]");
-												objLog.WriteLine("Section: [" + sSection + "]");
+												objLog.writeLine("Section: [" + sSection + "]");
 											
 											
 												//get the other elements by column, column 1 is reserved for an update sign e.g. N__ or U__, etc.
@@ -352,7 +352,7 @@ public class KernelFileTransformCsv2IniZZZ  extends AbstractKernelUseObjectZZZ{
 															  //get the Value											
 															  sColumntemp = (String)objsHashLine.get(stemp);													
 															  //System.out.println(sProperty + ": " + sColumntemp);
-															  objLog.WriteLine(sProperty + ": " + sColumntemp);
+															  objLog.writeLine(sProperty + ": " + sColumntemp);
 	
 															  //write the property to the current section
 															  //if no value was found, sColumntemp is null. But null is not allowed for that paramenter.
@@ -393,9 +393,9 @@ public class KernelFileTransformCsv2IniZZZ  extends AbstractKernelUseObjectZZZ{
 								objFileExpanded = new FileZZZ(this.getDirectoryTarget(), sFileEnd, "");
 								sFileExpanded = objFileExpanded.getNameExpandedNext();
 								sFileEnd = this.getDirectoryTarget() + File.separator + sFileExpanded;
-								objLog.WriteLineDate("Saving data in file: '" + sFileEnd + "'");
+								objLog.writeLineDate("Saving data in file: '" + sFileEnd + "'");
 								if(objIni != null){
-									objLog.WriteLineDate("Saving data in file: '" + this.getDirectoryTarget() + File.separator + sFileExpanded + "'");
+									objLog.writeLineDate("Saving data in file: '" + this.getDirectoryTarget() + File.separator + sFileExpanded + "'");
 									objIni.save(sFileEnd);
 									bReturn = true;
 								}

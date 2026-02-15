@@ -221,14 +221,14 @@ public abstract class AbstractKernelUseObjectWithStatusLocalZZZ extends Abstract
 			if(objLog==null) {
 				this.logLineDate(sLog);
 			}else {
-				objLog.WriteLineDate(sLog);
+				objLog.writeLineDate(sLog);
 			}
 		}else {
 			LogZZZ objLog = this.getLogObject();
 			if(objLog==null) {
 				this.logLineDate("");
 			}else {
-				objLog.WriteLineDate("");
+				objLog.writeLineDate("");
 			}	
 		}		
 	}

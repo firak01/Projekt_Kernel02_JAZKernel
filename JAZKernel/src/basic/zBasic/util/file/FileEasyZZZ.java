@@ -34,6 +34,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 import basic.zBasic.util.machine.EnvironmentZZZ;
 import basic.zKernel.IKernelConfigZZZ;
+import custom.zKernel.LogZZZ;
 
 /**Einfache Dateioperationen
  * @author lindhaueradmin
@@ -2079,7 +2080,7 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 		}
 		
 		}//end main:
-		ObjectZZZ.logLine("isDirectoryExisting=" + bReturn) ;
+		LogZZZ.writeLine(FileEasyZZZ.class, "isDirectoryExisting=" + bReturn) ;
 		return bReturn;	
 	}
 	

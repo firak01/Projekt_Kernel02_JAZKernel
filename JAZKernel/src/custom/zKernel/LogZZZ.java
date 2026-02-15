@@ -36,4 +36,6 @@ public class LogZZZ extends AbstractKernelLogZZZ{
 	public LogZZZ(IKernelConfigZZZ objConfig) throws ExceptionZZZ {
 		super(objConfig);
 	}
+
+	
 }

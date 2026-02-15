@@ -367,7 +367,7 @@ public class KernelEncryptionIniSolverZZZ<T>  extends AbstractKernelIniSolverZZZ
 						for(boolean bFound:baFound) {
 							iCounter++;
 							if(!bFound) {
-								this.getLogObject().WriteLineDate("Flag not available: '"+saControl[iCounter]+"'");
+								this.getLogObject().writeLineDate("Flag not available: '"+saControl[iCounter]+"'");
 							}
 						}
 					}													

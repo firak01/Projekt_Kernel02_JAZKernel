@@ -128,7 +128,7 @@ public class AbstractObjectZZZ<T> implements IObjectZZZ, IOutputDebugNormedZZZ, 
 		String sLogUsed = StringFormatManagerZZZ.getInstance().compute(obj, sLog);						
 		//wird in WriteLine schon gemacht... System.out.println(sLogUsed);
 		
-		objLog.WriteLine(sLogUsed);
+		objLog.writeLine(sLogUsed);
 	}
 	
 	@Override
@@ -140,7 +140,7 @@ public class AbstractObjectZZZ<T> implements IObjectZZZ, IOutputDebugNormedZZZ, 
 		String sLogUsed = StringFormatManagerZZZ.getInstance().compute(obj, sLogs);						
 		
 		//wird in WriteLine schon gemacht... System.out.println(sLogUsed);		
-		objLog.WriteLine(sLogUsed);
+		objLog.writeLine(sLogUsed);
 	}
 	
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -206,7 +206,7 @@ public class AbstractObjectZZZ<T> implements IObjectZZZ, IOutputDebugNormedZZZ, 
 			String sLogUsed = StringFormatManagerZZZ.getInstance().compute(objIn, ienumaMappedLogString, saLog);
 			
 			//wird schon in .WriteLine(...) gemacht;//System.out.println(sLogUsed);			
-			objLog.WriteLine(sLogUsed);
+			objLog.writeLine(sLogUsed);
 		}//end main:
 	
 	

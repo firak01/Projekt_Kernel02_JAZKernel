@@ -213,7 +213,7 @@ public abstract class AbstracKernelSenderObjectWithFlagStatusLocalBasicZZZ exten
 			String sTemp = AbstractKernelLogZZZ.computeLineDate(sLog);
 			System.out.println(sTemp);
 		}else {
-			objLog.WriteLineDate(sLog);
+			objLog.writeLineDate(sLog);
 		}		
 	}
 }

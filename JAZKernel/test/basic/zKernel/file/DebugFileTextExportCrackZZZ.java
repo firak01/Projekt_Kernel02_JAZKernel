@@ -38,7 +38,7 @@ public class DebugFileTextExportCrackZZZ {
 				
 					} catch (ExceptionZZZ e) {
 						try {
-							objLog.WriteLineDate(e.getDetailAllLast());
+							objLog.writeLineDate(e.getDetailAllLast());
 						} catch (ExceptionZZZ e1) {				
 							e1.printStackTrace();
 							System.out.println(e1.getDetailAllLast());

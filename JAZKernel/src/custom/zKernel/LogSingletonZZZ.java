@@ -1,17 +1,8 @@
 package custom.zKernel;
 
-import java.util.Vector;
-
 import basic.zBasic.ExceptionZZZ;
-import basic.zBasic.IObjectWithExpressionZZZ;
-import basic.zBasic.util.abstractList.Vector3ZZZ;
-import basic.zBasic.util.abstractList.VectorDifferenceZZZ;
-import basic.zBasic.util.file.JarEasyUtilZZZ;
 import basic.zKernel.AbstractKernelLogZZZ;
-import basic.zKernel.AbstractKernelObjectZZZ;
-import basic.zKernel.ConfigZZZ;
 import basic.zKernel.IKernelConfigZZZ;
-import basic.zKernel.file.ini.IIniTagWithExpressionZZZ;
 
 public class LogSingletonZZZ extends AbstractKernelLogZZZ{
 	private static final long serialVersionUID = 1L;

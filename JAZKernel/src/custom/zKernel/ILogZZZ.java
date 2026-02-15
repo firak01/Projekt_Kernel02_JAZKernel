@@ -27,22 +27,23 @@ public interface ILogZZZ extends IFileExpansionEnabledZZZ, IKernelConfigUserZZZ{
 	
 	public FileTextWriterZZZ getFileTextWriterObject() throws ExceptionZZZ;
 	
-	public boolean Write(String sLog) throws ExceptionZZZ;//wird dann als Synchronized implementiert.
-	public boolean WriteLine(String sLog) throws ExceptionZZZ;//wird dann als Synchronized implementiert.
-	public boolean WriteLineDate(String sLog) throws ExceptionZZZ;//wird dann als Synchronized implementiert.
-	public boolean WriteLineDate(String... sLogs) throws ExceptionZZZ;//wird dann als Synchronized implementiert.
+	public boolean write(String sLog) throws ExceptionZZZ;//wird dann als Synchronized implementiert.
+	public boolean writeLine(String sLog) throws ExceptionZZZ;//wird dann als Synchronized implementiert.
+	public boolean writeLineDate(String sLog) throws ExceptionZZZ;//wird dann als Synchronized implementiert.
+	public boolean writeLineDate(String sLog1, String sLog2) throws ExceptionZZZ;//wird dann als Synchronized implementiert.
+	public boolean writeLineDate(String... sLogs) throws ExceptionZZZ;//wird dann als Synchronized implementiert.
 	
-	public boolean WriteLineDate(Object obj, String sLog) throws ExceptionZZZ;//wird dann als Synchronized implementiert.
+	public boolean writeLineDate(Object obj, String sLog) throws ExceptionZZZ;//wird dann als Synchronized implementiert.
 	
-	public boolean WriteLineDateWithPosition(String sLog) throws ExceptionZZZ;
+	public boolean writeLineDateWithPosition(String sLog) throws ExceptionZZZ;
 	
-	public boolean WriteLineDateWithPosition(Class classObj, String sLog) throws ExceptionZZZ;	
-	public boolean WriteLineDateWithPosition(Object obj, String sLog) throws ExceptionZZZ;
-	public boolean WriteLineDateWithPosition(Object obj, int iStackTraceOffset, String sLog) throws ExceptionZZZ;
+	public boolean writeLineDateWithPosition(Class classObj, String sLog) throws ExceptionZZZ;	
+	public boolean writeLineDateWithPosition(Object obj, String sLog) throws ExceptionZZZ;
+	public boolean writeLineDateWithPosition(Object obj, int iStackTraceOffset, String sLog) throws ExceptionZZZ;
 	
-	public boolean WriteLineDateWithPositionXml(String sLog) throws ExceptionZZZ;
+	public boolean writeLineDateWithPositionXml(String sLog) throws ExceptionZZZ;
 	
-	public boolean WriteLineDateWithPositionXml(Class classObj, String sLog) throws ExceptionZZZ;
-	public boolean WriteLineDateWithPositionXml(Object obj, String sLog) throws ExceptionZZZ;
-	public boolean WriteLineDateWithPositionXml(Object obj, int iStackTraceOffset, String sLog) throws ExceptionZZZ;
+	public boolean writeLineDateWithPositionXml(Class classObj, String sLog) throws ExceptionZZZ;
+	public boolean writeLineDateWithPositionXml(Object obj, String sLog) throws ExceptionZZZ;
+	public boolean writeLineDateWithPositionXml(Object obj, int iStackTraceOffset, String sLog) throws ExceptionZZZ;
 }
