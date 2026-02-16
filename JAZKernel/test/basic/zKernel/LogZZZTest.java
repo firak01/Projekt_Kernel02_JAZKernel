@@ -109,7 +109,7 @@ public class LogZZZTest extends TestCase{
 			//Zeile mit 1x Logstring
 			sLog1 = "XXXTESTLAENGERXXX";			
 			iLine = ReflectCodeZZZ.getMethodCurrentLine()+1;//+1, weil halt die naechste Zeile im Code.			
-			sValue = objLogTest.computeLine(iaFormat, sLog1);
+			sValue = objLogTest.computeLine(this,iaFormat, sLog1);
 			System.out.println("LogZZZTest.testComputeLine_CUSTOM(): Logausgabe in nächster Zeile.\n" + sValue);
 						
 			//Nur 1x den LogString
@@ -136,7 +136,7 @@ public class LogZZZTest extends TestCase{
 			//Zeile mit 2x Logstring
 			sLog2 = "ZZZTESTZZZ";
 			iLine = ReflectCodeZZZ.getMethodCurrentLine()+1;//+1, weil halt die naechste Zeile im Code.
-			sValue = objLogTest.computeLine(iaFormat, sLog2, sLog1); //auch wenn log2 kuerzer als log1 ist, erwarte ich dass die Ausgabe buendig ist 
+			sValue = objLogTest.computeLine(sLog2, iaFormat, sLog1); //auch wenn log2 kuerzer als log1 ist, erwarte ich dass die Ausgabe buendig ist 
 			System.out.println("LogZZZTest.testComputeLine_CUSTOM(): Logausgabe in nächster Zeile.\n" + sValue);
 			
 			//Nur 1x den LogString

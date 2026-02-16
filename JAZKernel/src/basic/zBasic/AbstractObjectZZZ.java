@@ -260,8 +260,6 @@ public class AbstractObjectZZZ<T> implements IObjectZZZ, IOutputDebugNormedZZZ, 
 		String[] saLog = sLogs;
 		logProtocolWithPosition__(null, iaFormat, saLog);
 	}
-	
-	@Override
 	public synchronized void logProtocolWithPosition(String sLog) throws ExceptionZZZ{
 		
 		//Wir wollen hier zwar ohne Datum, aber mit Positionsangabe
@@ -275,6 +273,8 @@ public class AbstractObjectZZZ<T> implements IObjectZZZ, IOutputDebugNormedZZZ, 
 	@Override
 	public synchronized void logProtocolWithPosition(Object obj, String... sLogs) throws ExceptionZZZ{
 		
+	@Override
+	
 		//Wir wollen hier zwar ohne Datum, aber mit Positionsangabe
 		IEnumSetMappedStringFormatZZZ[]iaFormat = LogZZZ.getFormatForComputeLineWithPosition_withObject();
 		

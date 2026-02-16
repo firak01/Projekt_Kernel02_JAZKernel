@@ -349,7 +349,7 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 		return computeLine__(classObj, saLog);
 	}
 	
-	public synchronized static String computeLine(IEnumSetMappedStringFormatZZZ[]iaFormat, Object objIn, String sLog) throws ExceptionZZZ {
+	public synchronized static String computeLine(Object objIn, IEnumSetMappedStringFormatZZZ[]iaFormat, String sLog) throws ExceptionZZZ {
 		Object obj=null;
 		if(objIn==null) {
 			ExceptionZZZ ez = new ExceptionZZZ("Object", iERROR_PARAMETER_MISSING, AbstractKernelLogZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
@@ -377,7 +377,7 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 		return computeLine__(classObj, saLog);
 	}	
 	
-	public synchronized static String computeLine(IEnumSetMappedStringFormatZZZ[]iaFormat, Object objIn, String... sLogs) throws ExceptionZZZ {		
+	public synchronized static String computeLine(Object objIn, IEnumSetMappedStringFormatZZZ[]iaFormat, String... sLogs) throws ExceptionZZZ {		
 		Object obj=null;
 		if(objIn==null) {
 			ExceptionZZZ ez = new ExceptionZZZ("Object", iERROR_PARAMETER_MISSING, AbstractKernelLogZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
@@ -396,7 +396,7 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 		return computeLine__(classObj, saLog);
 	}
 	
-	public synchronized static String computeLine(IEnumSetMappedStringFormatZZZ[]iaFormat, Class classObj, String sLog) throws ExceptionZZZ {
+	public synchronized static String computeLine(Class classObj, IEnumSetMappedStringFormatZZZ[]iaFormat, String sLog) throws ExceptionZZZ {
 		String[]saLog = new String[1];
 		saLog[0] = sLog;
 		return computeLine__(classObj, 1, iaFormat, saLog);

@@ -16,6 +16,7 @@ import java.util.regex.Pattern;
 
 import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
 import basic.zBasic.util.datatype.longs.LongZZZ;
+import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilTagByTypeZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
@@ -33,6 +34,7 @@ import basic.zBasic.util.string.justifier.SeparatorMessageStringJustifierZZZ;
 import basic.zBasic.xml.tagtype.ITagByTypeZZZ;
 import basic.zBasic.xml.tagtype.ITagTypeZZZ;
 import basic.zBasic.xml.tagtype.TagByTypeFactoryZZZ;
+import basic.zKernel.AbstractKernelLogZZZ;
 
 public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 
@@ -1277,8 +1279,25 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 	public static String getClassFilePath(Class classObj) throws ExceptionZZZ{
 		String sReturn = null;
 		main:{			
-			String sFileName = ReflectCodeZZZ.getClassFileName(classObj);			
-			String sDirectory = StringZZZ.replace(classObj.getPackage().getName(),".",FileEasyZZZ.sDIRECTORY_SEPARATOR_WINDOWS);
+			if(classObj==null) {
+				ExceptionZZZ ez = new ExceptionZZZ("Class-Object", iERROR_PARAMETER_MISSING, AbstractKernelLogZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			
+			String sFileName = ReflectCodeZZZ.getClassFileName(classObj);	
+			
+			Package objPackage = classObj.getPackage();
+			if(objPackage==null) {
+				String sLog = "ReflectCodeZZZ.getClassFilePath(...): Package not available by classloader";
+				ReflectCodeZZZ.printStackTrace(sLog);
+				
+				sReturn = sFileName;
+				break main;
+			}
+			
+			String sPackage = classObj.getPackage().getName();
+			String sDirectory = StringZZZ.replace(sPackage,".",FileEasyZZZ.sDIRECTORY_SEPARATOR_WINDOWS);
 			
 			 //NEIN: ENDLOSSCHLEIFE weil darin ebenfalls geloggt wird.
             //String sFilePathTotal = FileEasyZZZ.joinFilePathName(sDirectory, sFileName);
@@ -1318,7 +1337,7 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 	 * @throws ExceptionZZZ 
 	 */
 	public static String[] getCallingStack() throws ExceptionZZZ {
-		return ReflectCodeZZZ.getCallingStack(null);
+		return getCallingStack(null);
 	}
 	
 	/**Gib ein Array der Methoden des Stacktrace zurück.
@@ -1545,6 +1564,76 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
         return size;
     }
 	
+	public static StackTraceElement[] getStackTrace() throws ExceptionZZZ {		
+		return getStackTrace__(1);
+	}
+	
+	public static StackTraceElement[] getStackTrace(int iStartingLevelIn) throws ExceptionZZZ {
+		int iStartingLevel = iStartingLevelIn + 1;		
+		return getStackTrace__(iStartingLevel);
+	}
+	
+	private static StackTraceElement[] getStackTrace__(int iStartingLevelIn) throws ExceptionZZZ {
+		StackTraceElement[] objaReturn = null;
+		main:{
+			int iStartingLevel = iStartingLevelIn + 1;
+			
+			StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+			
+			
+			//xxxxxxxxxx
+			ArrayList<StackTraceElement>listaTemp = new ArrayList<StackTraceElement>();
+			int iposition=0;
+			for(StackTraceElement element : stackTrace){
+				iposition++;
+				//if(iposition>=ReflectCodeZZZ.iPOSITION_STACKTRACE_CURRENT){	//Man willl den Stactrace erst ab der aktuellen Methode und nicht den oben durchgeführten "Thread-Aufruf";																																					
+				if(iposition>=ReflectCodeZZZ.iPOSITION_STACKTRACE_CURRENT + iStartingLevel){	//Man willl den Stactrace erst ab der aktuellen Methode und nicht den oben durchgeführten "Thread-Aufruf";
+						listaTemp.add(element);
+				}//end if
+			}//end for
+		
+			objaReturn = listaTemp.toArray(new StackTraceElement[listaTemp.size()]);
+		}//end main:
+		return objaReturn;
+	}
+	
+	//+++++++++++++++++
+	public static StackTraceElement[] getStackTraceCalling() throws ExceptionZZZ {		
+		return getStackTraceCalling__(1);
+	}
+	
+	public static StackTraceElement[] getStackTraceCalling(int iStartingLevelIn) throws ExceptionZZZ {
+		int iStartingLevel = iStartingLevelIn + 1;		
+		return getStackTraceCalling__(iStartingLevel);
+	}
+	
+	
+	private static StackTraceElement[] getStackTraceCalling__(int iStartingLevelIn) throws ExceptionZZZ {
+		StackTraceElement[] objaReturn = null;
+		main:{
+			int iStartingLevel = iStartingLevelIn + 1;
+			
+			StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+			
+			
+			//xxxxxxxxxx
+			ArrayList<StackTraceElement>listaTemp = new ArrayList<StackTraceElement>();
+			int iposition=0;
+			for(StackTraceElement element : stackTrace){
+				iposition++;
+				//if(iposition>=ReflectCodeZZZ.iPOSITION_STACKTRACE_CURRENT){	//Man willl den Stactrace erst ab der aktuellen Methode und nicht den oben durchgeführten "Thread-Aufruf";																																					
+				if(iposition>=ReflectCodeZZZ.iPOSITION_STACKTRACE_CALLING + iStartingLevel){	//Man willl den Stactrace erst ab der aktuellen Methode und nicht den oben durchgeführten "Thread-Aufruf";
+						listaTemp.add(element);
+				}//end if
+			}//end for
+		
+			objaReturn = listaTemp.toArray(new StackTraceElement[listaTemp.size()]);
+		}//end main:
+		return objaReturn;
+	}
+	
+	
+	
 	public static StackTraceElement[] getStackTrace(String sRegEx) throws ExceptionZZZ {
 		StackTraceElement[] objaReturn = null;
 		main:{			
@@ -1608,6 +1697,89 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 		}//end main:
 		return objaReturn;
 	}
+	
+	
+	public static String getStackTraceString() throws ExceptionZZZ {
+		StackTraceElement[]stacktrace=ReflectCodeZZZ.getStackTraceCalling__(1);
+		return ReflectCodeZZZ.stackTraceToString(stacktrace);
+	}
+	
+	public static String[] getStackTraceStringArray() throws ExceptionZZZ {
+		StackTraceElement[]stacktrace=ReflectCodeZZZ.getStackTraceCalling__(1);
+		return ReflectCodeZZZ.stackTraceToStringArray(stacktrace);
+	}
+	
+	public static String[] getStackTraceStringArray(int iLevelIn) throws ExceptionZZZ {
+		int iLevel = iLevelIn + 1;
+		StackTraceElement[]stacktrace=ReflectCodeZZZ.getStackTraceCalling__(iLevel);
+		return ReflectCodeZZZ.stackTraceToStringArray(stacktrace);
+	}
+	
+	public static String getStackTraceCallingString() throws ExceptionZZZ {
+		StackTraceElement[]stacktrace=ReflectCodeZZZ.getStackTraceCalling__(2); //+1wg. nicht nur den direkten Calling String, sondern noch einen weiteren.
+		return ReflectCodeZZZ.stackTraceToString(stacktrace);
+	}
+	
+	public static String[] getStackTraceCallingStringArray() throws ExceptionZZZ {
+		StackTraceElement[]stacktrace=ReflectCodeZZZ.getStackTraceCalling__(2);
+		return ReflectCodeZZZ.stackTraceToStringArray(stacktrace);
+	}
+	
+	public static String[] getStackTraceCallingStringArray(int iLevelIn) throws ExceptionZZZ {
+		int iLevel = 2 + iLevelIn;
+		StackTraceElement[]stacktrace=ReflectCodeZZZ.getStackTraceCalling__(iLevel);
+		return ReflectCodeZZZ.stackTraceToStringArray(stacktrace);
+	}
+	
+	public static String getStackTraceCallingString(int iLevelIn) throws ExceptionZZZ {
+		int iLevel = iLevelIn + 1;
+		StackTraceElement[]stacktrace=ReflectCodeZZZ.getStackTraceCalling__(iLevel); //+1wg. nicht nur den direkten Calling String, sondern noch einen weiteren.
+		return ReflectCodeZZZ.stackTraceToString(stacktrace);
+	}
+	
+	public static String stackTraceToString(StackTraceElement[] stackTrace) throws ExceptionZZZ{
+	    StringBuilder sb = new StringBuilder();
+	    for (StackTraceElement e : stackTrace) {
+	        sb.append("\tat ").append(e.toString()).append(System.lineSeparator());
+	    }
+	    return sb.toString();
+	}
+	
+	public static String[] stackTraceToStringArray(StackTraceElement[] stacktrace) throws ExceptionZZZ{
+		String[]saReturn=null;
+		main:{
+			ArrayList<StackTraceElement>listasTemp = new ArrayList<StackTraceElement>();
+			for(StackTraceElement element : stacktrace){
+				listasTemp.add(element);				
+			}//end for
+			
+			saReturn = ArrayListUtilZZZ.toStringArray( listasTemp);
+		}//end main
+		return saReturn;
+	}
+	
+	public static void printStackTrace(StackTraceElement[] stackTrace) throws ExceptionZZZ{
+		if(stackTrace==null) {
+			ExceptionZZZ ez = new ExceptionZZZ("StackTraceElement[]", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+			throw ez;
+		}
+		
+		String sValue = ReflectCodeZZZ.stackTraceToString(stackTrace);
+		System.out.println(sValue);
+	}
+	
+	public static void printStackTrace() throws ExceptionZZZ{
+		StackTraceElement[] stackTrace = ReflectCodeZZZ.getStackTrace__(3);
+		ReflectCodeZZZ.printStackTrace(stackTrace);
+	}
+	
+	public static void printStackTrace(String sMessage) throws ExceptionZZZ{
+		String[]saStacktrace = ReflectCodeZZZ.getStackTraceCallingStringArray();
+		String[]saReturn=StringArrayZZZ.prepend(sMessage, saStacktrace);
+		String sReturn = StringArrayZZZ.implode(saReturn, StringZZZ.crlf()+"\tat ");
+		System.out.println(sReturn);
+	}
+	
 	
 	/**Jetzt hat man die Postionsangaben mit Tags versehen, will sie dann aber wieder raus haben.
 	 * Das ist z.B. im LogStringFormatManagerZZZ der Fall, der die LogStrings ohne "stoerende" Tags ausgeben will. 

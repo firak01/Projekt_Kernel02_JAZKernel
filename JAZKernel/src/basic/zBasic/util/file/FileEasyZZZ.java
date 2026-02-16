@@ -2074,13 +2074,13 @@ public static String getNameWithChangedSuffixKeptEnd(String sFileName, String sS
 				throw ez;
 			}
 		
-		bReturn = FileEasyZZZ.isDirectory(file2proof);
-		if(bReturn) {
-			bReturn = FileEasyZZZ.exists(file2proof);
-		}
+			bReturn = FileEasyZZZ.isDirectory(file2proof);
+			if(bReturn) {
+				bReturn = FileEasyZZZ.exists(file2proof);
+			}
 		
 		}//end main:
-		LogZZZ.writeLine(FileEasyZZZ.class, "isDirectoryExisting=" + bReturn) ;
+		LogZZZ.logProtocolStringStatic(FileEasyZZZ.class, "isDirectoryExisting=" + bReturn);//.writeLine(FileEasyZZZ.class, "isDirectoryExisting=" + bReturn) ;
 		return bReturn;	
 	}
 	

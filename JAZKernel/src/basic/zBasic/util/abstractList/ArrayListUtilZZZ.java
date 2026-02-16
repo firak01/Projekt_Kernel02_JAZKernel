@@ -736,7 +736,8 @@ public class ArrayListUtilZZZ<T>  implements IConstantZZZ{
 			if(lista==null) break main;
 			if(lista.size()==0) break main;
 			
-			saReturn = lista.toArray(new String[lista.size()]);
+			//saReturn = lista.toArray(new String[lista.size()]);
+			saReturn = new String[lista.size()];
 			int iIndex = -1;
 			for(Object obj : lista){
 				iIndex++;
