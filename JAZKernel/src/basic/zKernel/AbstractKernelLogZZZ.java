@@ -361,7 +361,7 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 		
 		String[]saLog = new String[1];
 		saLog[0] = sLog;
-		return computeLine__(classObj, saLog);
+		return computeLine__(classObj, 1, iaFormat, saLog);
 	}
 	
 	public synchronized static String computeLine(Object objIn, String... sLogs) throws ExceptionZZZ {

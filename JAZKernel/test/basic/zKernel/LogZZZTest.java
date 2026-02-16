@@ -217,7 +217,7 @@ public class LogZZZTest extends TestCase{
 			//Da man die Anzahl der zum Buendigmachen verwendeten Leerzeichen nicht kennt: Anfang und Ende vergleichen.
 			sValueExpectedStart = "[A00/]";
 			sValueExpectedMid = ("^[T][Thread: 1][/T][CF][File:" + sClassFilePath + "][/CF][A00/]");
-			sValueExpectedEnd = IStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + "[A01]" + sLog2 + "[/A01]";
+			sValueExpectedEnd =  IStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT +"[A01]" + sLog1 + "[/A01]"+"[A01]" + sLog2 + "[/A01]";
 			
 			bStartsWith = StringZZZ.startsWith(sValue, sValueExpectedStart);
 			assertTrue(bStartsWith);
