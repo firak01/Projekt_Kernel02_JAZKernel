@@ -434,7 +434,7 @@ public class LogZZZTest extends TestCase{
 	}
 	
 	
-	public void testWriteLineDate(){
+	public void testwriteLineDate(){
 		try {
 			boolean bValue=false;
 			

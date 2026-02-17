@@ -219,7 +219,7 @@ public abstract class AbstractKernelUseObjectWithStatusLocalOnStatusLocalListeni
 		
 		if(sLogs!=null){
 			LogZZZ objLog = this.getLogObject();
-			objLog.WriteLineDate(sLogs);
+			objLog.writeLineDate(sLogs);
 		}else {
 			this.logLineDate(sLogs);	
 		}		
