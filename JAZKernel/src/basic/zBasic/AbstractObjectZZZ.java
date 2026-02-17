@@ -152,7 +152,7 @@ public class AbstractObjectZZZ<T> implements IObjectZZZ, IOutputDebugNormedZZZ, 
 		
 		String[] saLog = new String[1];
 		saLog[0] = sLog;
-		logProtocol__(null, ienumaMappedLogString, saLog);
+		logProtocol__(ienumaMappedLogString, saLog);
 	}
 	
 	@Override
@@ -161,13 +161,13 @@ public class AbstractObjectZZZ<T> implements IObjectZZZ, IOutputDebugNormedZZZ, 
 		ienumaMappedLogString[0] = ienumMappedLogString;
 		
 		String[] saLog = sLogs;
-		logProtocol__(null, ienumaMappedLogString, saLog);
+		logProtocol__(ienumaMappedLogString, saLog);
 	}
 	
 	@Override
 	public synchronized void logProtocol(IEnumSetMappedStringFormatZZZ[] ienumaMappedLogString, String... sLogs) throws ExceptionZZZ {
 		String[] saLog = sLogs;
-		logProtocol__(null, ienumaMappedLogString, saLog);
+		logProtocol__(ienumaMappedLogString, saLog);
 	}
 	
 	@Override
@@ -251,6 +251,61 @@ public class AbstractObjectZZZ<T> implements IObjectZZZ, IOutputDebugNormedZZZ, 
 	}
 	
 	
+	private void logProtocol__(IEnumSetMappedStringFormatZZZ[] ienumaMappedLogString, String[] saLog) throws ExceptionZZZ {
+		main:{
+			if(ArrayUtilZZZ.isNull(saLog)) break main;		
+			
+			//Wichtig: Hole erst die Log Instanz. Darin wird schon jede menge Protokolliert und die "justifier-Grenze" verschoben.
+			ILogZZZ objLog = LogSingletonZZZ.getInstance();
+			
+			String sLogUsed = StringFormatManagerZZZ.getInstance().compute(ienumaMappedLogString, saLog);
+			
+			//wird schon in .WriteLine(...) gemacht;//System.out.println(sLogUsed);			
+			objLog.writeLine(sLogUsed);
+		}//end main:
+	
+	
+	
+//			Object obj=null;
+//			if(objIn==null) {
+//				obj=this;
+//			}else {
+//				obj=objIn;
+//			}
+//			
+////			if(ArrayUtilZZZ.isNull(ienumaMappedLogString)){			
+////				sLogUsed = StringFormatManagerZZZ.getInstance().compute(obj, sLogs);						
+////				
+////				//wird schon in .WriteLine(...) gemacht;//System.out.println(sLogUsed);			
+////				objLog.WriteLine(sLogUsed);
+////				break main;
+////			}
+//			
+//			String sLogUsed;
+//			
+//			//Wichtig: Hole erst die Log Instanz. Darin wird schon jede menge Protokolliert und die "justifier-Grenze" verschoben.
+//			ILogZZZ objLog = LogSingletonZZZ.getInstance();
+//							
+//			//wichtig: Wenn dies vor dem Holen der Log Instanz gemacht wird, arbeitet man mit einer weit links liegenden "justifier-Grenze".
+//			if(obj==null) {
+//				if(ArrayUtilZZZ.isNull(ienumaMappedLogString)){
+//					
+//				}else {
+//					sLogUsed = StringFormatManagerZZZ.getInstance().compute(sLogs, ienumaMappedLogString);
+//				}
+//			}else {
+//				if(ArrayUtilZZZ.isNull(ienumaMappedLogString)){
+//					
+//				}else {
+//					sLogUsed = StringFormatManagerZZZ.getInstance().compute(obj, ienumaMappedLogString, sLogs);
+//				}
+//			}
+//			
+//			
+//		}//end main:
+	}
+	
+	
 	//############ ALLE METHODEN NUN AUCH NOCH MIT POSITIONSANGABE
 	@Override
 	public synchronized void logProtocolWithPosition(String... sLogs) throws ExceptionZZZ{
@@ -258,7 +313,7 @@ public class AbstractObjectZZZ<T> implements IObjectZZZ, IOutputDebugNormedZZZ, 
 		IEnumSetMappedStringFormatZZZ[]iaFormat = LogZZZ.getFormatForComputeLineWithPosition_withObject();
 		
 		String[] saLog = sLogs;
-		logProtocolWithPosition__(null, iaFormat, saLog);
+		logProtocolWithPosition__(1, iaFormat, saLog);
 	}
 	public synchronized void logProtocolWithPosition(String sLog) throws ExceptionZZZ{
 		
@@ -267,19 +322,17 @@ public class AbstractObjectZZZ<T> implements IObjectZZZ, IOutputDebugNormedZZZ, 
 		
 		String[] saLog = new String[1];
 		saLog[0] = sLog;
-		logProtocolWithPosition__(null, iaFormat, saLog);
+		logProtocolWithPosition__(this, 1, iaFormat, saLog);
 	}
 			
 	@Override
 	public synchronized void logProtocolWithPosition(Object obj, String... sLogs) throws ExceptionZZZ{
-		
-	@Override
 	
 		//Wir wollen hier zwar ohne Datum, aber mit Positionsangabe
 		IEnumSetMappedStringFormatZZZ[]iaFormat = LogZZZ.getFormatForComputeLineWithPosition_withObject();
 		
 		String[] saLog = sLogs;
-		logProtocolWithPosition__(obj, iaFormat, saLog);
+		logProtocolWithPosition__(this, 1, iaFormat, saLog);
 	}
 	
 	@Override
@@ -290,7 +343,7 @@ public class AbstractObjectZZZ<T> implements IObjectZZZ, IOutputDebugNormedZZZ, 
 		
 		String[] saLog = new String[1];
 		saLog[0] = sLog;
-		logProtocolWithPosition__(obj, iaFormat, saLog);
+		logProtocolWithPosition__(this, 1, iaFormat, saLog);
 	}
 	
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -301,13 +354,13 @@ public class AbstractObjectZZZ<T> implements IObjectZZZ, IOutputDebugNormedZZZ, 
 		ienumaMappedLogString[0] = ienumMappedLogString;
 		
 		String[] saLog = sLogs;
-		logProtocolWithPosition__(null, ienumaMappedLogString, saLog);
+		logProtocolWithPosition__(this, 1, ienumaMappedLogString, saLog);
 	}
 	
 	@Override
 	public synchronized void logProtocolWithPosition(IEnumSetMappedStringFormatZZZ[] ienumaMappedLogString, String... sLogs) throws ExceptionZZZ {		
 		String[] saLog = sLogs;
-		logProtocolWithPosition__(null, ienumaMappedLogString, saLog);
+		logProtocolWithPosition__(this, 1, ienumaMappedLogString, saLog);
 	}
 	
 	@Override
@@ -317,7 +370,7 @@ public class AbstractObjectZZZ<T> implements IObjectZZZ, IOutputDebugNormedZZZ, 
 		
 		String[] saLog = new String[1];
 		saLog[0] = sLog;
-		logProtocolWithPosition__(null, ienumaMappedLogString, saLog);
+		logProtocolWithPosition__(this, 1, ienumaMappedLogString, saLog);
 	}
 	
 	@Override
@@ -326,13 +379,13 @@ public class AbstractObjectZZZ<T> implements IObjectZZZ, IOutputDebugNormedZZZ, 
 		ienumaMappedLogString[0] = ienumMappedLogString;
 		
 		String[] saLog = sLogs;
-		logProtocolWithPosition__(obj, ienumaMappedLogString, saLog);
+		logProtocolWithPosition__(obj, 1, ienumaMappedLogString, saLog);
 	}
 	
 	@Override
 	public synchronized void logProtocolWithPosition(Object obj, IEnumSetMappedStringFormatZZZ[] ienumaMappedLogString, String... sLogs) throws ExceptionZZZ {		
 		String[] saLog = sLogs;
-		logProtocolWithPosition__(obj, ienumaMappedLogString, saLog);
+		logProtocolWithPosition__(obj, 1, ienumaMappedLogString, saLog);
 	}
 	
 	@Override
@@ -342,12 +395,20 @@ public class AbstractObjectZZZ<T> implements IObjectZZZ, IOutputDebugNormedZZZ, 
 
 		String[] saLog = new String[1];
 		saLog[0] = sLog;
-		logProtocolWithPosition__(obj, ienumaMappedLogString, saLog);
+		logProtocolWithPosition__(obj, 1, ienumaMappedLogString, saLog);
 	}	
 	
-	private void logProtocolWithPosition__(Object obj, IEnumSetMappedStringFormatZZZ[] ienumaMappedLogString, String[] saLogs) throws ExceptionZZZ {
-		String sPositionCalling = ReflectCodeZZZ.getPositionCallingXml(1); //Xml deshalb, weil sich daraus die Details gezogen werden kann. Ohne XML werden das 2 Zeilen im Log.
+	private void logProtocolWithPosition__(Object obj, int iLevelIn, IEnumSetMappedStringFormatZZZ[] ienumaMappedLogString, String[] saLogs) throws ExceptionZZZ {
+		int iLevel = iLevelIn + 1;
+		String sPositionCalling = ReflectCodeZZZ.getPositionXml(iLevel); //Xml deshalb, weil sich daraus die Details gezogen werden kann. Ohne XML werden das 2 Zeilen im Log.
 		String[] saLog = StringArrayZZZ.prepend(saLogs, sPositionCalling);
 		this.logProtocol(obj, ienumaMappedLogString, saLog); 
+	}
+	
+	private void logProtocolWithPosition__(int iLevelIn, IEnumSetMappedStringFormatZZZ[] ienumaMappedLogString, String[] saLogs) throws ExceptionZZZ {
+		int iLevel = iLevelIn + 1;
+		String sPositionCalling = ReflectCodeZZZ.getPositionXml(iLevel); //Xml deshalb, weil sich daraus die Details gezogen werden kann. Ohne XML werden das 2 Zeilen im Log.
+		String[] saLog = StringArrayZZZ.prepend(saLogs, sPositionCalling);
+		this.logProtocol(ienumaMappedLogString, saLog); 
 	}
 }

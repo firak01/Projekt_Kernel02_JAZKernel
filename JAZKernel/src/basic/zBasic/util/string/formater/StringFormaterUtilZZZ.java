@@ -285,52 +285,52 @@ public class StringFormaterUtilZZZ implements IConstantZZZ{
 	}
 	
 	//#######################################################################################################################
-	public static String justifyInfoPart(IStringJustifierZZZ objStringJustifier, String sLog) throws ExceptionZZZ{		
+	public static String justifyLine(IStringJustifierZZZ objStringJustifier, String sLog) throws ExceptionZZZ{		
 		String sReturn = sLog;
 		main:{
 			if(StringZZZ.isEmpty(sLog)) break main;
 								
 			//Teile die Zeile ggfs. am Zeilenumbruch auf
 			String[] saLine = StringZZZ.explode(sLog, StringZZZ.crlf());
-			sReturn = justifyInfoPart_(objStringJustifier, false, saLine);			
+			sReturn = justifyLine_(objStringJustifier, false, saLine);			
 		}//end main:
 		return sReturn;
 	}
 	
-	public static String justifyInfoPart(IStringJustifierZZZ objStringJustifier, String[] saLog) throws ExceptionZZZ{
+	public static String justifyLine(IStringJustifierZZZ objStringJustifier, String[] saLog) throws ExceptionZZZ{
 		String sReturn = null;
 		main:{
 			if(saLog==null) break main;						
-			sReturn = justifyInfoPart_(objStringJustifier, false, saLog);			
+			sReturn = justifyLine_(objStringJustifier, false, saLog);			
 		}//end main:
 		return sReturn;		
 	}
 	
 	
-	public static String justifyInfoPart(IStringJustifierZZZ objStringJustifier, boolean bMergeFirst2Lines, String sLog) throws ExceptionZZZ{
+	public static String justifyLine(IStringJustifierZZZ objStringJustifier, boolean bMergeFirst2Lines, String sLog) throws ExceptionZZZ{
 		String sReturn = sLog;
 		main:{
 			if(StringZZZ.isEmpty(sLog)) break main;
 								
 			//Teile die Zeile ggfs. am Zeilenumbruch auf
 			String[] saLine = StringZZZ.explode(sLog, StringZZZ.crlf());
-			sReturn = justifyInfoPart_(objStringJustifier, bMergeFirst2Lines, saLine);			
+			sReturn = justifyLine_(objStringJustifier, bMergeFirst2Lines, saLine);			
 		}//end main:
 		return sReturn;
 	}
 	
-	public static String justifyInfoPart(IStringJustifierZZZ objStringJustifier, boolean bMergeFirst2Lines, String[] saLine) throws ExceptionZZZ{
-		return justifyInfoPart_(objStringJustifier, bMergeFirst2Lines, saLine);
+	public static String justifyLine(IStringJustifierZZZ objStringJustifier, boolean bMergeFirst2Lines, String[] saLine) throws ExceptionZZZ{
+		return justifyLine_(objStringJustifier, bMergeFirst2Lines, saLine);
 	}
 	
-	private static String justifyInfoPart_(IStringJustifierZZZ objStringJustifier, boolean bMergeFirst2Lines, String[] saLine) throws ExceptionZZZ{
+	private static String justifyLine_(IStringJustifierZZZ objStringJustifier, boolean bMergeFirst2Lines, String[] saLine) throws ExceptionZZZ{
 		String sReturn = null;
 		main:{
 			if(saLine==null) break main;
 			
 			ArrayListZZZ<String> listasLineZ = ArrayListUtilZZZ.toArrayList(saLine);
 			
-			ArrayListZZZ<String> listasReturn = justifyInfoPartArrayList_(objStringJustifier, bMergeFirst2Lines, listasLineZ);
+			ArrayListZZZ<String> listasReturn = justifyLineArrayList_(objStringJustifier, bMergeFirst2Lines, listasLineZ);
 			sReturn = ArrayListUtilZZZ.implode(listasReturn, StringZZZ.crlf());
 		}//end main:
 		return sReturn;
@@ -392,27 +392,27 @@ public class StringFormaterUtilZZZ implements IConstantZZZ{
 	
 	
 	
-	public static String justifyInfoPart(IStringJustifierZZZ objStringJustifier, boolean bMergeFirst2Lines, ArrayListZZZ<String> listasLine) throws ExceptionZZZ{
+	public static String justifyLine(IStringJustifierZZZ objStringJustifier, boolean bMergeFirst2Lines, ArrayListZZZ<String> listasLine) throws ExceptionZZZ{
 		String sReturn = null;
 		main:{			
 			if(listasLine==null) break main;
 			if(listasLine.isEmpty()) break main;			
 			
-			ArrayListZZZ<String> listasReturn = justifyInfoPartArrayList_(objStringJustifier, bMergeFirst2Lines, listasLine);
+			ArrayListZZZ<String> listasReturn = justifyLineArrayList_(objStringJustifier, bMergeFirst2Lines, listasLine);
 			sReturn = ArrayListUtilZZZ.implode(listasReturn, StringZZZ.crlf());
 		}//end  main:
 		return sReturn;
 	}
 
-	public static ArrayListZZZ<String> justifyInfoPartArrayList(IStringJustifierZZZ objStringJustifier, ArrayListZZZ<String>listasLine) throws ExceptionZZZ{
-		return justifyInfoPartArrayList_(objStringJustifier, true, listasLine);
+	public static ArrayListZZZ<String> justifyLineArrayList(IStringJustifierZZZ objStringJustifier, ArrayListZZZ<String>listasLine) throws ExceptionZZZ{
+		return justifyLineArrayList_(objStringJustifier, true, listasLine);
 	}
 	
-	public static ArrayListZZZ<String> justifyInfoPartArrayList(IStringJustifierZZZ objStringJustifier, boolean bMergeFirst2Lines, ArrayListZZZ<String>listasLine) throws ExceptionZZZ{
-		return justifyInfoPartArrayList_(objStringJustifier, bMergeFirst2Lines, listasLine);
+	public static ArrayListZZZ<String> justifyLineArrayList(IStringJustifierZZZ objStringJustifier, boolean bMergeFirst2Lines, ArrayListZZZ<String>listasLine) throws ExceptionZZZ{
+		return justifyLineArrayList_(objStringJustifier, bMergeFirst2Lines, listasLine);
 	}
 	
-	private static ArrayListZZZ<String> justifyInfoPartArrayList_(IStringJustifierZZZ objStringJustifier, boolean bMergeFirst2Lines, ArrayListZZZ<String>listasLine) throws ExceptionZZZ{
+	private static ArrayListZZZ<String> justifyLineArrayList_(IStringJustifierZZZ objStringJustifier, boolean bMergeFirst2Lines, ArrayListZZZ<String>listasLine) throws ExceptionZZZ{
 		ArrayListZZZ<String>listasReturn=null;;
 		main:{	
 			if(listasLine==null) break main;
@@ -431,8 +431,8 @@ public class StringFormaterUtilZZZ implements IConstantZZZ{
 			ArrayListZZZ<String>listasLineNormed = normStringForJustifyArrayList_(objStringJustifier, bMergeFirst2Lines, listasLine);
 			
 			//Bei 0 wuerde nix buendig gemacht, darum die Grenze ggfs. explizit auf die Position des ersten SeparatorStrings setzen
-			int iIndexMayIncrease = objStringJustifier.getInfoPartBoundLeftBehind2use(listasLineNormed.get(0)); 
-			objStringJustifier.setInfoPartBoundLeftBehindIncreased(iIndexMayIncrease);
+			int iIndexMayIncrease = objStringJustifier.computeLineMarkerIndexLeftBehind2use(listasLineNormed.get(0)); 
+			objStringJustifier.setLineMarkerIndexLeftBehindIncreased(iIndexMayIncrease);
 		
 			//20260210 TODOGOON Das erledigen mit: 
 			//objStringJustifier.justifyArrayList(listasLineNormed);
@@ -443,24 +443,16 @@ public class StringFormaterUtilZZZ implements IConstantZZZ{
 			if(listasLineNormed.size()>=2) {
 				//Nun über mehrere Zeilen das machen!!! Einmal hin und wieder zurueck
 				ArrayListZZZ<String> listasLineReversed1 =  ArrayListUtilZZZ.reverse(listasLineNormed);
-				ArrayListZZZ<String>listasLineReversedJustified1 = new ArrayListZZZ<String>();
-				for(String sLine : listasLineReversed1) {
-					String sLineJustified = objStringJustifier.justifyInfoPart(sLine);
-					listasLineReversedJustified1.add(sLineJustified);
-				}
+				ArrayListZZZ<String> listasLineReversedJustified1 = objStringJustifier.justifyLine(listasLineReversed1);
 				
 				ArrayListZZZ<String>listasLineReversed2 =  ArrayListUtilZZZ.reverse(listasLineReversedJustified1);
-				ArrayListZZZ<String>listasLineReversedJustified2 = new ArrayListZZZ<String>();
-				for(String sLine : listasLineReversed2) {
-					String sLineJustified = objStringJustifier.justifyInfoPart(sLine);
-					listasLineReversedJustified2.add(sLineJustified);
-				}
+				ArrayListZZZ<String>listasLineReversedJustified2 = objStringJustifier.justifyLine(listasLineReversed2);
 				
 				listasReturn = listasLineReversedJustified2;
 			}else {				
 				String sLine = listasLineNormed.get(0);
 				if(sLine!=null) {
-					String sLineJustified = objStringJustifier.justifyInfoPart(sLine);
+					String sLineJustified = objStringJustifier.justifyLine(sLine);
 					listasReturn.add(sLineJustified);
 				}
 			}		
@@ -478,14 +470,14 @@ public class StringFormaterUtilZZZ implements IConstantZZZ{
 			boolean bLogEmpty  = StringZZZ.isEmpty(sLog);
 			if( bLogEmpty & bLineEmpty ) break main;			
 			if(bLogEmpty && !bLineEmpty) {
-				return justifyInfoPart(objStringJustifier, sLine);
+				return justifyLine(objStringJustifier, sLine);
 			}else if (!bLogEmpty && bLineEmpty) {
-				return justifyInfoPart(objStringJustifier, sLog);
+				return justifyLine(objStringJustifier, sLog);
 			}
 			
 			String[]saLogCommented = normStringForJustify_(objStringJustifier, sLine, sLog);
 			
-			sReturn = justifyInfoPart(objStringJustifier, false, saLogCommented);			
+			sReturn = justifyLine(objStringJustifier, false, saLogCommented);			
 		}//end  main:
 		return sReturn;
 	}

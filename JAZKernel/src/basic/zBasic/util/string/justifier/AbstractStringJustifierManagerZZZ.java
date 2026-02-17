@@ -236,7 +236,7 @@ public class AbstractStringJustifierManagerZZZ extends AbstractObjectWithFlagZZZ
 			for(int icount=0; icount<=listaStringJustifier.size()-1;icount++) {
 				IStringJustifierZZZ objJustifier = listaStringJustifier.get(icount);		
 				this.getStringJustifierListUsed().add(objJustifier);
-				listasReturn = StringFormaterUtilZZZ.justifyInfoPartArrayList(objJustifier, true, listasReturn);//true=fasse erste und zweite Zeile zusammen, die entstehen beim "Normieren", wenn an den Kommentartrenner aufgeteilt wird.									
+				listasReturn = StringFormaterUtilZZZ.justifyLineArrayList(objJustifier, true, listasReturn);//true=fasse erste und zweite Zeile zusammen, die entstehen beim "Normieren", wenn an den Kommentartrenner aufgeteilt wird.									
 			}
 			
 		

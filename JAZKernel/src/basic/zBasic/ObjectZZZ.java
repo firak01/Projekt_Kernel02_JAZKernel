@@ -78,17 +78,17 @@ public class ObjectZZZ extends AbstractObjectWithExceptionZZZ{
 	//     Die Position der Codepostion im String wird durch eine Formatanweisung definiert.
 	//     Das dann jeweils als Variante mit einer Klasse als Argument
 	public static void logLineDateWithPosition(Object obj, String sLog) throws ExceptionZZZ{		
-		String sTemp = LogZZZ.computeLineDateWithPosition(obj, sLog);
+		String sTemp = LogZZZ.computeLineDateWithPosition(obj, 1, sLog);
 		System.out.println(sTemp);
 	}
 	
 	public static void logLineDateWithPosition(Object obj, String[] saLog) throws ExceptionZZZ{		
-		String sTemp = LogZZZ.computeLineDateWithPosition(obj, saLog);
+		String sTemp = LogZZZ.computeLineDateWithPosition(obj, 1, saLog);
 		System.out.println(sTemp);
 	}
 	
 	public static void logLineDateWithPosition(Class classObj, String sLog) throws ExceptionZZZ{				
-		String sTemp = LogZZZ.computeLineDateWithPosition(classObj, sLog);				
+		String sTemp = LogZZZ.computeLineDateWithPosition(classObj, 1, sLog);				
 		System.out.println(sTemp);
 	}
 	

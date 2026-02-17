@@ -266,7 +266,7 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 				//WICHTIG2: DAHER AUCH NACH DEM ENTFERNEN DER XML-TAGS NEU AUSRECHNEN
 				
 				IStringJustifierZZZ objStringJustifier = SeparatorMessageStringJustifierZZZ.getInstance();
-				sReturn = StringFormaterUtilZZZ.justifyInfoPart(objStringJustifier, sReturn);				
+				sReturn = StringFormaterUtilZZZ.justifyLine(objStringJustifier, sReturn);				
 			}//end main:
 			return sReturn;
 	  }

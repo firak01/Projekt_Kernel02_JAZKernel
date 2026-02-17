@@ -252,7 +252,7 @@ public class StringFormatManagerZZZ extends AbstractStringFormatManagerZZZ imple
 	//############################################################
 	@Override
 	public synchronized String computeJustified(IEnumSetMappedStringFormatZZZ[] ienumaFormatLogStringIn, String... sLogs) throws ExceptionZZZ {
-		return this.computeJustified__(this.getClass(), ienumaFormatLogStringIn, sLogs);
+		return this.computeJustified__(ienumaFormatLogStringIn, sLogs);
 	}	
 	
 	
@@ -288,6 +288,9 @@ public class StringFormatManagerZZZ extends AbstractStringFormatManagerZZZ imple
 				ExceptionZZZ ez = new ExceptionZZZ("IEnumSetMappedLogStringFormatZZZ[]", iERROR_PARAMETER_EMPTY, this, ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;	
 			}
+			
+			
+			
 						
 			//#######################
 						
@@ -320,7 +323,55 @@ public class StringFormatManagerZZZ extends AbstractStringFormatManagerZZZ imple
 
 	
 	
-	
+	//###################################################
+	private String computeJustified__(IEnumSetMappedStringFormatZZZ[] ienumaFormatLogStringIn, String... sLogs) throws ExceptionZZZ {
+		String sReturn = null;
+		main:{
+			String stemp;
+			
+			//Will man einen Default-Format-Style haben, dann soll man halt die Methode ohne diese Formatanweisung nutzen 
+			if(ienumaFormatLogStringIn==null) {
+				ExceptionZZZ ez = new ExceptionZZZ("IEnumSetMappedLogStringFormatZZZ[]", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			if(ArrayUtilZZZ.isEmpty(ienumaFormatLogStringIn)) {				
+				ExceptionZZZ ez = new ExceptionZZZ("IEnumSetMappedLogStringFormatZZZ[]", iERROR_PARAMETER_EMPTY, this, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;	
+			}
+			
+			
+			
+						
+			//#######################
+						
+			//1. Teile Formatierung an den Zeilentrennern auf.
+			List<IEnumSetMappedStringFormatZZZ[]> listaEnumLine = ArrayUtilZZZ.splitArrayByValue(ienumaFormatLogStringIn, (IEnumSetMappedStringFormatZZZ)IStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_LINENEXT_, IEnumSetMappedStringFormatZZZ.class);
+			
+			//TODOGOON20260210: 2. Formatanweisung jeder Zeile normieren. (d.h. fehlende Spalten etc. ergänzen, Reihenfolge angleichen)
+						
+			//3. Alle Zeilen unbündig holen
+			ArrayListZZZ<String>listasJaggedTemp;
+			ArrayListZZZ<String>listasJaggedReturn=new ArrayListZZZ<String>();
+			for(IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString : listaEnumLine) { 
+				listasJaggedTemp = super.computeJaggedArrayList_(ienumaFormatLogString, sLogs);
+				listasJaggedReturn.addAll(listasJaggedTemp);
+			}
+			
+			//4. Zeilen bündig machen			
+			ArrayListZZZ<String> listasJustifiedReturn=listasJaggedReturn;
+			IStringJustifierManagerZZZ objJustifierManager = StringJustifierManagerZZZ.getInstance();
+			
+			for(IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString : listaEnumLine) {
+				listasJustifiedReturn = objJustifierManager.compute(listasJustifiedReturn, ienumaFormatLogString);
+			}
+			
+			ArrayListZZZ<String> listasReturn = listasJustifiedReturn; 
+			sReturn = ArrayListUtilZZZ.implode(listasReturn, StringZZZ.crlf());			
+		}//end main:
+		return sReturn;
+	}
+
+
 	
 	
 

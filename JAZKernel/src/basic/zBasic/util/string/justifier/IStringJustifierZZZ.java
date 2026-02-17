@@ -28,10 +28,10 @@ public interface IStringJustifierZZZ extends IStringJustifierJustifyZZZ{
 	public String getPositionIdentifier() throws ExceptionZZZ;
 	public void setPositionIdentifier(String sPositionIdentifier) throws ExceptionZZZ;
 
-	public int getInfoPartBoundLeftBehindCurrent() throws ExceptionZZZ;
-	public void setInfoPartBoundLeftBehindCurrent(int iIndex) throws ExceptionZZZ;
-	public void setInfoPartBoundLeftBehindIncreased(int iIndexMayIncrease) throws ExceptionZZZ;
-	public int indexOfInfoPartBoundLeft(String sLog) throws ExceptionZZZ; //Rechne fuer den konkreten Log String die Postion aus.
-	public int indexOfInfoPartBoundLeftBehind(String sLog) throws ExceptionZZZ; //Rechne fuer den konkreten Log String die Postion aus.
-	public int getInfoPartBoundLeftBehind2use(String sLog) throws ExceptionZZZ;     //Rechne aus, gib aber ggfs. den gespeicherten Wert zurueck, wenn der groesser ist.	
+	public int getLineMarkerIndexLeftBehindCurrent() throws ExceptionZZZ;
+	public void setLineMarkerIndexLeftBehindCurrent(int iIndex) throws ExceptionZZZ;
+	public void setLineMarkerIndexLeftBehindIncreased(int iIndexMayIncrease) throws ExceptionZZZ;
+	public int computeLineMarkerIndexLeft(String sLog) throws ExceptionZZZ; //Rechne fuer den konkreten Log String die Postion aus.
+	public int computeLineMarkerIndexLeftBehind(String sLog) throws ExceptionZZZ; //Rechne fuer den konkreten Log String die Postion aus.
+	public int computeLineMarkerIndexLeftBehind2use(String sLog) throws ExceptionZZZ;     //Rechne aus, gib aber ggfs. den gespeicherten Wert zurueck, wenn der groesser ist.	
 }

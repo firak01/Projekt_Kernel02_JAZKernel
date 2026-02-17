@@ -682,6 +682,211 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 	}
 	
 	
+	private String computeByControl__(IEnumSetMappedStringFormatZZZ ienumFormatLogString, String sLogIn) throws ExceptionZZZ {
+		String[]saLog = new String[1];
+		saLog[0]=sLogIn;
+		return computeByControl__(ienumFormatLogString,saLog );
+	}
+	
+	private String computeByControl__(IEnumSetMappedStringFormatZZZ ienumFormatLogString, String[] saLogIn) throws ExceptionZZZ {
+		String sReturn = null;
+		main:{
+			Class classObj = null;		
+			ITagByTypeZZZ objTagMessageSeparator = null; String sMessageSeparatorTag = null;
+            			
+			if(ienumFormatLogString == null) {
+				ExceptionZZZ ez = new ExceptionZZZ("IEnumSetMappedLogStringFormatZZZ", iERROR_PARAMETER_MISSING, AbstractStringFormaterZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;				
+			}
+			if (!StringFormaterUtilZZZ.isFormatUsingControl(ienumFormatLogString)) break main; // Hier werden also nur Werte errechnet aufgrund des Objekts selbst
+		
+		    					   
+			String sFormat=null; String sLeft=null; String sMid = null; String sRight=null;
+			String sMessageSeparator=null;
+			
+			String sPrefixSeparator = ienumFormatLogString.getPrefixSeparator();
+			String sPostfixSeparator = ienumFormatLogString.getPostfixSeparator();
+			String sLogTotal= null;
+			
+			//Rechne aus, ob es überhaupt einen gueltigen Kommentar gibt, der keine XML-Angabe ist.
+			if(saLogIn!=null) {
+				for(String sLog : saLogIn) {
+					String sOuter = XmlUtilZZZ.findTextOuterXml(sLog);
+					if(!StringZZZ.isEmpty(sOuter)) {				
+						//+++ Problem: Wenn '# ' um den XML String stehen, dann wird das fuer eine neue Zeile verwendet
+						//    Das wird erzeugt durch ReflectCodeZZZ.getPositionCurrent()
+						//    sPOSITION_MESSAGE_SEPARATOR wird explizit dahinter gesetzt.
+						//Darum entfernen wir dies ggfs.															
+						sOuter = StringZZZ.trimRight(sOuter, IReflectCodeZZZ.sPOSITION_MESSAGE_SEPARATOR );
+						if(StringZZZ.isEmpty(sOuter)) break main;
+						sLogTotal = StringZZZ.joinAll(sLogTotal, sOuter);
+					}else {
+						//Also: sOuter ist Leerstring oder Null UND es nicht explizit ein XML, nur dann den String übernehme
+						boolean bContainsXml = XmlUtilZZZ.isXmlContained(sLog);	
+						if(bContainsXml) {
+							//mache nix
+						}else {
+							sLogTotal = StringZZZ.joinAll(sLogTotal, sOuter);
+						}
+					}	
+				}//end for
+			}else {
+				sLogTotal="";
+			}
+			
+			//Ziel ist es eine unnoetigerweise erzeugte Leerzeile mit KommentarSeparator zu verhindern.
+			//if(sLog==null)break main; //Ein explizit uebergebener Leerstring gilt aber.
+			
+			
+	        switch (ienumFormatLogString.getFactor()) {
+	            case IStringFormatZZZ.iFACTOR_CONTROLMESSAGESEPARATOR_STRING:
+	            	//ByControl?
+	            	//Aber nur, wenn es ueberhaupt einen Kommentar gibt (und das kein XML Kommentar ist, wie im der Positionsangabe)
+	            	if(!StringZZZ.isEmpty(sLogTotal)) {
+		            
+		                sFormat = this.getHashMapFormatPositionString().get(
+		                        new Integer(IStringFormatZZZ.iFACTOR_CONTROLMESSAGESEPARATOR_STRING));	                    
+		                sMessageSeparator = String.format(sFormat, IStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);
+		                sMessageSeparator = sPrefixSeparator + sMessageSeparator + sPostfixSeparator;
+		                  
+		                sReturn = sMessageSeparator;
+	            	}
+	                break;
+	                
+	            case IStringFormatZZZ.iFACTOR_CONTROLMESSAGESEPARATOR_XML:
+	            	//ByControl?
+	            	//Aber nur, wenn es ueberhaupt einen Kommentar gibt (und das kein XML Kommentar ist, wie im der Positionsangabe)
+	            	if(!StringZZZ.isEmpty(sLogTotal)) {
+		                sFormat = this.getHashMapFormatPositionString().get(
+		                        new Integer(IStringFormatZZZ.iFACTOR_CONTROLMESSAGESEPARATOR_XML));	                    
+		                sMessageSeparator = String.format(sFormat, IStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);
+		                sMessageSeparator = sPrefixSeparator + sMessageSeparator + sPostfixSeparator;
+		                  
+	
+			        	objTagMessageSeparator = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.SEPARATORMESSAGE, sMessageSeparator);
+			        	sMessageSeparatorTag = objTagMessageSeparator.getElementString();
+			            
+		                sReturn = sMessageSeparatorTag;
+	            	}
+	                break;
+	            case IStringFormatZZZ.iFACTOR_CONTROL01SEPARATOR_STRING:
+	            	//ByControl?
+	                  sFormat = this.getHashMapFormatPositionString().get(
+	                        new Integer(IStringFormatZZZ.iFACTOR_CONTROL01SEPARATOR_STRING));	                    
+	                  sMessageSeparator = String.format(sFormat, IStringFormatZZZ.sSEPARATOR_01_DEFAULT);
+	                  sMessageSeparator = sPrefixSeparator + sMessageSeparator + sPostfixSeparator;
+	                  
+	                  sReturn = sMessageSeparator;
+	                break;
+	            case IStringFormatZZZ.iFACTOR_CONTROL01SEPARATOR_XML:
+	            	//ByControl?
+	                sFormat = this.getHashMapFormatPositionString().get(
+	                        new Integer(IStringFormatZZZ.iFACTOR_CONTROL01SEPARATOR_XML));	                    
+	                sMessageSeparator = String.format(sFormat, IStringFormatZZZ.sSEPARATOR_01_DEFAULT);
+	                sMessageSeparator = sPrefixSeparator + sMessageSeparator + sPostfixSeparator;
+	                  
+
+		        	objTagMessageSeparator = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.SEPARATOR01, sMessageSeparator);
+		        	sMessageSeparatorTag = objTagMessageSeparator.getElementString();
+		            
+	                sReturn = sMessageSeparatorTag;
+	                break;
+	            case IStringFormatZZZ.iFACTOR_CONTROL02SEPARATOR_STRING:
+	            	//ByControl?
+	                  sFormat = this.getHashMapFormatPositionString().get(
+	                        new Integer(IStringFormatZZZ.iFACTOR_CONTROL02SEPARATOR_STRING));	                    
+	                  sMessageSeparator = String.format(sFormat, IStringFormatZZZ.sSEPARATOR_02_DEFAULT);
+	                  sMessageSeparator = sPrefixSeparator + sMessageSeparator + sPostfixSeparator;
+	                  
+	                  sReturn = sMessageSeparator;
+	                break;
+	            case IStringFormatZZZ.iFACTOR_CONTROL02SEPARATOR_XML:
+	            	//ByControl?
+	                sFormat = this.getHashMapFormatPositionString().get(
+	                        new Integer(IStringFormatZZZ.iFACTOR_CONTROL02SEPARATOR_XML));	                    
+	                sMessageSeparator = String.format(sFormat, IStringFormatZZZ.sSEPARATOR_02_DEFAULT);
+	                sMessageSeparator = sPrefixSeparator + sMessageSeparator + sPostfixSeparator;
+	                  
+
+		        	objTagMessageSeparator = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.SEPARATOR02, sMessageSeparator);
+		        	sMessageSeparatorTag = objTagMessageSeparator.getElementString();
+		            
+	                sReturn = sMessageSeparatorTag;
+	                break;
+	            case IStringFormatZZZ.iFACTOR_CONTROL03SEPARATOR_STRING:
+	            	//ByControl?
+	                  sFormat = this.getHashMapFormatPositionString().get(
+	                        new Integer(IStringFormatZZZ.iFACTOR_CONTROL03SEPARATOR_STRING));	                    
+	                  sMessageSeparator = String.format(sFormat, IStringFormatZZZ.sSEPARATOR_03_DEFAULT);
+	                  sMessageSeparator = sPrefixSeparator + sMessageSeparator + sPostfixSeparator;
+	                  
+	                  sReturn = sMessageSeparator;
+	                break;
+	            case IStringFormatZZZ.iFACTOR_CONTROL03SEPARATOR_XML:
+	            	//ByControl?
+	                sFormat = this.getHashMapFormatPositionString().get(
+	                        new Integer(IStringFormatZZZ.iFACTOR_CONTROL03SEPARATOR_XML));	                    
+	                sMessageSeparator = String.format(sFormat, IStringFormatZZZ.sSEPARATOR_03_DEFAULT);
+	                sMessageSeparator = sPrefixSeparator + sMessageSeparator + sPostfixSeparator;
+	                  
+
+		        	objTagMessageSeparator = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.SEPARATOR03, sMessageSeparator);
+		        	sMessageSeparatorTag = objTagMessageSeparator.getElementString();
+		            
+	                sReturn = sMessageSeparatorTag;
+	                break;
+	            case IStringFormatZZZ.iFACTOR_CONTROL04SEPARATOR_STRING:
+	            	//ByControl?
+	                  sFormat = this.getHashMapFormatPositionString().get(
+	                        new Integer(IStringFormatZZZ.iFACTOR_CONTROL04SEPARATOR_STRING));	                    
+	                  sMessageSeparator = String.format(sFormat, IStringFormatZZZ.sSEPARATOR_04_DEFAULT);
+	                  sMessageSeparator = sPrefixSeparator + sMessageSeparator + sPostfixSeparator;
+	                  
+	                  sReturn = sMessageSeparator;
+	                break;
+	            case IStringFormatZZZ.iFACTOR_CONTROL04SEPARATOR_XML:
+	            	//ByControl?
+	                sFormat = this.getHashMapFormatPositionString().get(
+	                        new Integer(IStringFormatZZZ.iFACTOR_CONTROL04SEPARATOR_XML));	                    
+	                sMessageSeparator = String.format(sFormat, IStringFormatZZZ.sSEPARATOR_04_DEFAULT);
+	                sMessageSeparator = sPrefixSeparator + sMessageSeparator + sPostfixSeparator;
+	                  
+
+		        	objTagMessageSeparator = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.SEPARATOR04, sMessageSeparator);
+		        	sMessageSeparatorTag = objTagMessageSeparator.getElementString();
+		            
+	                sReturn = sMessageSeparatorTag;
+	                break;
+	            case IStringFormatZZZ.iFACTOR_CONTROLPOSITIONSEPARATOR_STRING:
+	            	//ByControl?
+	                  sFormat = this.getHashMapFormatPositionString().get(
+	                        new Integer(IStringFormatZZZ.iFACTOR_CONTROLPOSITIONSEPARATOR_STRING));	                    
+	                  sMessageSeparator = String.format(sFormat, IStringFormatZZZ.sSEPARATOR_POSITION_DEFAULT);
+	                  sMessageSeparator = sPrefixSeparator + sMessageSeparator + sPostfixSeparator;
+	                  
+	                  sReturn = sMessageSeparator;
+	                break;
+	            case IStringFormatZZZ.iFACTOR_CONTROLPOSITIONSEPARATOR_XML:
+	            	//ByControl?
+	                sFormat = this.getHashMapFormatPositionString().get(
+	                        new Integer(IStringFormatZZZ.iFACTOR_CONTROLPOSITIONSEPARATOR_XML));	                    
+	                sMessageSeparator = String.format(sFormat, IStringFormatZZZ.sSEPARATOR_POSITION_DEFAULT);
+	                sMessageSeparator = sPrefixSeparator + sMessageSeparator + sPostfixSeparator;
+	                  
+
+		        	objTagMessageSeparator = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.POSITION_IN_FILE, sMessageSeparator);
+		        	sMessageSeparatorTag = objTagMessageSeparator.getElementString();
+		            
+	                sReturn = sMessageSeparatorTag;
+	                break;	               
+	            default:
+	                System.out.println("AbstractLogStringFormaterZZZ.computeByControl_(..,..): Dieses Format ist nicht in den gültigen Formaten für einen objektbasierten LogString vorhanden. iFaktor=" + ienumFormatLogString.getFactor());
+	                break;
+	        }			    
+		}//end main:
+		return sReturn;
+	}
+	
 	private ArrayListZZZ<String> computeLinePartByObject_ArrayList__(Class classObjIn, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString) throws ExceptionZZZ{
 		ArrayListZZZ<String>listasReturn = new ArrayListZZZ<String>();
 		main:{
@@ -718,6 +923,237 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 		}//end main:
 		return listasReturn;
 	}
+	
+	private String computeUsingFormat__(LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hmLogString,  IEnumSetMappedStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
+		String sReturn = null;
+		main:{
+						
+			boolean bFormatUsingControl = StringFormaterUtilZZZ.isFormatUsingControl(ienumFormatLogString);
+			boolean bFormatUsingObject = StringFormaterUtilZZZ.isFormatUsingObject(ienumFormatLogString);
+			boolean bFormatUsingString = StringFormaterUtilZZZ.isFormatUsingString(ienumFormatLogString);
+			boolean bFormatUsingStringXml = StringFormaterUtilZZZ.isFormatUsingStringXml(ienumFormatLogString);
+			boolean bFormatUsingStringHashMap = StringFormaterUtilZZZ.isFormatUsingHashMap(ienumFormatLogString);
+									
+			//Merke: Das Log-String-Array kann nur hier verarbeitet werden.
+			//       Es in einer aufrufenden Methode zu verarbeitet, wuerde ggfs. mehrmals .computeByObject_ ausfuehren, was falsch ist.
+			if(bFormatUsingControl & bFormatUsingString) {
+				//Hier werden Strings mit dem Steuerungszeichen mitverarbeitet
+				if(!StringArrayZZZ.isEmpty(sLogs)) {
+					ArrayListUniqueZZZ<Integer>listaIndexRead=this.getStringIndexReadList();					
+					for(int iStringIndexToRead=0; iStringIndexToRead <= sLogs.length-1; iStringIndexToRead++) {					
+						
+						Integer intIndex = new Integer(iStringIndexToRead);
+						if(!listaIndexRead.contains(intIndex)){
+							String sValue = this.computeByString__(ienumFormatLogString, sLogs[iStringIndexToRead]);
+							if(sValue!=null) {								
+								if(sReturn!=null) {
+									sReturn = sReturn + sValue;
+								}else {
+									sReturn = sValue;
+								}
+								this.getStringIndexReadList().add(intIndex);
+								break; //nach der ersten Verarbeitung aus der Schleife raus!!!
+							}														
+						}
+					}
+				}else {
+					sReturn = this.computeUsingFormat__(ienumFormatLogString, sLogs);
+				}	
+				
+			}else if(bFormatUsingControl & !bFormatUsingString) {
+				//Hier wird nur das Steuerungszeichen ohne String verarbeitet
+				sReturn = this.computeUsingFormat__(ienumFormatLogString, sLogs);					
+			}else if(bFormatUsingObject) {
+				sReturn = this.computeUsingFormat__(ienumFormatLogString);				
+			}else if(bFormatUsingString & !bFormatUsingControl) {				
+				sReturn = this.computeUsingFormat__(ienumFormatLogString, sLogs);				
+			}else if(bFormatUsingStringXml) {			
+				sReturn = this.computeByStringXml__(ienumFormatLogString, sLogs);
+			}else if(bFormatUsingStringHashMap) {
+				sReturn = this.computeByStringHashMap_Jagged__(hmLogString, ienumFormatLogString);
+			}else {
+				//mache nix				
+			}									
+		}//end main:
+		return sReturn;
+	}
+	
+	private String computeUsingFormat__(IEnumSetMappedStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
+		//!!! Verwende hier nur einfache Methoden und keine Methoden, die wiederum Logging verwenden, sonst Endlosschleifengefahr !!!
+		
+		String sReturn = null;
+		main:{		 
+				
+			if(ienumFormatLogString == null) {
+				ExceptionZZZ ez = new ExceptionZZZ("IEnumSetMappedLogStringFormatZZZ", iERROR_PARAMETER_MISSING, AbstractStringFormaterZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;				
+			}
+			if (!StringFormaterUtilZZZ.isFormatUsingObject(ienumFormatLogString)) break main; // Hier werden also nur Werte errechnet aufgrund des Objekts selbst
+	    
+			String sLog=null; String sFormat=null; String sLeft=null; String sMid = null; String sRight=null;
+			String sDate = null;
+			GregorianCalendar d=null; Integer iDateYear = null; Integer iDateMonth = null; Integer iDateDay = null; Integer iTimeHour = null; Integer iTimeMinute = null;
+
+			
+			String sPrefixSeparator = ienumFormatLogString.getPrefixSeparator();
+			String sPostfixSeparator = ienumFormatLogString.getPostfixSeparator();
+			
+	        switch (ienumFormatLogString.getFactor()) {
+	            //case IStringFormatZZZ.iFACTOR_CLASSNAME_STRING:
+	            //case IStringFormatZZZ.iFACTOR_CLASSNAME_XML:	               
+	            //case IStringFormatZZZ.iFACTOR_CLASSNAMESIMPLE_STRING:	               
+	            //case IStringFormatZZZ.iFACTOR_CLASSNAMESIMPLE_XML:	               
+	            //case IStringFormatZZZ.iFACTOR_CLASSFILENAME_STRING:	              
+	            //case IStringFormatZZZ.iFACTOR_CLASSFILENAME_XML:
+	              
+	            case IStringFormatZZZ.iFACTOR_DATE_STRING:
+	                d = new GregorianCalendar();
+	                iDateYear = new Integer(d.get(Calendar.YEAR));
+	                iDateMonth = new Integer(d.get(Calendar.MONTH) + 1);
+	                iDateDay = new Integer(d.get(Calendar.DAY_OF_MONTH));
+	                iTimeHour = new Integer(d.get(Calendar.HOUR_OF_DAY));
+	                iTimeMinute = new Integer(d.get(Calendar.MINUTE));
+
+	                sDate = iDateYear.toString() + "-" + iDateMonth.toString() + "-" + iDateDay.toString()
+	                        + "_" + iTimeHour.toString() + "_" + iTimeMinute.toString();
+
+	                sFormat = this.getHashMapFormatPositionString().get(new Integer(IStringFormatZZZ.iFACTOR_DATE_STRING));
+	                sReturn = String.format(sFormat, sDate);
+                    sReturn = sPrefixSeparator + sReturn + sPostfixSeparator;
+	                break;
+
+	            case IStringFormatZZZ.iFACTOR_DATE_XML:
+	                d = new GregorianCalendar();
+	                iDateYear = new Integer(d.get(Calendar.YEAR));
+	                iDateMonth = new Integer(d.get(Calendar.MONTH) + 1);
+	                iDateDay = new Integer(d.get(Calendar.DAY_OF_MONTH));
+	                iTimeHour = new Integer(d.get(Calendar.HOUR_OF_DAY));
+	                iTimeMinute = new Integer(d.get(Calendar.MINUTE));
+
+	                sDate = iDateYear.toString() + "-" + iDateMonth.toString() + "-" + iDateDay.toString()
+	                        + "_" + iTimeHour.toString() + "_" + iTimeMinute.toString();
+
+	                sFormat = this.getHashMapFormatPositionString().get(new Integer(IStringFormatZZZ.iFACTOR_DATE_STRING));
+	                sDate = String.format(sFormat, sDate);
+                    sDate = sPrefixSeparator + sDate + sPostfixSeparator;
+                    
+                    ITagByTypeZZZ objTagDate = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.DATE, sDate);
+        	 		String sDateTag = objTagDate.getElementString();
+                    sReturn = sDateTag;
+	                break;
+	                
+	            case IStringFormatZZZ.iFACTOR_THREADID_STRING:
+	                if (this.getFlag(IStringFormaterZZZ.FLAGZ.EXCLUDE_THREAD)) {
+	                    System.out.println(ReflectCodeZZZ.getPositionCurrent() +
+	                        "In diesem Format ist die Ausgabe der ThreadId per gesetztem Flag unterbunden.");
+	                } else {
+	                    sFormat = this.getHashMapFormatPositionString().get(
+	                        new Integer(IStringFormatZZZ.iFACTOR_THREADID_STRING));
+	                    long lngThreadID = Thread.currentThread().getId();
+	                    sReturn = String.format(sFormat, lngThreadID);
+                        sReturn = sPrefixSeparator + sReturn + sPostfixSeparator;
+	                }
+	                break;
+	            case IStringFormatZZZ.iFACTOR_THREADID_XML:
+	                if (this.getFlag(IStringFormaterZZZ.FLAGZ.EXCLUDE_THREAD)) {
+	                    System.out.println(ReflectCodeZZZ.getPositionCurrent() +
+	                        "In diesem Format ist die Ausgabe der ThreadId per gesetztem Flag unterbunden.");
+	                } else {
+	                    sFormat = this.getHashMapFormatPositionString().get(
+	                        new Integer(IStringFormatZZZ.iFACTOR_THREADID_XML));
+	                    long lngThreadId = Thread.currentThread().getId();     
+	        			String sThreadId = LongZZZ.longToString(lngThreadId);
+	        			sThreadId = String.format(sFormat, sThreadId);
+	        			sThreadId = sPrefixSeparator + sThreadId + sPostfixSeparator;
+	        			ITagByTypeZZZ objTagThreadId = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.THREADID, sThreadId);
+	        			String sThreadIdTag = objTagThreadId.getElementString();
+	                    
+	                    sReturn = sThreadIdTag;                        
+	                }
+	                break;
+	                
+	            default:
+	                System.out.println("AbstractLogStringFormaterZZZ.computeByObject_(...): Dieses Format ist nicht in den gültigen Formaten für einen objektbasierten LogString vorhanden. iFaktor="
+	                        + ienumFormatLogString.getFactor());
+	                break;
+	        }			    
+		}//end main:
+		return sReturn;
+	}
+	
+	private String computeUsingFormat__(IEnumSetMappedStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
+		String sReturn = null;
+		main:{
+						
+			boolean bFormatUsingControl = StringFormaterUtilZZZ.isFormatUsingControl(ienumFormatLogString);
+			boolean bFormatUsingObject = StringFormaterUtilZZZ.isFormatUsingObject(ienumFormatLogString);
+			boolean bFormatUsingString = StringFormaterUtilZZZ.isFormatUsingString(ienumFormatLogString);
+			boolean bFormatUsingStringXml = StringFormaterUtilZZZ.isFormatUsingStringXml(ienumFormatLogString);
+			boolean bFormatUsingStringHashMap = StringFormaterUtilZZZ.isFormatUsingHashMap(ienumFormatLogString);
+									
+			//Merke: Das Log-String-Array kann nur hier verarbeitet werden.
+			//       Es in einer aufrufenden Methode zu verarbeitet, wuerde ggfs. mehrmals .computeByObject_ ausfuehren, was falsch ist.
+			if(bFormatUsingControl & bFormatUsingString) {
+				//Hier werden Strings mit dem Steuerungszeichen mitverarbeitet
+				if(!StringArrayZZZ.isEmpty(sLogs)) {
+					ArrayListUniqueZZZ<Integer>listaIndexRead=this.getStringIndexReadList();					
+					for(int iStringIndexToRead=0; iStringIndexToRead <= sLogs.length-1; iStringIndexToRead++) {					
+						
+						Integer intIndex = new Integer(iStringIndexToRead);
+						if(!listaIndexRead.contains(intIndex)){
+							String sValue = this.computeByControl__(ienumFormatLogString, sLogs[iStringIndexToRead]);
+							if(sValue!=null) {								
+								if(sReturn!=null) {
+									sReturn = sReturn + sValue;
+								}else {
+									sReturn = sValue;
+								}
+								this.getStringIndexReadList().add(intIndex);
+								break; //nach der ersten Verarbeitung aus der Schleife raus!!!
+							}														
+						}
+					}
+				}else {
+					sReturn = this.computeByControl__(ienumFormatLogString, sLogs);
+				}	
+				
+			}else if(bFormatUsingControl & !bFormatUsingString) {
+				//Hier wird nur das Steuerungszeichen ohne String verarbeitet
+				sReturn = this.computeByControl__(ienumFormatLogString, sLogs);					
+			}else if(bFormatUsingObject) {
+				sReturn = this.computeUsingFormat__(ienumFormatLogString);				
+			}else if(bFormatUsingString & !bFormatUsingControl) {				
+				if(!StringArrayZZZ.isEmpty(sLogs)) {
+					ArrayListUniqueZZZ<Integer>listaIndexRead=this.getStringIndexReadList();					
+					for(int iStringIndexToRead=0; iStringIndexToRead <= sLogs.length-1; iStringIndexToRead++) {					
+						
+						Integer intIndex = new Integer(iStringIndexToRead); //Durchlaufe die Log-Einträge auf der Suche nach dem ersten Eintrag, der noch nich geschrieben wurde.
+						if(!listaIndexRead.contains(intIndex)){
+							String sValue = this.computeByString__(ienumFormatLogString, sLogs[iStringIndexToRead]);
+							if(sValue!=null) {								
+								if(sReturn!=null) {
+									sReturn = sReturn + sValue;
+								}else {
+									sReturn = sValue;
+								}
+								this.getStringIndexReadList().add(intIndex);
+								break; //nach der ersten Verarbeitung aus der Schleife raus!!!
+							}														
+						}
+					}
+				}							
+										
+			}else if(bFormatUsingStringXml) {			
+				sReturn = this.computeByStringXml__(ienumFormatLogString, sLogs);
+			}else if(bFormatUsingStringHashMap) {
+				//mache nix     sReturn = this.computeByStringHashMap_Jagged__(hmLogString, ienumFormatLogString);
+			}else {
+				//mache nix				
+			}									
+		}//end main:
+		return sReturn;
+	}
+
 	
 	private String computeUsingFormatByObject__(Class classObjIn, IEnumSetMappedStringFormatZZZ ienumFormatLogString) throws ExceptionZZZ {
 		//!!! Verwende hier nur einfache Methoden und keine Methoden, die wiederum Logging verwenden, sonst Endlosschleifengefahr !!!
@@ -935,7 +1371,7 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 	                break;
 	                
 	            default:
-	                System.out.println("AbstractLogStringFormaterZZZ.computeByObject_(..,..): Dieses Format ist nicht in den gültigen Formaten für einen objektbasierten LogString vorhanden. iFaktor="
+	                System.out.println("AbstractLogStringFormaterZZZ.computeByObject_(Class ...,..): Dieses Format ist nicht in den gültigen Formaten für einen objektbasierten LogString vorhanden. iFaktor="
 	                        + ienumFormatLogString.getFactor());
 	                break;
 	        }			    
@@ -1436,6 +1872,457 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 		return sReturn;		
 	}
 	
+	private String computeByStringXml__(IEnumSetMappedStringFormatZZZ ienumMappedFormat, String... sLogs) throws ExceptionZZZ {
+		String sReturn = null;
+		main:{
+			
+			
+			if(ienumMappedFormat == null) {
+				ExceptionZZZ ez = new ExceptionZZZ("IEnumSetMappedLogStringFormatZZZ", iERROR_PARAMETER_MISSING, AbstractStringFormaterZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;				
+			}
+			if (!StringFormaterUtilZZZ.isFormatUsingStringXml(ienumMappedFormat)) break main; // Hier werden also nur Werte errechnet aufgrund des Objekts selbst
+		
+			//###### Ohne irgendeinen String
+			if(ArrayUtilZZZ.isNull(sLogs)) {
+				//Dann können es immer noch Formatanweisungen vom Typ ILogStringZZZ.iARG_OBJECT darin sein.
+				if(sReturn==null) {
+					sReturn = this.compute(ienumMappedFormat);
+				}else {
+					sReturn = sReturn + this.compute(ienumMappedFormat);
+				}
+				break main;
+			}
+			
+			//###### Mit Strings, alle durchsuchen.			
+			for(String sLog:sLogs) {
+				if(sReturn==null) {
+					sReturn = this.computeByStringXml__(ienumMappedFormat, sLog);
+				}else {
+					sReturn = sReturn + this.computeByStringXml__(ienumMappedFormat, sLog);
+				}
+			}
+		}//end main:
+		return sReturn;
+	}
+	
+	private String computeByStringXml__(IEnumSetMappedStringFormatZZZ ienumMappedFormat, String sLogIn) throws ExceptionZZZ {
+		String sReturn = null;
+		main:{
+						
+			if(ienumMappedFormat == null) {
+				ExceptionZZZ ez = new ExceptionZZZ("IEnumSetMappedLogStringFormatZZZ", iERROR_PARAMETER_MISSING, AbstractStringFormaterZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;				
+			}
+			if (!StringFormaterUtilZZZ.isFormatUsingStringXml(ienumMappedFormat)) break main; // Hier werden also nur Werte errechnet aufgrund des Objekts selbst
+		
+			String sPrefixSeparator = ienumMappedFormat.getPrefixSeparator();
+			String sPostfixSeparator = ienumMappedFormat.getPostfixSeparator();					    
+
+			String sLog=sLogIn;
+			ITagTypeZZZ objTagTypePositionCurrent = null; ITagTypeZZZ objTagTypeLineNummer = null; ITagTypeZZZ objTagTypeFileName = null; ITagTypeZZZ objTagTypeFilePosition = null; ITagTypeZZZ objTagTypeMethod = null;
+						
+			String sTagTemp=null;
+			switch(ienumMappedFormat.getFactor()) {
+			//#######################################################################
+			//### XML AUS DEM XML-STRING WERT ZURUECKGEBEN
+			//#######################################################################
+			case IStringFormatZZZ.iFACTOR_CLASSFILEPOSITION_XML_BY_XML:			
+				objTagTypeFilePosition = new TagTypeFilePositionZZZ();
+				sTagTemp = XmlUtilZZZ.findFirstTagValue(sLog, objTagTypeFilePosition.getTagName());
+				if(sTagTemp!=null) {
+					//umgib die Werte noch mit einem Tag...
+		            //ITagByTypeZZZ objTagPositionCurrent = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.POSITIONCURRENT, sReturn);
+					ITagByTypeZZZ objTagFilePosition = new TagByTypeZZZ(objTagTypeFilePosition);
+					objTagFilePosition.setValue(sTagTemp);
+					sReturn = objTagFilePosition.getElementString();	
+					sReturn = sPrefixSeparator + sReturn + sPostfixSeparator;
+					
+				}			
+				break;
+			case IStringFormatZZZ.iFACTOR_CLASSMETHOD_XML_BY_XML:
+				objTagTypeMethod = new TagTypeMethodZZZ();
+				sTagTemp = XmlUtilZZZ.findFirstTagValue(sLog, objTagTypeMethod.getTagName());
+				if(sTagTemp!=null) {
+					
+					//umgib die Werte noch mit einem Tag...
+		            //ITagByTypeZZZ objTagTypeMethod = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.POSITIONCURRENT, sReturn);
+					ITagByTypeZZZ objTagMethod = new TagByTypeZZZ(objTagTypeMethod);
+					objTagMethod.setValue(sTagTemp);
+					sReturn = objTagMethod.getElementString();
+					sReturn = sPrefixSeparator + sReturn + sPostfixSeparator;					
+				}			
+				break;
+			case IStringFormatZZZ.iFACTOR_CLASSFILELINE_XML_BY_XML:
+				objTagTypeLineNummer = new TagTypeLineNumberZZZ();
+				sTagTemp = XmlUtilZZZ.findFirstTagValue(sLog, objTagTypeLineNummer.getTagName());
+				if(sTagTemp!=null) {
+					
+					//umgib die Werte noch mit einem Tag...
+		            //ITagByTypeZZZ objTagTypeMethod = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.POSITIONCURRENT, sReturn);
+					ITagByTypeZZZ objTagLineNumber = new TagByTypeZZZ(objTagTypeLineNummer);
+					objTagLineNumber.setValue(sTagTemp);
+					sReturn = objTagLineNumber.getElementString();
+					sReturn = sPrefixSeparator + sReturn + sPostfixSeparator;
+					
+				}			
+				break;
+			case IStringFormatZZZ.iFACTOR_CLASSFILENAME_XML_BY_XML:
+				objTagTypeFileName = new TagTypeFileNameZZZ();
+				sTagTemp = XmlUtilZZZ.findFirstTagValue(sLog, objTagTypeFileName.getTagName());
+				if(sTagTemp!=null) {
+					
+					//umgib die Werte noch mit einem Tag...
+		            //ITagByTypeZZZ objTagTypeMethod = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.POSITIONCURRENT, sReturn);
+					ITagByTypeZZZ objTagFileName = new TagByTypeZZZ(objTagTypeFileName);
+					objTagFileName.setValue(sTagTemp);
+					sReturn = objTagFileName.getElementString();
+					sReturn = sPrefixSeparator + sReturn + sPostfixSeparator;
+					
+				}			
+				break;
+			case IStringFormatZZZ.iFACTOR_POSITIONCURRENT_XML_BY_XML:
+				objTagTypePositionCurrent = new TagTypePositionCurrentZZZ();
+				sTagTemp = XmlUtilZZZ.findFirstTagValue(sLog, objTagTypePositionCurrent.getTagName());
+				if(sTagTemp!=null) {
+					
+					//umgib die Werte noch mit einem Tag...
+		            //ITagByTypeZZZ objTagTypeMethod = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.POSITIONCURRENT, sReturn);
+					ITagByTypeZZZ objTagPositionCurrent = new TagByTypeZZZ(objTagTypePositionCurrent);
+					objTagPositionCurrent.setValue(sTagTemp);
+					sReturn = objTagPositionCurrent.getElementString();
+					sReturn = sPrefixSeparator + sReturn + sPostfixSeparator;
+					
+				}			
+				break;
+				
+			//#######################################################################
+			//### EINFACHEN STRING AUS DEM XML-STRINGWERT ZURUECKGEBEN
+			//#######################################################################
+			case IStringFormatZZZ.iFACTOR_CLASSFILEPOSITION_STRING_BY_XML:			
+				objTagTypeFilePosition = new TagTypeFilePositionZZZ();
+				sTagTemp = XmlUtilZZZ.findFirstTagValue(sLog, objTagTypeFilePosition.getTagName());
+				if(sTagTemp!=null) {					
+					sReturn = sPrefixSeparator + sTagTemp + sPostfixSeparator;					
+				}			
+				break;
+			case IStringFormatZZZ.iFACTOR_CLASSMETHOD_STRING_BY_XML:
+				objTagTypeMethod = new TagTypeMethodZZZ();
+				sTagTemp = XmlUtilZZZ.findFirstTagValue(sLog, objTagTypeMethod.getTagName());
+				if(sTagTemp!=null) {					
+					sReturn = sPrefixSeparator + sTagTemp + sPostfixSeparator;					
+				}		
+				break;
+			case IStringFormatZZZ.iFACTOR_CLASSFILELINE_STRING_BY_XML:
+				objTagTypeLineNummer = new TagTypeLineNumberZZZ();
+				sTagTemp = XmlUtilZZZ.findFirstTagValue(sLog, objTagTypeLineNummer.getTagName());
+				if(sTagTemp!=null) {					
+					sReturn = sPrefixSeparator + sTagTemp + sPostfixSeparator;					
+				}		
+				break;
+			case IStringFormatZZZ.iFACTOR_CLASSFILENAME_STRING_BY_XML:
+				objTagTypeFileName = new TagTypeFileNameZZZ();
+				sTagTemp = XmlUtilZZZ.findFirstTagValue(sLog, objTagTypeFileName.getTagName());
+				if(sTagTemp!=null) {					
+					sReturn = sPrefixSeparator + sTagTemp + sPostfixSeparator;					
+				}			
+				break;
+			case IStringFormatZZZ.iFACTOR_POSITIONCURRENT_STRING_BY_XML:
+				objTagTypePositionCurrent = new TagTypePositionCurrentZZZ();
+				sTagTemp = XmlUtilZZZ.findFirstTagValue(sLog, objTagTypePositionCurrent.getTagName());
+				if(sTagTemp!=null) {					
+					sReturn = sPrefixSeparator + sTagTemp + sPostfixSeparator;					
+				}			
+				break;
+			default:
+				System.out.println("AbstractLogStringFormaterZZZ.computeByStringXml_(obj, String, IEnumSetMapped): Dieses Format ist nicht in den gueltigen Formaten für einen LogString vorhanden iFaktor="+ienumMappedFormat.getFactor());
+				break;					
+			}								
+		}//end main:
+		return sReturn;		
+	}
+	
+	
+	
+	//++++++++++++++++++++++++++++
+	private String computeByString__(IEnumSetMappedStringFormatZZZ ienumFormatLogString, String sLogIn) throws ExceptionZZZ {
+		String sReturn = null;
+		main:{
+			String stemp;
+			
+			
+			if(ienumFormatLogString == null) {
+				ExceptionZZZ ez = new ExceptionZZZ("IEnumSetMappedLogStringFormatZZZ", iERROR_PARAMETER_MISSING, AbstractStringFormaterZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;				
+			}
+			if (!StringFormaterUtilZZZ.isFormatUsingString(ienumFormatLogString)) break main; // Hier werden also nur Werte errechnet aufgrund des Objekts selbst
+		
+			
+			
+			//+++ Pruefe darauf, ob es ein XML-String ist. Wenn ja... Abbruch. Ansonsten wird ggfs. <filepositioncurrent> als normaler Logeintrag behandelt.
+			//    Dieser String wird naemlich über das Array saLog gerettet und uebergeben ( aus der entsprechenden ermittelnden ReflectionZZZ Methode ).
+			
+			//Nein, dadurch wird ggfs. Text vor oder nach dem XML unterschlagen.
+			//boolean bXml = XmlUtilZZZ.isXmlContained(sLogIn);
+			//if(bXml) break main; //hier werden nur einfach Strings verarbeitet und keine XML Strings...
+			
+			//Statt dessen
+			//+++ Pruefe darauf, ob Text vor oder hinter XML steht (oder alles, wenn kein XML).
+			String sOuter = XmlUtilZZZ.findTextOuterXml(sLogIn);
+			if(StringZZZ.isEmpty(sOuter)) break main;
+			
+			//+++ Problem: Wenn '# ' um den XML String stehen, dann wird das fuer eine neue Zeile verwendet
+			//    Das wird erzeugt durch ReflectCodeZZZ.getPositionCurrent()
+			//    sPOSITION_MESSAGE_SEPARATOR wird explizit dahinter gesetzt.
+			//Darum entfernen wir dies ggfs.
+			sOuter = StringZZZ.trimRight(sOuter, IReflectCodeZZZ.sPOSITION_MESSAGE_SEPARATOR );
+			if(StringZZZ.isEmpty(sOuter)) break main;
+			
+			
+			
+			//+++++++++++++++++++++++++++					
+			String sLog = sOuter;
+			
+			String sPrefixSeparator = ienumFormatLogString.getPrefixSeparator();
+			String sPostfixSeparator = ienumFormatLogString.getPostfixSeparator();
+						
+			String sFormat=null; String sLeft=null; String sMid = null; String sRight=null;
+			String sLogTag=null;
+			
+			switch(ienumFormatLogString.getFactor()) {		
+			case IStringFormatZZZ.iFACTOR_STRINGTYPE01_STRING_BY_STRING:
+				sFormat = this.getHashMapFormatPositionString().get(new Integer(IStringFormatZZZ.iFACTOR_STRINGTYPE01_STRING_BY_STRING));
+								
+//				//!!!Aus dem Logstring (der ja immer mit Position uebergeben werden muss) die Position herausrechenen
+//				//Merke: Der Position steht im Logstring immer am Anfang
+//				//Merke: So sieht der rohe ReflectCodeZZZ.getPositionCurrent() String aus:
+//				//Z.B.:  joinFilePathName_ ~ (FileEasyZZZ.java:1911) # wird.........
+//				
+//				//Auseinanderbauen
+//				sLeft = StringZZZ.left(sLog, ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER);
+//				sMid = StringZZZ.midLeftRightback(sLog, sLeft, ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER);
+//				sRight = StringZZZ.right(ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER + sLog, ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER); //ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER davor, falls nur ein String uebergeben wurde, wird trotzdem etwas gefunden
+//				
+//				//Die Postionsangabe weglassen
+//				
+//				//sLogUsed = StringZZZ.stripLeft(sRight, ReflectCodeZZZ.sPOSITION_FILE_IDENTIFIER);
+//				sLog = StringZZZ.joinAll(sLeft, sMid, sRight);		
+				sLog = String.format(sFormat, sLog);
+				sReturn = sPrefixSeparator + sLog + sPostfixSeparator;				
+				break;
+			
+			case IStringFormatZZZ.iFACTOR_STRINGTYPE01_XML_BY_STRING:												
+			 	sFormat = this.getHashMapFormatPositionString().get(
+                     new Integer(IStringFormatZZZ.iFACTOR_STRINGTYPE01_XML_BY_STRING));
+			 	
+			 	sLog = String.format(sFormat, sLog);
+				sLog = sPrefixSeparator + sLog + sPostfixSeparator;
+				
+     			ITagByTypeZZZ objTagStringType01 = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.STRINGTYPE01, sLog);
+     			sLogTag = objTagStringType01.getElementString();
+                 
+                sReturn = sLogTag; 				
+				break;
+			case IStringFormatZZZ.iFACTOR_STRINGTYPE02_STRING_BY_STRING:	
+				sFormat = this.getHashMapFormatPositionString().get(new Integer(IStringFormatZZZ.iFACTOR_STRINGTYPE02_STRING_BY_STRING));
+				
+//				//!!!Aus dem Logstring (der ja immer mit Position uebergeben werden muss) die Position herausrechenen
+//				//Merke: Der Position steht im Logstring immer am Anfang
+//				//Merke: So sieht der rohe ReflectCodeZZZ.getPositionCurrent() String aus:
+//				//Z.B.:  joinFilePathName_ ~ (FileEasyZZZ.java:1911) # wird.........
+//				
+//				//Auseinanderbauen
+//				sLeft = StringZZZ.left(sLog, ReflectCodeZZZ.sPOSITION_FILE_IDENTIFIER);
+//				sMid = StringZZZ.midLeftRightback(sLog, sLeft, ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER);
+//				sRight = StringZZZ.right(ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER + sLog, ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER); //ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER davor, falls nur ein String uebergeben wurde, wird trotzdem etwas gefunden
+//				
+//				//Die Postionsangabe weglassen
+//				sRight = StringZZZ.stripLeft(sRight, ReflectCodeZZZ.sPOSITION_FILE_IDENTIFIER);
+//				
+//				sLog = StringZZZ.joinAll(sLeft, sMid, sRight);				
+				sLog = String.format(sFormat, sLog);
+				sReturn = sPrefixSeparator + sLog + sPostfixSeparator;					
+				break;
+				
+			case IStringFormatZZZ.iFACTOR_STRINGTYPE02_XML_BY_STRING:
+				sLog = String.format(sFormat, sLog);
+				sLog = sPrefixSeparator + sLog + sPostfixSeparator;
+				
+     			ITagByTypeZZZ objTagStringType02 = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.STRINGTYPE02, sLog);
+     			sLogTag = objTagStringType02.getElementString();
+                 
+                sReturn = sLogTag; 				
+				break;
+				
+			case IStringFormatZZZ.iFACTOR_STRINGTYPE03_STRING_BY_STRING:
+				sFormat = this.getHashMapFormatPositionString().get(new Integer(IStringFormatZZZ.iFACTOR_STRINGTYPE03_STRING_BY_STRING));
+				
+//				//!!!Aus dem Logstring (der ja immer mit Position uebergeben werden muss) die Position herausrechenen
+//				//Merke: Der Position steht im Logstring immer am Anfang
+//				//Merke: So sieht der rohe ReflectCodeZZZ.getPositionCurrent() String aus:
+//				//Z.B.:  joinFilePathName_ ~ (FileEasyZZZ.java:1911) # wird.........
+//				
+//				//Auseinanderbauen
+//				sLeft = StringZZZ.left(sLogIn, ReflectCodeZZZ.sPOSITION_FILE_IDENTIFIER);
+//				sMid = StringZZZ.midLeftRightback(sLog, sLeft, ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER);
+//				sRight = StringZZZ.right(ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER + sLog, ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER); //ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER davor, falls nur ein String uebergeben wurde, wird trotzdem etwas gefunden
+//				
+//				//Die Postionsangabe weglassen
+//				sRight = StringZZZ.stripLeft(sRight, ReflectCodeZZZ.sPOSITION_FILE_IDENTIFIER);
+//				sLog = StringZZZ.joinAll(sLeft, sMid, sRight);		
+				sLog = String.format(sFormat, sLog);
+				sReturn = sPrefixSeparator + sLog + sPostfixSeparator;					
+				break;
+			
+			case IStringFormatZZZ.iFACTOR_STRINGTYPE03_XML_BY_STRING:
+				sLog = String.format(sFormat, sLog);
+				sLog = sPrefixSeparator + sLog + sPostfixSeparator;
+				
+     			ITagByTypeZZZ objTagStringType03 = TagByTypeFactoryZZZ.createTagByName(TagByTypeFactoryZZZ.TAGTYPE.STRINGTYPE03, sLog);
+     			sLogTag = objTagStringType03.getElementString();
+                 
+                sReturn = sLogTag; 				
+				break;
+			
+			case iFACTOR_CLASSMETHOD_STRING_BY_HASHMAP:
+				sFormat = this.getHashMapFormatPositionString().get(new Integer(IStringFormatZZZ.iFACTOR_CLASSMETHOD_STRING_BY_HASHMAP));
+				
+				//!!!Aus dem Logstring (der ja immer mit Position uebergeben werden muss) die Position herausrechenen
+				//Merke: Der Position steht im Logstring immer am Anfang
+				//Merke: So sieht der rohe ReflectCodeZZZ.getPositionCurrent() String aus:
+				//Z.B.:  joinFilePathName_ ~ (FileEasyZZZ.java:1911) # wird.........
+				
+				//Auseinanderbauen
+//				sLeft = StringZZZ.left(sLog, ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER);
+//				sMid = StringZZZ.midLeftRightback(sLog, sLeft, ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER);
+//				sRight = StringZZZ.right(ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER + sLog, ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER); //ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER davor, falls nur ein String uebergeben wurde, wird trotzdem etwas gefunden
+				
+				stemp = StringZZZ.left(sLogIn + ReflectCodeZZZ.sPOSITION_IN_FILE_IDENTIFIER, ReflectCodeZZZ.sPOSITION_IN_FILE_IDENTIFIER);				
+				sLog = stemp;
+				
+				
+				//Die Postionsangabe weglassen
+				
+				
+				
+				
+				//sLogUsed = StringZZZ.stripLeft(sRight, ReflectCodeZZZ.sPOSITION_FILE_IDENTIFIER);
+				//sLog = StringZZZ.joinAll(sLeft, sMid, sRight);		
+				sLog = String.format(sFormat, sLog);
+				sReturn = sPrefixSeparator + sLog + sPostfixSeparator;				
+				break;
+				
+			case iFACTOR_CLASSFILELINE_STRING_BY_HASHMAP:
+				sFormat = this.getHashMapFormatPositionString().get(new Integer(IStringFormatZZZ.iFACTOR_CLASSFILELINE_STRING_BY_HASHMAP));
+				
+				//!!!Aus dem Logstring (der ja immer mit Position uebergeben werden muss) die Position herausrechenen
+				//Merke: Der Position steht im Logstring immer am Anfang
+				//Merke: So sieht der rohe ReflectCodeZZZ.getPositionCurrent() String aus:
+				//Z.B.:  joinFilePathName_ ~ (FileEasyZZZ.java:1911) # wird.........
+				
+				//Auseinanderbauen
+//				sLeft = StringZZZ.left(sLog, ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER);
+//				sMid = StringZZZ.midLeftRightback(sLog, sLeft, ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER);
+//				sRight = StringZZZ.right(ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER + sLog, ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER); //ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER davor, falls nur ein String uebergeben wurde, wird trotzdem etwas gefunden
+				
+				stemp = StringZZZ.left(sLogIn + ReflectCodeZZZ.sPOSITION_FILE_IDENTIFIER_RIGHT, ReflectCodeZZZ.sPOSITION_FILE_IDENTIFIER_RIGHT);
+				stemp = StringZZZ.right(stemp + ReflectCodeZZZ.sPOSITION_FILE_IDENTIFIER_LEFT, ReflectCodeZZZ.sPOSITION_FILE_IDENTIFIER_LEFT);				
+				
+				sLog = stemp;
+				
+				
+				//Die Postionsangabe weglassen
+				
+				//sLogUsed = StringZZZ.stripLeft(sRight, ReflectCodeZZZ.sPOSITION_FILE_IDENTIFIER);
+				//sLog = StringZZZ.joinAll(sLeft, sMid, sRight);		
+				sLog = String.format(sFormat, sLog);
+				sReturn = sPrefixSeparator + sLog + sPostfixSeparator;				
+				break;
+				
+			case iFACTOR_CLASSFILENAME_STRING_BY_HASHMAP:
+				sFormat = this.getHashMapFormatPositionString().get(new Integer(IStringFormatZZZ.iFACTOR_CLASSFILENAME_STRING_BY_HASHMAP));
+				
+				//!!!Aus dem Logstring (der ja immer mit Position uebergeben werden muss) die Position herausrechenen
+				//Merke: Der Position steht im Logstring immer am Anfang
+				//Merke: So sieht der rohe ReflectCodeZZZ.getPositionCurrent() String aus:
+				//Z.B.:  joinFilePathName_ ~ (FileEasyZZZ.java:1911) # wird.........
+				
+				//Auseinanderbauen
+//				sLeft = StringZZZ.left(sLog, ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER);
+//				sMid = StringZZZ.midLeftRightback(sLog, sLeft, ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER);
+//				sRight = StringZZZ.right(ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER + sLog, ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER); //ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER davor, falls nur ein String uebergeben wurde, wird trotzdem etwas gefunden
+				
+				stemp = StringZZZ.left(sLogIn + ReflectCodeZZZ.sPOSITION_FILE_IDENTIFIER_RIGHT, ReflectCodeZZZ.sPOSITION_FILE_IDENTIFIER_RIGHT);
+				stemp = StringZZZ.right(ReflectCodeZZZ.sPOSITION_FILE_IDENTIFIER_LEFT + stemp, ReflectCodeZZZ.sPOSITION_FILE_IDENTIFIER_LEFT);				
+				stemp = StringZZZ.left(stemp + ReflectCodeZZZ.sPOSITION_LINENR_IDENTIFIER, ReflectCodeZZZ.sPOSITION_LINENR_IDENTIFIER);
+				
+				sLog = stemp;
+				
+				
+				//Die Postionsangabe weglassen
+				
+				//sLogUsed = StringZZZ.stripLeft(sRight, ReflectCodeZZZ.sPOSITION_FILE_IDENTIFIER);
+				//sLog = StringZZZ.joinAll(sLeft, sMid, sRight);		
+				sLog = String.format(sFormat, sLog);
+				sReturn = sPrefixSeparator + sLog + sPostfixSeparator;				
+				break;
+				
+			case iFACTOR_CLASSFILEPOSITION_STRING_BY_HASHMAP:
+				sFormat = this.getHashMapFormatPositionString().get(new Integer(IStringFormatZZZ.iFACTOR_CLASSFILEPOSITION_STRING_BY_HASHMAP));
+				
+				//!!!Aus dem Logstring (der ja immer mit Position uebergeben werden muss) die Position herausrechenen
+				//Merke: Der Position steht im Logstring immer am Anfang
+				//Merke: So sieht der rohe ReflectCodeZZZ.getPositionCurrent() String aus:
+				//Z.B.:  joinFilePathName_ ~ (FileEasyZZZ.java:1911) # wird.........
+				//Neu 20260204 nun wird ja jeder Separator per Konfiguration reingerechnet.
+				//             Also reduziert sich das auf die Klammern um (FileEasyZZZ.java:1911), was ein Ausdruck ist, damit die Position in Eclipse Clickbar ist.
+				
+				//Auseinanderbauen
+//				sLeft = StringZZZ.left(sLogIn, ReflectCodeZZZ.sPOSITION_FILE_IDENTIFIER);
+//				sMid = StringZZZ.midLeftRightback(sLog, sLeft, ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER);
+//				sRight = StringZZZ.right(ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER + sLog, ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER); //ReflectCodeZZZ.sPOSITION_MESSAGE_IDENTIFIER davor, falls nur ein String uebergeben wurde, wird trotzdem etwas gefunden
+//				
+//				//Die Postionsangabe weglassen
+//				sRight = StringZZZ.stripLeft(sRight, ReflectCodeZZZ.sPOSITION_FILE_IDENTIFIER_RIGHT);
+//				sLog = StringZZZ.joinAll(sLeft, sMid, sRight);	
+				
+				stemp = StringZZZ.left(sLogIn + ReflectCodeZZZ.sPOSITION_FILE_IDENTIFIER_RIGHT, ReflectCodeZZZ.sPOSITION_FILE_IDENTIFIER_RIGHT);
+				stemp = StringZZZ.right(ReflectCodeZZZ.sPOSITION_FILE_IDENTIFIER_LEFT + stemp, ReflectCodeZZZ.sPOSITION_FILE_IDENTIFIER_LEFT);				
+				
+				sLog = stemp;
+				sLog = String.format(sFormat, sLog);
+				sReturn = sPrefixSeparator + sLog + sPostfixSeparator;
+				break;
+			case IStringFormatZZZ.iFACTOR_CONTROLMESSAGESEPARATOR_STRING:
+				//SOLLTE HIER NICHT ERSCHEINEN SONDERN EINE EIGENE FORMATKLASSE SEIN computeByControl_(...)
+//				//By HashMap?
+//				 sFormat = this.getHashMapFormatPositionString().get(
+//	                        new Integer(ILogStringFormatZZZ.iFACTOR_CONTROLMESSAGESEPARATOR_STRING));	                    
+//	             sReturn = String.format(sFormat, ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);	               
+	              break;
+			case IStringFormatZZZ.iFACTOR_CONTROLMESSAGESEPARATOR_XML:
+				//SOLLTE HIER NICHT ERSCHEINEN SONDERN EINE EIGENE FORMATKLASSE SEIN computeByControl_(...)
+//				//By HashMap?
+//				 sFormat = this.getHashMapFormatPositionString().get(
+//	                        new Integer(ILogStringFormatZZZ.iFACTOR_CONTROLMESSAGESEPARATOR_STRING));	                    
+//	             sReturn = String.format(sFormat, ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);	               
+	              break;
+			case IStringFormatZZZ.iFACTOR_LINENEXT_STRING:
+				//SOLLTE ZUVOR ALS TRENNER FUER DAS FORMAT-ARRAY VERWENDET WORDEN SEIN UND HIER GARNICHT MEHR AUFTRETEN			
+				break;
+			default:
+				System.out.println("AbstractLogStringFormaterZZZ.computeByString_(obj, String, IEnumSetMapped): Dieses Format ist nicht in den gueltigen Formaten für einen LogString vorhanden iFaktor="+ienumFormatLogString.getFactor());
+				break;					
+			}				
+						
+		}//end main:
+		return sReturn;		
+	}
+	
+	
+	
+	
+	
 	//######################################
 //	private String computeLinesInLog_Justified_(Class classObjIn, LinkedHashMap<IEnumSetMappedLogStringFormatZZZ, String> hmLog) throws ExceptionZZZ {
 //		String sReturn = "";
@@ -1703,7 +2590,115 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 	}
 	
 	
+	private String computeByStringHashMap_Jagged__(LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hmLogString, IEnumSetMappedStringFormatZZZ ienumMappedFormat) throws ExceptionZZZ {
+		String sReturn = null;
+		main:{			
+			if(hmLogString == null) break main;
+			
+			if(ienumMappedFormat == null) {
+				ExceptionZZZ ez = new ExceptionZZZ("IEnumSetMappedLogStringFormatZZZ", iERROR_PARAMETER_MISSING, AbstractStringFormaterZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;				
+			}
+			
+			if (!StringFormaterUtilZZZ.isFormatUsingHashMap(ienumMappedFormat)) break main; // Hier werden also nur Werte errechnet aufgrund des Objekts selbst
 		
+			String sPrefixSeparator = ienumMappedFormat.getPrefixSeparator();
+			String sPostfixSeparator = ienumMappedFormat.getPostfixSeparator();
+			
+			String sLog=null; String sFormat=null; String sLeft=null; String sMid = null; String sRight=null;	
+			
+			//TODO: Weil es immer das gleiche ist, scheint es die SWITCH Anweisung eigentlich nicht zu benoetigen.
+	        switch (ienumMappedFormat.getFactor()) {
+	        	case IStringFormatZZZ.iFACTOR_DATE_XML_BY_HASHMAP:
+	        		sLog = hmLogString.get(ienumMappedFormat);
+	            	if(sLog!=null) {
+	            		sLog = sPrefixSeparator + sLog + sPostfixSeparator;
+		            	if(sReturn==null) {
+		            		sReturn = sLog;
+		            	}else {
+		            		sReturn = sReturn + sLog;
+		            	}
+	            	}
+	        		break;
+	        	case IStringFormatZZZ.iFACTOR_THREADID_XML_BY_HASHMAP:	        		
+	        		sLog = hmLogString.get(ienumMappedFormat);
+	            	if(sLog!=null) {
+	            		sLog = sPrefixSeparator + sLog + sPostfixSeparator;
+		            	if(sReturn==null) {
+		            		sReturn = sLog;
+		            	}else {
+		            		sReturn = sReturn + sLog;
+		            	}
+	            	}
+	        		break;
+	            case IStringFormatZZZ.iFACTOR_CLASSFILELINE_XML_BY_HASHMAP:
+	            	sLog = hmLogString.get(ienumMappedFormat);
+	            	if(sLog!=null) {
+	            		sLog = sPrefixSeparator + sLog + sPostfixSeparator;
+		            	if(sReturn==null) {
+		            		sReturn = sLog;
+		            	}else {
+		            		sReturn = sReturn + sLog;
+		            	}
+	            	}
+	                break;
+
+	            case IStringFormatZZZ.iFACTOR_CLASSFILENAME_XML_BY_HASHMAP:
+	            	sLog = hmLogString.get(ienumMappedFormat);
+	            	if(sLog!=null) {
+	            		sLog = sPrefixSeparator + sLog + sPostfixSeparator;					
+		            	if(sReturn==null) {
+		            		sReturn = sLog;
+		            	}else {
+		            		sReturn = sReturn + sLog;
+		            	}
+	            	}
+	                break;
+
+	            case IStringFormatZZZ.iFACTOR_CLASSFILEPOSITION_XML_BY_HASHMAP:
+	            	sLog = hmLogString.get(ienumMappedFormat);
+	            	if(sLog!=null) {
+	            		sLog = sPrefixSeparator + sLog + sPostfixSeparator;
+		            	if(sReturn==null) {
+		            		sReturn = sLog;
+		            	}else {
+		            		sReturn = sReturn + sLog;
+		            	}
+	            	}
+	                break;
+	                
+	            case IStringFormatZZZ.iFACTOR_CLASSNAMESIMPLE_XML_BY_HASHMAP:	            	
+	            	sLog = hmLogString.get(ienumMappedFormat);
+	            	if(sLog!=null) {
+	            		sLog = sPrefixSeparator + sLog + sPostfixSeparator;
+		            	if(sReturn==null) {
+		            		sReturn = sLog;
+		            	}else {
+		            		sReturn = sReturn + sLog;
+		            	}
+	            	}	            	
+	            	break;
+	            	
+	            case IStringFormatZZZ.iFACTOR_CLASSMETHOD_XML_BY_HASHMAP:	            	               
+	            	sLog = hmLogString.get(ienumMappedFormat);
+	            	if(sLog!=null) {
+	            		sLog = sPrefixSeparator + sLog + sPostfixSeparator;
+		            	if(sReturn==null) {
+		            		sReturn = sLog;
+		            	}else {
+		            		sReturn = sReturn + sLog;
+		            	}
+	            	}
+	                break;
+
+	            default:
+	                System.out.println("AbstractLogStringStringZZZ.computeByStringHashMap_(..,..): Dieses Format ist nicht in den gültigen Formaten für einen objektbasierten LogString vorhanden. iFaktor="
+	                        + ienumMappedFormat.getFactor());
+	                break;
+	        }		
+		}//end main:
+		return sReturn;
+	}
 	
 	
 	
@@ -1751,6 +2746,48 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 			List<IEnumSetMappedStringFormatZZZ[]> listaEnumLine = ArrayUtilZZZ.splitArrayByValue(ienumaFormatLogString, (IEnumSetMappedStringFormatZZZ)IStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_LINENEXT_, IEnumSetMappedStringFormatZZZ.class);			
 			for(IEnumSetMappedStringFormatZZZ[] ienumaLine: listaEnumLine){
 				sValue = computeLineInLog_Jagged__(classObj, ienumaLine, sLogs);
+				if(sValue!=null) { //z.B. werden Zeilen, nur mit Separatoren fuer die Justifier ausgeschlossen.
+					if(sReturn!=null) {
+						sReturn = sReturn + sValue;
+					}else {
+						sReturn = sValue;
+					}
+				}				
+			}	
+			if(sReturn!=null) {
+				listasReturn.add(sReturn);
+			}
+		}//end main:
+		return listasReturn;
+	}
+	
+	private ArrayListZZZ<String> computeLinesInLog_Jagged_ArrayList__(IEnumSetMappedStringFormatZZZ[]ienumaFormatLogStringIn, String... sLogs) throws ExceptionZZZ {
+		ArrayListZZZ<String> listasReturn = new ArrayListZZZ<String>();		
+		main:{
+								
+			IEnumSetMappedStringFormatZZZ[]ienumaFormatLogString=null;
+			if(ArrayUtilZZZ.isNullOrEmpty(ienumaFormatLogStringIn)) {
+				ienumaFormatLogString = this.getFormatPositionsMapped();
+				
+				if(ArrayUtilZZZ.isNull(ienumaFormatLogString)) {										
+					ExceptionZZZ ez = new ExceptionZZZ("IEnumSetMappedLogStringFormatZZZ Array", iERROR_PARAMETER_MISSING, AbstractStringFormaterZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;
+				}	
+			
+				if(ArrayUtilZZZ.isEmpty(ienumaFormatLogString)) {				
+					ExceptionZZZ ez = new ExceptionZZZ("IEnumSetMappedLogStringFormatZZZ[]", iERROR_PARAMETER_EMPTY, this, ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;	
+				}
+				
+			}else {
+				ienumaFormatLogString = ienumaFormatLogStringIn;
+			}
+								
+			//###### Splitte das Array der Formatanweisungen auf an der "LINENEXT" STEUERANWEISUNG
+			String sReturn = null; String sValue = null;
+			List<IEnumSetMappedStringFormatZZZ[]> listaEnumLine = ArrayUtilZZZ.splitArrayByValue(ienumaFormatLogString, (IEnumSetMappedStringFormatZZZ)IStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_LINENEXT_, IEnumSetMappedStringFormatZZZ.class);			
+			for(IEnumSetMappedStringFormatZZZ[] ienumaLine: listaEnumLine){
+				sValue = computeLineInLog_Jagged__(ienumaLine, sLogs);
 				if(sValue!=null) { //z.B. werden Zeilen, nur mit Separatoren fuer die Justifier ausgeschlossen.
 					if(sReturn!=null) {
 						sReturn = sReturn + sValue;
@@ -1867,6 +2904,16 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 	}
 	
 	
+	private String computeLinesInLog_Jagged__(IEnumSetMappedStringFormatZZZ[]ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
+		String sReturn = "";
+		main:{			
+			ArrayListZZZ<String> listasLine = this.computeLinesInLog_Jagged_ArrayList__(ienumaFormatLogString, sLogs);
+			sReturn = ArrayListUtilZZZ.implode(listasLine, StringZZZ.crlf());				
+		}//end main:
+		return sReturn;
+	}
+	
+	//++++++++++++++++++++++	
 	private String computeLinesInLog_Justified__(Object obj, IEnumSetMappedStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
 		String sReturn = "";
 		main:{
@@ -2019,8 +3066,80 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 		}//end main:
 		return sReturn;
 	}
+	
+	private String computeLineInLog_Jagged__(IEnumSetMappedStringFormatZZZ[]ienumaFormatLogStringIn, String... sLogs) throws ExceptionZZZ {
+		String sReturn = null;
+		main:{
+						
+			IEnumSetMappedStringFormatZZZ[]ienumaFormatLogString=null;
+			if(ArrayUtilZZZ.isNullOrEmpty(ienumaFormatLogStringIn)) {
+				ienumaFormatLogString = this.getFormatPositionsMapped();
+				
+				if(ArrayUtilZZZ.isNull(ienumaFormatLogString)) {										
+					ExceptionZZZ ez = new ExceptionZZZ("IEnumSetMappedLogStringFormatZZZ Array", iERROR_PARAMETER_MISSING, AbstractStringFormaterZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;
+				}				
+			}else {
+				ienumaFormatLogString = ienumaFormatLogStringIn;
+			}
+		
+		
+			//###### Ohne irgendeinen String
+			if(ArrayUtilZZZ.isNull(sLogs)) {
+				//Dann können es immer noch Formatanweisungen vom Typ ILogStringZZZ.iARG_OBJECT darin sein.
+				for(IEnumSetMappedStringFormatZZZ ienumFormatLogString : ienumaFormatLogString) {
+					String sValue = this.computeLinePartInLog__(ienumFormatLogString, sLogs);//this.computeByObject_(classObj, ienumFormatLogString);
+					if(sValue!=null) {
+						if(sReturn==null) {
+							sReturn = sValue;
+						}else {
+							sReturn = sReturn + sValue; 
+						}
+					}
+				}
+				break main;
+			}
+			
+						
+			//####### Mit Strings
+			for(IEnumSetMappedStringFormatZZZ ienumFormatLogString : ienumaFormatLogString) {
+				String sValue = this.computeLinePartInLog__(ienumFormatLogString, sLogs);
+				if(sValue!=null) {
+					if(sReturn==null) {
+						sReturn = sValue;
+					}else {
+						sReturn = sReturn + sValue; 
+					}
+				}
+			}
+			
+			//Also eine Zeile, die nur den Kommentartrenner enthaelt ist keine Zeile.
+			//String sCommentSeparatorFormated = LogStringFormaterUtilZZZ.computeLinePartInLog_ControlCommentSeparator();
+			//if(sReturn!=null && sReturn.equalsIgnoreCase(sCommentSeparatorFormated)){
+			//	sReturn = null;
+			//}
+			
+			//20260124: Vermeide eine Zeile, die nur einen Kommentartrenner enthält
+
+			String[] saCommentSeparatorFormated = StringFormaterUtilZZZ.computeLinePartInLog_ControlSeparatorAny();
+			
+			//Da Kombinationen moeglich sind und auch die Reihenfolge wichtig ist, geht das so nicht.
+			//if(sReturn!=null && StringArrayZZZ.contains(saCommentSeparatorFormated, sReturn)) {
+			//	sReturn = null;
+			//}
+			
+			//Verwende daher einen Ansatz der Stringreduktion (s. ChatGPT 2026-01-24)
+			if(sReturn!=null && StringAnalyseUtilZZZ.consistsOnlyOf(sReturn, saCommentSeparatorFormated)){
+				sReturn = null;
+			}
+		}//end main:
+		return sReturn;
+	}
 		
 	
+	
+	
+	//+++++++++++++++++++++++++
 	private ArrayListZZZ<String> computeLinePartInLog_ArrayList__(Class classObjIn, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
 		ArrayListZZZ<String> listasReturn = new ArrayListZZZ<String>();
 		main:{								
@@ -2079,6 +3198,24 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 		
 			//##### Mit zu verarbeitenden Strings			
 			sReturn = this.computeUsingFormat__(classObj, ienumFormatLogString, sLogs);				
+		}//end main:
+		return sReturn;
+	}
+	
+	private String computeLinePartInLog__(IEnumSetMappedStringFormatZZZ ienumFormatLogString, String... sLogs) throws ExceptionZZZ {
+		String sReturn = null;
+		main:{								
+			
+			//###### Ohne irgendeinen String
+			if(ArrayUtilZZZ.isNull(sLogs)) {
+				//Dann können es immer noch Formatanweisungen vom Typ ILogStringZZZ.iARG_OBJECT darin sein.						
+				sReturn = this.computeUsingFormat__(ienumFormatLogString); 					
+				break main;
+			}
+	
+		
+			//##### Mit zu verarbeitenden Strings			
+			sReturn = this.computeUsingFormat__(ienumFormatLogString, sLogs);				
 		}//end main:
 		return sReturn;
 	}
@@ -2242,9 +3379,8 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 		//###### Mache das Array der verarbeiteten "normalen" Text-Log-Zeilen leer
 		//20260212 raus
 		//this.resetStringIndexRead(); //Hier in der aufrufenden Methode, nicht in der von x-Stellen aufgerufenen private Methode
-				
-		Class classObj = this.getClass();
-		return computeUsingFormatByObject__(classObj, ienumFormatLogString);
+
+		return computeUsingFormat__(ienumFormatLogString);
 
 	}
 	
@@ -2255,8 +3391,8 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 		//20260212 raus
 		//this.resetStringIndexRead(); //hier 1x  der aufrufenden Methode und nicht in der x-mal aufgerufenen private Methode.
 				
-		Class classObj = this.getClass();		    		
-		return this.computeLinesInLog_Jagged__(classObj, ienumaFormatLogString, sLogs);
+				    	
+		return this.computeLinesInLog_Jagged__(ienumaFormatLogString, sLogs);
 		//return this.computeLinesInLog_Jagged_(ienumaFormatLogString, sLogs);
 	}
 	
@@ -2287,7 +3423,9 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 				
 		Class classObj = null;
 	    if (classObj == null) {
-	    	classObj = this.getClass();	
+	    	//In den aufrufenden Methoden dieser private Methode sollte das schon geklaert sein.
+			ExceptionZZZ ez = new ExceptionZZZ("Class-Object", iERROR_PARAMETER_MISSING, AbstractStringFormaterZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+			throw ez;	
 	    }else {
 	    	classObj = classObjIn;
 	    }
@@ -2303,7 +3441,9 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 				
 		Class classObj = null;
 	    if (classObjIn == null) {
-	    	classObj = this.getClass();	
+	    	//In den aufrufenden Methoden dieser private Methode sollte das schon geklaert sein.
+			ExceptionZZZ ez = new ExceptionZZZ("Class-Object", iERROR_PARAMETER_MISSING, AbstractStringFormaterZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+			throw ez;
 	    }else {
 	    	classObj = classObjIn;
 	    }		
@@ -2335,7 +3475,9 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 			
 			Class classObj = null;
 			if(classObjIn==null) {
-				classObj = this.getClass();
+				//In den aufrufenden Methoden dieser private Methode sollte das schon geklaert sein.
+				ExceptionZZZ ez = new ExceptionZZZ("Class-Object", iERROR_PARAMETER_MISSING, AbstractStringFormaterZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
 			}else {
 				classObj = classObjIn;
 			}
@@ -2381,7 +3523,9 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 	
 		Class classObj = null;
 		if(classObjIn==null) {
-			classObj = this.getClass();
+			//In den aufrufenden Methoden dieser private Methode sollte das schon geklaert sein.
+			ExceptionZZZ ez = new ExceptionZZZ("Class-Object", iERROR_PARAMETER_MISSING, AbstractStringFormaterZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+			throw ez;
 		}else {
 			classObj = classObjIn;
 		}
@@ -2400,7 +3544,9 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 		main:{
 			Class classObj = null;
 			if(obj==null) {
-				classObj = this.getClass();
+				//In den aufrufenden Methoden dieser private Methode sollte das schon geklaert sein.
+				ExceptionZZZ ez = new ExceptionZZZ("Object", iERROR_PARAMETER_MISSING, AbstractStringFormaterZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
 			}else {
 				classObj = obj.getClass();
 			}
@@ -2419,7 +3565,9 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 
 		Class classObj = null;
 		if(classObjIn==null) {
-			classObj = this.getClass();
+			//In den aufrufenden Methoden dieser private Methode sollte das schon geklaert sein.
+			ExceptionZZZ ez = new ExceptionZZZ("Class-Object", iERROR_PARAMETER_MISSING, AbstractStringFormaterZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+			throw ez;
 		}else {
 			classObj = classObjIn;
 		}
@@ -2534,7 +3682,7 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 		//20260212 raus
 		//this.resetStringIndexRead(); //hier 1x  der aufrufenden Methode und nicht in der x-mal aufgerufenen private Methode. 
 		
-		return this.computeLinesInLog_Jagged_ArrayList__(this.getClass(), ienumaFormatLogString, sLogs);
+		return this.computeLinesInLog_Jagged_ArrayList__(ienumaFormatLogString, sLogs);
 	}
 
 
@@ -2547,7 +3695,9 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 				
 		Object obj;
 		if(objIn==null) {
-			obj = this;
+			//In den aufrufenden Methoden dieser private Methode sollte das schon geklaert sein.
+			ExceptionZZZ ez = new ExceptionZZZ("Object", iERROR_PARAMETER_MISSING, AbstractStringFormaterZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+			throw ez;
 		}else {
 			obj = objIn;
 		}
@@ -2566,7 +3716,9 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 				
 		Class classObj = null;
 		if (classObjIn == null) {
-	    	classObj = this.getClass();	
+			//In den aufrufenden Methoden dieser private Methode sollte das schon geklaert sein.
+			ExceptionZZZ ez = new ExceptionZZZ("Class-Object", iERROR_PARAMETER_MISSING, AbstractStringFormaterZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+			throw ez;	
 	    }else {
 	    	classObj = classObjIn;
 	    }
@@ -2587,7 +3739,9 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 						
 		Object obj = null;
 		if (objIn == null) {
-			obj = this;	
+			//In den aufrufenden Methoden dieser private Methode sollte das schon geklaert sein.
+			ExceptionZZZ ez = new ExceptionZZZ("Object", iERROR_PARAMETER_MISSING, AbstractStringFormaterZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+			throw ez;
 		}else {
 		   	obj = objIn;
 		}
@@ -2608,7 +3762,9 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 								
 		Class classObj  = null;
 		if (classObjIn == null) {
-			classObj = this.getClass();	
+			//In den aufrufenden Methoden dieser private Methode sollte das schon geklaert sein.
+			ExceptionZZZ ez = new ExceptionZZZ("Class-Object", iERROR_PARAMETER_MISSING, AbstractStringFormaterZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+			throw ez;
 		}else {
 			classObj = classObjIn;
 		}
@@ -2629,7 +3785,9 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 						
 		Object obj = null;
 		if (objIn == null) {
-			obj = this;	
+			//In den aufrufenden Methoden dieser private Methode sollte das schon geklaert sein.
+			ExceptionZZZ ez = new ExceptionZZZ("Object", iERROR_PARAMETER_MISSING, AbstractStringFormaterZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+			throw ez;
 		}else {
 		   	obj = objIn;
 		}
@@ -2649,7 +3807,9 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 			
 			Class classObj = null;
 			if(classObjIn==null) {
-				classObj = this.getClass();
+				//In den aufrufenden Methoden dieser private Methode sollte das schon geklaert sein.
+				ExceptionZZZ ez = new ExceptionZZZ("Class-Object", iERROR_PARAMETER_MISSING, AbstractStringFormaterZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
 			}else {
 				classObj = classObjIn;
 			}

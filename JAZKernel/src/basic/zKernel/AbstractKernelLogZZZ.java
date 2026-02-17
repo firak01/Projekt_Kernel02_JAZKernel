@@ -606,7 +606,59 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 	}
 	
 	
+	public synchronized static String computeLineDateWithPosition(Object objIn, int iLevelIn, String sLog) throws ExceptionZZZ {	
+		Object obj=null;
+		if(objIn==null) {
+			ExceptionZZZ ez = new ExceptionZZZ("Object", iERROR_PARAMETER_MISSING, AbstractKernelLogZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+			throw ez;
+		}else {
+			obj = objIn;
+		}
+		Class classObj = obj.getClass();
+		
+		int iLevel = iLevelIn + 1;
+		
+		String[] saLog = new String[1];
+		saLog[0]=sLog;
+		return computeLineDateWithPosition__(classObj, iLevel, saLog);
+	}
 	
+	public synchronized static String computeLineDateWithPosition(Object objIn, int iLevelIn, String sLog1, String sLog2) throws ExceptionZZZ {	
+		Object obj=null;
+		if(objIn==null) {
+			ExceptionZZZ ez = new ExceptionZZZ("Object", iERROR_PARAMETER_MISSING, AbstractKernelLogZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+			throw ez;
+		}else {
+			obj = objIn;
+		}
+		Class classObj = obj.getClass();
+		
+		int iLevel = iLevelIn + 1;
+		
+		String[] saLog = new String[2];
+		saLog[0]=sLog1;
+		saLog[1]=sLog2;
+		return computeLineDateWithPosition__(classObj, iLevel, saLog);
+	}	
+	
+	
+	public synchronized static String computeLineDateWithPosition(Object objIn, int iLevelIn, String... sLogs) throws ExceptionZZZ {
+		Object obj=null;
+		if(objIn==null) {
+			ExceptionZZZ ez = new ExceptionZZZ("Object", iERROR_PARAMETER_MISSING, AbstractKernelLogZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
+			throw ez;
+		}else {
+			obj = objIn;
+		}
+		Class classObj = obj.getClass();
+		
+		int iLevel = iLevelIn + 1;
+		
+		String[] saLog = sLogs;
+		return computeLineDateWithPosition__(classObj, iLevel, saLog);
+	}
+	
+	//++++++++++++++++++++
 	public synchronized static String computeLineDateWithPosition(Class classObj, String sLog) throws ExceptionZZZ {	
 		String[] saLog = new String[1];
 		saLog[0] = sLog;
@@ -620,17 +672,26 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 	}
 	
 	
+	public synchronized static String computeLineDateWithPosition(Class classObj, int iLevelIn, String sLog) throws ExceptionZZZ {
+		int iLevel = iLevelIn + 1;
+		String[] saLog = new String[1];
+		saLog[0] = sLog;
+		return computeLineDateWithPosition__(classObj, iLevel, saLog);
+	}
+	
 	public synchronized static String computeLineDateWithPosition(Class classObj, int iStackTraceLevelIn, String... sLogs) throws ExceptionZZZ {
 		int iStackTraceLevel = iStackTraceLevelIn + 1;
 		String[] saLog = sLogs;
 		return computeLineDateWithPosition__(classObj, iStackTraceLevel, saLog);
 	}
 	
-	private static String computeLineDateWithPosition__(Class classObj, int iStackTraceLevel, String[] saLogIn) throws ExceptionZZZ {	
+	private static String computeLineDateWithPosition__(Class classObj, int iLevelIn, String[] saLogIn) throws ExceptionZZZ {	
 		IEnumSetMappedStringFormatZZZ[]iaFormat = getFormatForComputeLineDateWithPosition_withObject();
 		
 		//Fuer die Positionsermittlung die XML Variante nehmen. Nur sie kann dann hinsichtlich der einzelnen Bestandteilen, wg. der Tags aufgeloest werden.
-		String sPositionCalling = ReflectCodeZZZ.getPositionCallingXml(iStackTraceLevel);
+		int iLevel = iLevelIn + 1;
+		String sPositionCalling = ReflectCodeZZZ.getPositionCallingXml(iLevelIn);
+		//String sPositionCalling = ReflectCodeZZZ.getPositionXml(iLevelIn);
 		 
 		//Packe diesen String mit in die Log-Strings, zur Abarbeitung durch den FormatManager
 		//String[] satemp = StringArrayZZZ.append(satemp, sPositionCalling);
