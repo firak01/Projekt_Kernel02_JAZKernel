@@ -43,7 +43,7 @@ public class LogZZZTest extends TestCase{
 	public void testComputeLine_CUSTOM() {
 		try {
 			int itemp;
-			String sLog1=null; String sLog2=null;
+			String sLog1=null; String sLog2=null; String sLog3=null;
 			String sValue=null; String sMid1=null; String sMid2=null; int iLine=0; String sFilePath=null; String sLinePosition=null; 
 			String sValueExpectedStart=null; String sValueExpectedMid1=null; String sValueExpectedMid2=null;  String sValueExpectedEnd=null;
 			boolean bValue=false;
@@ -96,7 +96,7 @@ public class LogZZZTest extends TestCase{
 					 IStringFormatZZZ.LOGSTRINGFORMAT.CLASSMETHOD_STRING_BY_XML,
 					 IStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORMESSAGE_STRING,
 					 IStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
-					 IStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATOR03_STRING,
+					 IStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATOR04_STRING,
 					 IStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,	
 					 IStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORPOSITION_STRING,
 					 IStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILEPOSITION_STRING_BY_XML,				 
@@ -136,16 +136,16 @@ public class LogZZZTest extends TestCase{
 			//Zeile mit 2x Logstring
 			sLog2 = "ZZZTESTZZZ";
 			iLine = ReflectCodeZZZ.getMethodCurrentLine()+1;//+1, weil halt die naechste Zeile im Code.
-			sValue = objLogTest.computeLine(sLog2, iaFormat, sLog1); //auch wenn log2 kuerzer als log1 ist, erwarte ich dass die Ausgabe buendig ist 
+			sValue = objLogTest.computeLine(this, iaFormat, sLog2, sLog1); //auch wenn log2 kuerzer als log1 ist, erwarte ich dass die Ausgabe buendig ist 
 			System.out.println("LogZZZTest.testComputeLine_CUSTOM(): Logausgabe in nächster Zeile.\n" + sValue);
 			
-			//Nur 1x den LogString
+			//Nur 1x den LogString1
 			itemp = StringZZZ.count(sValue, sLog1);
 			bValue = (itemp==1);
 			assertTrue("Mindestens/Nur 1x den LogString '" + sLog1 + "' erwartet", bValue);
 			
-			//Nur 1x den LogString
-			itemp = StringZZZ.count(sValue, sLog1);
+			//Nur 1x den LogString2
+			itemp = StringZZZ.count(sValue, sLog2);
 			bValue = (itemp==1);
 			assertTrue("Mindestens/Nur 1x den LogString '" + sLog2 + "' erwartet", bValue);
 			
@@ -163,6 +163,35 @@ public class LogZZZTest extends TestCase{
 			itemp = StringZZZ.count(sValue, sLinePosition);
 			bValue = (itemp==1);
 			assertTrue("Mindestens/Nur 1x die Fileposition '" + sLinePosition + "' im Logstring '" + sValue + "' erwartet", bValue);
+			
+			//########################################
+			//### Noch einmal machen, nur einen kurzen Log-Text.
+			//### Nun wirkt sich auch aus, das der PositionSeparator ~ verwendet wird, und dies bleibt bündig.
+			sLog3 = "YTESTY";
+			iLine = ReflectCodeZZZ.getMethodCurrentLine()+1;//+1, weil halt die naechste Zeile im Code.
+			sValue = objLogTest.computeLine(this, iaFormat, sLog3); //auch wenn log3 kuerzer ist als alles zuvor, erwarte ich dass die Ausgabe buendig ist. Auch in der Spalte vor der CodePosition 
+			System.out.println("LogZZZTest.testComputeLine_CUSTOM(): Logausgabe in nächster Zeile.\n" + sValue);
+			
+			//Nur 1x den LogString1
+			itemp = StringZZZ.count(sValue, sLog3);
+			bValue = (itemp==1);
+			assertTrue("Mindestens/Nur 1x den LogString '" + sLog3 + "' erwartet", bValue);
+						
+			//Nur 1x den Messageseparator
+			itemp = StringZZZ.count(sValue, IStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);
+			bValue = (itemp==1);
+			assertTrue("Mindestens/Nur 1x den Kommentarseparator '" + IStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + "' im Logstring '" + sLog1 + "' erwartet", bValue);
+			
+			//Nicht am Ende, sondern vor dem uebergebenen String.
+			bValue = StringZZZ.endsWith(sValue, IStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);
+			assertFalse("Der Separator '" + IStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT + "'  darf nicht am Ende stehen, wenn ein String für die Protokollierung übergeben wurde.", bValue);
+			
+			//Der Name der aufrufenden Klasse muss auch hierdrin sein, mit der Zeilennummer
+			sLinePosition = ReflectCodeZZZ.formatFileCallingLineForConsole(sFilePath, iLine);//Neu ausrechnen. Merke: Das wäre mit deraktuellen Zeilennumer und das ist in diesem Fall falsch: ReflectCodeZZZ.getMethodCurrentNameLined();
+			itemp = StringZZZ.count(sValue, sLinePosition);
+			bValue = (itemp==1);
+			assertTrue("Mindestens/Nur 1x die Fileposition '" + sLinePosition + "' im Logstring '" + sValue + "' erwartet", bValue);
+	
 			
 		} catch (ExceptionZZZ ez) {
 			ez.printStackTrace();
