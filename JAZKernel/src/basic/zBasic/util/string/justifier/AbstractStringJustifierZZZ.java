@@ -194,11 +194,10 @@ public abstract class AbstractStringJustifierZZZ extends AbstractObjectWithExcep
 	public synchronized ArrayListZZZ<String> justifyLine(ArrayListZZZ<String> listasLine) throws ExceptionZZZ {
 		ArrayListZZZ<String> listasReturn = null;
 		main:{
-			if(listasLine==null) break main;									
-			if(ArrayListUtilZZZ.isEmpty(listasLine)) {
-				listasReturn=new ArrayListZZZ<String>();	
-				break main;
-			}
+			if(listasLine==null) break main;
+			
+			listasReturn=new ArrayListZZZ<String>();			
+			if(ArrayListUtilZZZ.isEmpty(listasLine)) break main;
 			
 			for(String sLine : listasLine) {
 				String sLineJustified = this.justifyLine(sLine);
