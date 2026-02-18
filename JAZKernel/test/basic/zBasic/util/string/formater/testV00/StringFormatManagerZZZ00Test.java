@@ -522,8 +522,8 @@ public class StringFormatManagerZZZ00Test extends TestCase {
 			String sJustifierFilteredSeparator04_1 = objJustifierFiltered04_1.getPositionSeparator();
 			assertEquals(IStringFormatZZZ.sSEPARATOR_02_DEFAULT, sJustifierFilteredSeparator04_1);
 			
-			
-			//+++ Nicht unmittelbar Bestandteil des Tests, aber rechen trotzdem mal aus
+			TODOGOON20260218;//Das sollen mehrere Zeilen sein
+			//+++ Nicht unmittelbar Bestandteil des Tests, aber rechne trotzdem mal aus
 			//Merke: Weil es eine Position gibt in der letzten Zeile noch die ThreadID auszugeben, kommt eine nahezu leere Zeile
 			//       in den Beispielen häufig zustande.
 			System.out.println("++++++++++++");
