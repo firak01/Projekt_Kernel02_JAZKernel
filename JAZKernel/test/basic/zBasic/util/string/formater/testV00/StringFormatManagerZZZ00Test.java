@@ -522,7 +522,7 @@ public class StringFormatManagerZZZ00Test extends TestCase {
 			String sJustifierFilteredSeparator04_1 = objJustifierFiltered04_1.getPositionSeparator();
 			assertEquals(IStringFormatZZZ.sSEPARATOR_02_DEFAULT, sJustifierFilteredSeparator04_1);
 			
-			TODOGOON20260218;//Das sollen mehrere Zeilen sein
+			
 			//+++ Nicht unmittelbar Bestandteil des Tests, aber rechne trotzdem mal aus
 			//Merke: Weil es eine Position gibt in der letzten Zeile noch die ThreadID auszugeben, kommt eine nahezu leere Zeile
 			//       in den Beispielen häufig zustande.
@@ -535,6 +535,7 @@ public class StringFormatManagerZZZ00Test extends TestCase {
 			System.out.println("In der nächsten Zeile erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);			
 			
 			System.out.println("++++++++++++");
+			//TODOGOON20260218;//Das sollen mehrere Zeilen sein
 			sLogValue = StringFormatManagerZZZ.getNewInstance().computeJustified(objDummy, ienumaFormat04, sLog1, sLog2, sLog3);
 			System.out.println("In der nächsten Zeile erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);
 						

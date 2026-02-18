@@ -417,17 +417,16 @@ public class StringFormaterUtilZZZ implements IConstantZZZ{
 		main:{	
 			if(listasLine==null) break main;
 			
-			if(objStringJustifier==null | listasLine.isEmpty()) {
-				listasReturn=listasLine;
-				break main;
-			}else {
-				listasReturn = new ArrayListZZZ<String>();
-			}
+			listasReturn = new ArrayListZZZ<String>();
+			if(objStringJustifier==null | listasLine.isEmpty()) break main;
 			
 			
 			//In den übergebenen Zeilen koennten weitere Kommentartrenner stecken.
 			//Daher jede Zeile splitten und danach das neue "Standardisierte Array" weiterverarbeiten
 			//Ggfs. auch die erste Zeile und die 2te Zeile zusammenfassen.
+			//ArrayListZZZ<String>listasLineNormed = normStringForJustifyArrayList_(objStringJustifier, bMergeFirst2Lines, listasLine);
+			
+			//20260218: Hier auf gar keinen Fall Zeilen zusammenfassen
 			ArrayListZZZ<String>listasLineNormed = normStringForJustifyArrayList_(objStringJustifier, bMergeFirst2Lines, listasLine);
 			
 			//Bei 0 wuerde nix buendig gemacht, darum die Grenze ggfs. explizit auf die Position des ersten SeparatorStrings setzen
