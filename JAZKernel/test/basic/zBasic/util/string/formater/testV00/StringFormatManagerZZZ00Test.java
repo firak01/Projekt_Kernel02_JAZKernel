@@ -535,7 +535,6 @@ public class StringFormatManagerZZZ00Test extends TestCase {
 			System.out.println("In der nächsten Zeile erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);			
 			
 			System.out.println("++++++++++++");
-			//TODOGOON20260218;//Das sollen mehrere Zeilen sein
 			sLogValue = StringFormatManagerZZZ.getNewInstance().computeJustified(objDummy, ienumaFormat04, sLog1, sLog2, sLog3);
 			System.out.println("In der nächsten Zeile erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);
 						
