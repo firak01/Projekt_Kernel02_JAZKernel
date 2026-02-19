@@ -41,7 +41,9 @@ public interface IStringFormatComputerZZZ {
 		public String compute(Class classObj, String... sLogs) throws ExceptionZZZ;	
 		
 		//############################
-		//Jede Methode auch als ArrayListZZZ
+		//Jede Methode auch als ArrayListZZZ, sollten eigentlich private oder protected sein.
+		//Das geht aber in Java 1.7 nicht im Interface zu definieren. 
+		//Also einen Unterstrich angehängt... zum Darstellen, das diese Methode nicht ausserhalb der Formatierung selbst zu verwenden ist.
 		public ArrayListZZZ<String> computeJaggedArrayList_(String... sLogs) throws ExceptionZZZ;
 		
 		public ArrayListZZZ<String> computeJaggedArrayList_(LinkedHashMap<IEnumSetMappedStringFormatZZZ, String> hm) throws ExceptionZZZ;

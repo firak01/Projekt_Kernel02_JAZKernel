@@ -2954,33 +2954,6 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 
 	}
 	
-	
-//	private String computeLinesInLog_Justified_(Class<?> classObjIn, IEnumSetMappedLogStringFormatZZZ[]ienumaFormatLogString, String... sLogs) throws ExceptionZZZ {
-//		String sReturn = "";
-//		main:{
-//			Class classObj = null;		
-//		  	if(classObjIn==null) {
-//				//In den aufrufenden Methoden dieser private Methode sollte das schon geklaert sein.
-//				ExceptionZZZ ez = new ExceptionZZZ("Class-Object", iERROR_PARAMETER_MISSING, AbstractLogStringFormaterZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
-//				throw ez;			
-//			}else {
-//				classObj = classObjIn;
-//			}
-//			
-//			ArrayListZZZ<String> listasLine = this.computeLinesInLog_Jagged_ArrayList_(classObj, ienumaFormatLogString, sLogs);
-//			
-//			//### Versuch den Infoteil ueber alle Zeilen buendig zu halten
-//		    //WICHTIG: DAS ERST NACHDEM ALLE STRING-TEILE, ALLER FORMATSTYPEN ABGEARBEITET WURDEN UND ZUSAMMENGESETZT WORDEN SIND.
-//			//sReturn = this.getStringJustifier().justifyInfoPart(sReturn);
-//			
-//			IStringJustifierZZZ objStringJustifier = this.getStringJustifier();
-//			ArrayList<String> listasReturn = LogStringFormaterUtilZZZ.justifyInfoPartArrayList(objStringJustifier, listasLine);
-//			sReturn = ArrayListUtilZZZ.implode(listasReturn, StringZZZ.crlf());
-//		}//end main:
-//		return sReturn;
-//	}
-	
-	
 	/** .LINENEXT als Steuerkennzeichen wird hier nicht mehr beruecksichtig
 	 * @param classObjIn
 	 * @param saLog
@@ -3044,21 +3017,11 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 				}
 			}
 			
-			//Also eine Zeile, die nur den Kommentartrenner enthaelt ist keine Zeile.
-			//String sCommentSeparatorFormated = LogStringFormaterUtilZZZ.computeLinePartInLog_ControlCommentSeparator();
-			//if(sReturn!=null && sReturn.equalsIgnoreCase(sCommentSeparatorFormated)){
-			//	sReturn = null;
-			//}
-			
+			//Also eine Zeile, die nur den Kommentartrenner enthaelt ist keine Zeile.			
 			//20260124: Vermeide eine Zeile, die nur einen Kommentartrenner enthält
-
 			String[] saCommentSeparatorFormated = StringFormaterUtilZZZ.computeLinePartInLog_ControlSeparatorAny();
 			
-			//Da Kombinationen moeglich sind und auch die Reihenfolge wichtig ist, geht das so nicht.
-			//if(sReturn!=null && StringArrayZZZ.contains(saCommentSeparatorFormated, sReturn)) {
-			//	sReturn = null;
-			//}
-			
+			//Da Kombinationen moeglich sind und auch die Reihenfolge wichtig ist:
 			//Verwende daher einen Ansatz der Stringreduktion (s. ChatGPT 2026-01-24)
 			if(sReturn!=null && StringAnalyseUtilZZZ.consistsOnlyOf(sReturn, saCommentSeparatorFormated)){
 				sReturn = null;
@@ -3114,20 +3077,10 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 			}
 			
 			//Also eine Zeile, die nur den Kommentartrenner enthaelt ist keine Zeile.
-			//String sCommentSeparatorFormated = LogStringFormaterUtilZZZ.computeLinePartInLog_ControlCommentSeparator();
-			//if(sReturn!=null && sReturn.equalsIgnoreCase(sCommentSeparatorFormated)){
-			//	sReturn = null;
-			//}
-			
 			//20260124: Vermeide eine Zeile, die nur einen Kommentartrenner enthält
-
 			String[] saCommentSeparatorFormated = StringFormaterUtilZZZ.computeLinePartInLog_ControlSeparatorAny();
 			
-			//Da Kombinationen moeglich sind und auch die Reihenfolge wichtig ist, geht das so nicht.
-			//if(sReturn!=null && StringArrayZZZ.contains(saCommentSeparatorFormated, sReturn)) {
-			//	sReturn = null;
-			//}
-			
+			//Da Kombinationen moeglich sind und auch die Reihenfolge wichtig ist:
 			//Verwende daher einen Ansatz der Stringreduktion (s. ChatGPT 2026-01-24)
 			if(sReturn!=null && StringAnalyseUtilZZZ.consistsOnlyOf(sReturn, saCommentSeparatorFormated)){
 				sReturn = null;
@@ -3393,7 +3346,6 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 				
 				    	
 		return this.computeLinesInLog_Jagged__(ienumaFormatLogString, sLogs);
-		//return this.computeLinesInLog_Jagged_(ienumaFormatLogString, sLogs);
 	}
 	
 
@@ -3530,9 +3482,8 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 			classObj = classObjIn;
 		}
 		
-		//Nein, hier nicht die Zeilen buendig machen, es koennten XML-Tags angefordert sein
-		//von der Methode der erbenden Klasse. Die Aufrufende Methode soll sich dann um das Buendig-Machen kuemmern.
-		//return this.computeLinesInLog_Justified_(classObjIn, ienumaFormatLogString, sLogs);
+		//Hier nicht die Zeilen buendig machen, es koennten XML-Tags angefordert sein
+		//von der Methode der erbenden Klasse. Die Aufrufende Methode soll sich dann um das Buendig-Machen kuemmern.		
 		ArrayListZZZ<String> lista =  this.computeLinesInLog_Jagged_ArrayList__(classObj, (IEnumSetMappedStringFormatZZZ[])null, sLogs);
 		String sReturn = ArrayListUtilZZZ.implode(lista, StringZZZ.crlf());
 		return sReturn;
@@ -3572,9 +3523,8 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 			classObj = classObjIn;
 		}
 		
-		//Nein, hier nicht die Zeilen buendig machen, es koennten XML-Tags angefordert sein
-		//von der Methode der erbenden Klasse. Die Aufrufende Methode soll sich dann um das Buendig-Machen kuemmern.
-		//return this.computeLinesInLog_Justified_(classObjIn, ienumaFormatLogString, sLogs);
+		//Hier nicht die Zeilen buendig machen, es koennten XML-Tags angefordert sein
+		//Die Aufrufende Methode soll sich dann um das Buendig-Machen kuemmern.
 		ArrayListZZZ<String> lista =  this.computeLinesInLog_Jagged_ArrayList__(classObj, ienumaFormatLogString, sLogs);
 		String sReturn = ArrayListUtilZZZ.implode(lista, StringZZZ.crlf());
 		return sReturn;
@@ -3617,10 +3567,8 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 		//20260212 raus
 		//this.resetStringIndexRead(); //hier 1x  der aufrufenden Methode und nicht in der x-mal aufgerufenen private Methode. 
 
-		//Nein, hier nicht die Zeilen buendig machen, es koennten XML-Tags angefordert sein
-		//von der Methode der erbenden Klasse. Die Aufrufende Methode soll sich dann um das Buendig-Machen kuemmern.
-		//return this.computeLinesInLog_Justified_(classObjIn, ienumaFormatLogString, sLogs);
-				
+		//Hier nicht die Zeilen buendig machen, es koennten XML-Tags angefordert sein
+		//Die Aufrufende Methode soll sich dann um das Buendig-Machen kuemmern.
 		Class classObj = this.getClass();
 		ArrayListZZZ<String> listas =  this.computeLinesInLog_Jagged_ArrayList__(classObj, (IEnumSetMappedStringFormatZZZ[]) null, sLogs);		
 		return listas;	
@@ -3657,8 +3605,6 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-
 
 	@Override
 	public ArrayListZZZ<String> computeJaggedArrayList_(Class classObj, String... sLogs) throws ExceptionZZZ {

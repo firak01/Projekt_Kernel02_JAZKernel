@@ -236,10 +236,8 @@ public class AbstractStringJustifierManagerZZZ extends AbstractObjectWithFlagZZZ
 			for(int icount=0; icount<=listaStringJustifier.size()-1;icount++) {
 				IStringJustifierZZZ objJustifier = listaStringJustifier.get(icount);		
 				this.getStringJustifierListUsed().add(objJustifier);
-				//listasReturn = StringFormaterUtilZZZ.justifyLineArrayList(objJustifier, true, listasReturn);//true=fasse erste und zweite Zeile zusammen, die entstehen beim "Normieren", wenn an den Kommentartrenner aufgeteilt wird.
 				
-				//Hier auf garkeinen Fall die Zeilen zusammenfassen, das soll wenn dann beim jagged-Bilden passieren
-				listasReturn = StringFormaterUtilZZZ.justifyLineArrayList(objJustifier, false, listasReturn);//true=fasse erste und zweite Zeile zusammen, die entstehen beim "Normieren", wenn an den Kommentartrenner aufgeteilt wird.
+				listasReturn = StringFormaterUtilZZZ.justifyLineArrayList(objJustifier, listasReturn);//true=fasse erste und zweite Zeile zusammen, die entstehen beim "Normieren", wenn an den Kommentartrenner aufgeteilt wird.
 			}
 			
 		
