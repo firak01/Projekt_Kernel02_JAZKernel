@@ -92,7 +92,7 @@ public class StringFormatManagerZZZ00Test extends TestCase {
 		}
 	}
 	
-	public void testCompute_FormatDefined_Using_Single_Double_Array(){
+	public void testCompute_FormatDefined_Using_Defined_MessageArray(){
 		try{
 			String sLog1 = null; String sLog2 = null; String sThread = null; String sClassName = null;
 			String sLogValue = null; 
@@ -136,7 +136,7 @@ public class StringFormatManagerZZZ00Test extends TestCase {
 			
 			
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-			//+++ Bei 2x Strintype (OHNE ARGNEXT) soll der 1x Logeintrag auch nur 1x in der Zeile erscheinen.	
+			//+++ Bei 2x Strintype (OHNE LINENEXT) soll der 1x Logeintrag auch nur 1x in der Zeile erscheinen.	
 			//a) identischer Fall
 			IEnumSetMappedStringFormatZZZ[] ienumaFormat02= {
 							IStringFormatZZZ.LOGSTRINGFORMAT.CLASSNAME_STRING,						
@@ -173,7 +173,7 @@ public class StringFormatManagerZZZ00Test extends TestCase {
 			assertTrue(iLogIndex2 == -1);
 			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-			//+++ Bei 2x Strintype (OHNE ARGNEXT) soll der identische 2x Logeintrag auch 2x in der Zeile erscheinen. Wenn entsprechend uebergeben	
+			//+++ Bei 2x Strintype (OHNE LINENEXT) soll der identische 2x Logeintrag auch 2x in der Zeile erscheinen. Wenn entsprechend uebergeben	
 			//b) gleicher Logeintraege	
 			StringFormatManagerZZZ.getInstance().resetStringIndexRead();
 			sLogValue = StringFormatManagerZZZ.getInstance().compute(objDummy, ienumaFormat02, sLog1, sLog1);
@@ -204,7 +204,7 @@ public class StringFormatManagerZZZ00Test extends TestCase {
 			assertTrue(iLogIndex2 == -1);
 						
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-			//+++ Bei 2x Strintype (OHNE ARGNEXT) soll der Logeintrag auch 2x in der Zeile erscheinen.	
+			//+++ Bei 2x Strintype (OHNE LINENEXT) soll der Logeintrag auch 2x in der Zeile erscheinen.	
 			//c) unterschiedliche Logeintraege	
 			StringFormatManagerZZZ.getInstance().resetStringIndexRead();
 			sLogValue = StringFormatManagerZZZ.getInstance().compute(objDummy, ienumaFormat02, sLog1, sLog2);
@@ -240,6 +240,95 @@ public class StringFormatManagerZZZ00Test extends TestCase {
 		}
 	} 
 	
+	public void testCompute_FormatDynamic_Using_Defined_MessageArray(){
+		try{
+			String sLog1 = null; String sLog2 = null; String sThread = null; String sClassName = null;
+			String sLogValue = null; 
+			int iLogIndex1 = -1; int iLogIndex2 = -1; int iThreadIndex = -1; int iClassNameIndex = -1;
+			
+			DummyTestObjectZZZ objDummy = new DummyTestObjectZZZ();
+			sLog1 = "der erste Logeintrag";
+			sLog2 = "der zweite Logeintrag";
+			sThread = "[Thread:";
+			sClassName = objDummy.getClass().getSimpleName();
+			
+			IEnumSetMappedStringFormatZZZ[] ienumaFormat01= {
+							IStringFormatZZZ.LOGSTRINGFORMAT.CLASSNAME_STRING,						
+							IStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
+							IStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,																						
+							};
+			//+++ Bei 1x Strintype soll der 1te Logeintrag nur 1x erscheinen.					
+			//                          der 2te Logeintrag soll NICHT erscheinen.   			
+			StringFormatManagerZZZ.getInstance().setFlag(IStringFormatManagerZZZ.FLAGZ.USE_STATIC_FORMAT, true);
+			StringFormatManagerZZZ.getInstance().resetStringIndexRead();
+			sLogValue = StringFormatManagerZZZ.getNewInstance().compute(objDummy, ienumaFormat01, sLog1, sLog2);
+			System.out.println("In der nächsten Zeile erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);			
+			
+			assertTrue(StringZZZ.contains(sLogValue, sLog1));
+			assertTrue(StringZZZ.count(sLogValue, sLog1)==1);
+									
+			assertTrue(StringZZZ.count(sLogValue,sThread)==1);//wg %s kann man nicht auf die Konstante selbst abprüfen, die ja nicht eretzt wurde
+			
+			assertTrue(StringZZZ.count(sLogValue,sClassName)==1); //Der Name sollte 1x vorkommen, mit einem Doppelpunkt dahinter.
+			
+			//Logeintrag soll hinter dem Classnamen stehen
+			iLogIndex1 = StringZZZ.indexOfFirst(sLogValue, sLog1);
+			iThreadIndex = StringZZZ.indexOfFirst(sLogValue, sThread);
+			assertTrue(iThreadIndex > iLogIndex1+sLog1.length());
+			
+			iClassNameIndex = StringZZZ.indexOfFirst(sLogValue, sClassName);
+			assertTrue(iLogIndex1 > iClassNameIndex+sClassName.length());
+			
+			//zweiter (anderer) Logeintrag ist nicht vorhanden
+			iLogIndex2 = StringZZZ.indexOfLast(sLogValue, sLog2);
+			assertTrue(iLogIndex2 == -1);
+			
+			//+++ Bei 1x Strintype soll der 1te Logeintrag nur 1x in der ersten Zeile erscheinen.
+			//                          der 2te Logeintrag soll in der nächsten Zeile erscheinen.
+			//                          Dazu wird das Format um eine LINENEXT - Anweisung, einen COMMENT - Separator, einen StringTyp erweitert.
+			//                          Dieses "Normieren" des Formatanweisungsarrays macht der Formatmanager.
+			StringFormatManagerZZZ.getInstance().setFlag(IStringFormatManagerZZZ.FLAGZ.USE_STATIC_FORMAT, false);
+			StringFormatManagerZZZ.getInstance().resetStringIndexRead();
+			sLogValue = StringFormatManagerZZZ.getNewInstance().compute(objDummy, ienumaFormat01, sLog1, sLog2);
+			System.out.println("In der nächsten Zeile erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);			
+			
+			assertTrue(StringZZZ.contains(sLogValue, sLog1));
+			assertTrue(StringZZZ.count(sLogValue, sLog1)==1);
+																	
+			assertTrue(StringZZZ.count(sLogValue,sThread)==1);//wg %s kann man nicht auf die Konstante selbst abprüfen, die ja nicht eretzt wurde
+			
+			assertTrue(StringZZZ.count(sLogValue,sClassName)==1); //Der Name sollte 1x vorkommen, mit einem Doppelpunkt dahinter.
+			
+			//Logeintrag soll hinter dem Classnamen stehen
+			iLogIndex1 = StringZZZ.indexOfFirst(sLogValue, sLog1);
+			iThreadIndex = StringZZZ.indexOfFirst(sLogValue, sThread);
+			assertTrue(iThreadIndex > iLogIndex1+sLog1.length());
+			
+			iClassNameIndex = StringZZZ.indexOfFirst(sLogValue, sClassName);
+			assertTrue(iLogIndex1 > iClassNameIndex+sClassName.length());
+			
+			//wiederholter (erster) Logeintrag ist vorhanden
+			iLogIndex2 = StringZZZ.indexOfLast(sLogValue, sLog1);
+			assertTrue(iLogIndex2 > -1);
+			assertTrue(iLogIndex2 > iLogIndex1 + sLog1.length());
+						
+			//zweiter Logeintrag, soll ausgegeben werden. Weil die Formatanweisung dynamsch erweitert wurde.
+			iLogIndex2 = StringZZZ.indexOfLast(sLogValue, sLog2);
+			assertTrue(iLogIndex2 > -1);
+			assertTrue(iLogIndex2> iThreadIndex + sThread.length());
+			
+			
+			//#############################################
+			//### Vergleiche das Ergebnis des - basierend auf dynamischem Fomat - erstellten Strings
+			//### mit dem erstellten String   - basierende auf dem statischen Format.
+			//TODOGOON20260220
+			
+		} catch (ExceptionZZZ ez) {
+			ez.printStackTrace();
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
+	} 
+	
 	
 	public void testCompute_FormatDefined_Using_LINENEXT_log_hinten(){
 		try{			
@@ -265,7 +354,7 @@ public class StringFormatManagerZZZ00Test extends TestCase {
 					};
 			
 			
-			//+++ Bei 2x Strintype soll der Logeintrag nur 1x erscheinen auch mit ARGNEXT.								
+			//+++ Bei 2x Strintype soll der Logeintrag nur 1x erscheinen auch mit LINENEXT.								
 			sLogValue = StringFormatManagerZZZ.getNewInstance().compute(objDummy, ienumaFormat03, sLog1);
 			System.out.println("In der nächsten Zeile erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);			
 			
@@ -288,7 +377,7 @@ public class StringFormatManagerZZZ00Test extends TestCase {
 			//+++ Bei 2x Strintype (MIT LINENEXT voneinandere trennen) soll jeder Logeintrag in einer anderen der Zeile erscheinen.	
 			//b) unterschiedliche Logeintraege							
 			
-			//TODOGOON: MIT ARGNEXT soll der 2te Logeintrag auf eine andere Zeile Kommen
+			//TODOGOON: MIT LINENEXT soll der 2te Logeintrag auf eine andere Zeile Kommen
 			sLogValue = StringFormatManagerZZZ.getNewInstance().compute(objDummy, ienumaFormat03, sLog1, sLog2);
 			System.out.println("In der nächsten Zeile erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);			
 			
@@ -380,7 +469,7 @@ public class StringFormatManagerZZZ00Test extends TestCase {
 					};
 			
 			
-			//+++ Bei 2x Strintype soll der Logeintrag nur 1x erscheinen auch mit ARGNEXT.								
+			//+++ Bei 2x Strintype soll der Logeintrag nur 1x erscheinen auch mit LINENEXT.								
 			sLogValue = StringFormatManagerZZZ.getNewInstance().compute(objDummy, ienumaFormat03, sLog1);
 			System.out.println("In der nächsten Zeile erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);			
 			
@@ -403,7 +492,7 @@ public class StringFormatManagerZZZ00Test extends TestCase {
 			//+++ Bei 2x Strintype (MIT LINENEXT voneinandere trennen) soll jeder Logeintrag in einer anderen der Zeile erscheinen.	
 			//b) unterschiedliche Logeintraege							
 			
-			//TODOGOON: MIT ARGNEXT soll der 2te Logeintrag auf eine andere Zeile Kommen
+			//TODOGOON: MIT LINENEXT soll der 2te Logeintrag auf eine andere Zeile Kommen
 			sLogValue = StringFormatManagerZZZ.getNewInstance().compute(objDummy, ienumaFormat03, sLog1, sLog2);
 			System.out.println("In der nächsten Zeile erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);			
 			

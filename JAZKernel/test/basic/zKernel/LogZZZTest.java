@@ -326,7 +326,7 @@ public class LogZZZTest extends TestCase{
 			iLine = ReflectCodeZZZ.getMethodCurrentLine()+1;//+1, weil halt die naechste Zeile im Code.
 			sValue = objLogTest.computeLineDate(this, sLog1); //Darin wird die Zeile schon "bündig gemacht".
 			assertNotNull(sValue);
-			System.out.println("LogZZZTest.testComputeLineDate(): (1) In der nächsten Zeile steht der Testergebnis-String\n" + sValue);
+			System.out.println("LogZZZTest.testComputeLineDate(): (2) In der nächsten Zeile steht der Testergebnis-String\n" + sValue);
 			
 			//Nur 1x den LogString
 			itemp = StringZZZ.count(sValue, sLog1);
@@ -346,7 +346,7 @@ public class LogZZZTest extends TestCase{
 			//################################################
 			sValue = objLogTest.computeLineDate(this, sLog1, sLog2); //Darin wird die Zeile schon "bündig gemacht".
 			assertNotNull(sValue);
-			System.out.println("LogZZZTest.testComputeLineDate(): (1) In der nächsten Zeile steht der Testergebnis-String\n" + sValue);
+			System.out.println("LogZZZTest.testComputeLineDate(): (3) In der nächsten Zeile steht der Testergebnis-String\n" + sValue);
 			
 			//Nur jeweils 1x den LogString
 			itemp = StringZZZ.count(sValue, sLog1);

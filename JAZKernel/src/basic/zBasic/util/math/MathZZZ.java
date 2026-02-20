@@ -57,6 +57,7 @@ public abstract class MathZZZ {
 		}
 		return iReturn;
 	}
+	
 	public static int min(int i1, int i2){
 		int iReturn = 0;
 		main:{
@@ -69,34 +70,62 @@ public abstract class MathZZZ {
 		return iReturn;
 	}
 	
-	public static int min(int[] iaValue){
+	public static int min(int... iValues){
 		int iReturn = 0;
 		main:{
-			if(iaValue==null) break main;
-			if(iaValue.length==0)break main;
+			if(iValues==null) break main;
+			if(iValues.length==0)break main;
 			
-			iReturn = iaValue[0];
-			for(int icount=0; icount <= iaValue.length-1; icount++){
-				if(iaValue[icount]<iReturn) iReturn = iaValue[icount];
+			iReturn = iValues[0];
+			for(int icount=0; icount <= iValues.length-1; icount++){
+				if(iValues[icount]<iReturn) iReturn = iValues[icount];
+			}
+		}
+		return iReturn;
+	}
+	
+//	public static int min(int[] iaValue){
+//		int iReturn = 0;
+//		main:{
+//			if(iaValue==null) break main;
+//			if(iaValue.length==0)break main;
+//			
+//			iReturn = iaValue[0];
+//			for(int icount=0; icount <= iaValue.length-1; icount++){
+//				if(iaValue[icount]<iReturn) iReturn = iaValue[icount];
+//			}
+//		}
+//		return iReturn;
+//	}
+	
+	public static int max(int... iValues){
+		int iReturn = 0;
+		main:{
+			if(iValues==null) break main;
+			if(iValues.length==0)break main;
+			
+			iReturn = iValues[0];
+			for(int icount=0; icount <= iValues.length-1; icount++){
+				if(iValues[icount]>iReturn) iReturn = iValues[icount];
 			}
 		}
 		return iReturn;
 	}
 	
 	
-	public static int max(int[] iaValue){
-		int iReturn = 0;
-		main:{
-			if(iaValue==null) break main;
-			if(iaValue.length==0)break main;
-			
-			iReturn = iaValue[0];
-			for(int icount=0; icount <= iaValue.length-1; icount++){
-				if(iaValue[icount]>iReturn) iReturn = iaValue[icount];
-			}
-		}
-		return iReturn;
-	}
+//	public static int max(int[] iaValue){
+//		int iReturn = 0;
+//		main:{
+//			if(iaValue==null) break main;
+//			if(iaValue.length==0)break main;
+//			
+//			iReturn = iaValue[0];
+//			for(int icount=0; icount <= iaValue.length-1; icount++){
+//				if(iaValue[icount]>iReturn) iReturn = iaValue[icount];
+//			}
+//		}
+//		return iReturn;
+//	}
 	
 	/** Wenn man 5/2 teilt kommt normalerweise immer 2.0 raus.
 	 *  diese Funktion setzt um: ttps://stackoverflow.com/questions/43300892/dividing-numbers
@@ -168,15 +197,28 @@ public abstract class MathZZZ {
 		return Math.sqrt(iValue^1/iX);
 	}
 	
-	public static int sum(int[] ia) {
+
+	public static int sum(int... iValue) {
 		int iReturn=0;
 		main:{
-			if(ArrayUtilZZZ.isNull(ia))break main;
+			if(ArrayUtilZZZ.isNull(iValue))break main;
 			
-			for(int i : ia) {
-				iReturn = iReturn+i;
+			for (int i : iValue) {
+				iReturn += i;
 			}
-		}//end main:
+		}
 		return iReturn;
 	}
+	
+//	public static int sum(int[] ia) {
+//		int iReturn=0;
+//		main:{
+//			if(ArrayUtilZZZ.isNull(ia))break main;
+//			
+//			for(int i : ia) {
+//				iReturn = iReturn+i;
+//			}
+//		}//end main:
+//		return iReturn;
+//	}
 }//end class

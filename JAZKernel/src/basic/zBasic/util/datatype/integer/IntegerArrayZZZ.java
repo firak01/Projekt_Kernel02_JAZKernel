@@ -20,8 +20,30 @@ public class IntegerArrayZZZ implements IConstantZZZ {
 		this.bIsInteger = true;
 	}
 	
+	public static boolean contains(int[] iaInteger, int iValue) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			if(iaInteger==null){
+				ExceptionZZZ ez = new ExceptionZZZ("No array available.", iERROR_PARAMETER_MISSING, IntegerArrayZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
+			for(int iInteger : iaInteger) {
+				if(iInteger==iValue) {
+					bReturn=true;
+					break main;
+				}
+			}
+		}//end main:
+		return bReturn;
+	}
 	
 	public static Integer[] toObject(int[] iaInteger) throws ExceptionZZZ{
+		if(iaInteger==null){
+			ExceptionZZZ ez = new ExceptionZZZ("No array available.", iERROR_PARAMETER_MISSING, IntegerArrayZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+			throw ez;
+		}
+		
 		int iSize = iaInteger.length;
 		Integer[]intaInteger = new Integer[iSize-1];
 		for(int icount = 0; icount<=iSize-1;icount++){
@@ -35,6 +57,11 @@ public class IntegerArrayZZZ implements IConstantZZZ {
 	public static Integer[] plus(Integer[] iaInteger, int iValue) throws ExceptionZZZ{
 		Integer[] objReturn = null;
 		main:{
+			if(iaInteger==null){
+				ExceptionZZZ ez = new ExceptionZZZ("No array available.", iERROR_PARAMETER_MISSING, IntegerArrayZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+				throw ez;
+			}
+			
 			if(iValue==0){
 				objReturn = new Integer[iaInteger.length];
 				System.arraycopy(iaInteger,0,objReturn, 0, iaInteger.length);
@@ -67,6 +94,12 @@ public class IntegerArrayZZZ implements IConstantZZZ {
 		main:{
 			int iSize = iaInteger.length;
 			
+			if(iaInteger==null){
+//				ExceptionZZZ ez = new ExceptionZZZ("No array available.", iERROR_PARAMETER_MISSING, IntegerArrayZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+//				throw ez;
+				break main;
+			}
+			
 			for(int icount = 0; icount<=iSize-1;icount++){
 				int iTemp = iaInteger[icount];//.intValue();
 				if(StringZZZ.isEmpty(sReturn)) {
@@ -95,6 +128,12 @@ public class IntegerArrayZZZ implements IConstantZZZ {
 	private static String implode_(Integer[] intaInteger, String sDelimiter) throws ExceptionZZZ{
 		String sReturn=null;
 		main:{
+			if(intaInteger==null){
+//				ExceptionZZZ ez = new ExceptionZZZ("No array available.", iERROR_PARAMETER_MISSING, IntegerArrayZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+//				throw ez;
+				break main;
+			}
+			
 			int iSize = intaInteger.length;
 			
 			for(int icount = 0; icount<=iSize-1;icount++){

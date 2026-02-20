@@ -11,6 +11,7 @@ import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilTagByTypeZZZ;
+import basic.zBasic.util.math.MathZZZ;
 import basic.zBasic.util.string.justifier.IStringJustifierManagerZZZ;
 import basic.zBasic.util.string.justifier.IStringJustifierZZZ;
 import basic.zBasic.util.string.justifier.StringJustifierManagerZZZ;
@@ -289,7 +290,32 @@ public class StringFormatManagerZZZ extends AbstractStringFormatManagerZZZ imple
 				throw ez;	
 			}
 			
+			//#######################
+			//0. Vergleiche die Formatanweisung, hinsichtlicher Stringausgaben mit der Anzahl der sLogs.
+			//   Wenn zuwenig Stringausgaben sind, ergänze diese in jeweils einer neuen Zeile, mit vorangestelltem Kommentarseparator.
+			int iNumberOfFormats_StringType01 = StringFormatManagerUtilZZZ.evaluateNumberOf_StringType01(ienumaFormatLogStringIn);
+			int iNumberOfFormats_StringType02 = 0;
+			int iNumberOfFormats_StringType03 = 0;
 			
+			int iNumberOfStringFormats = MathZZZ.sum(iNumberOfFormats_StringType01, iNumberOfFormats_StringType02, iNumberOfFormats_StringType03);
+			int iLinesDifference = sLogs.length - iNumberOfStringFormats;					
+			if(iLinesDifference>=1) {
+				int iMaxType = MathZZZ.max(iNumberOfFormats_StringType01, iNumberOfFormats_StringType02, iNumberOfFormats_StringType03);
+				
+				//Strategie: Mache als Format der neuen Zeile das meist verwendete
+				if(iMaxType == iNumberOfFormats_StringType01) {					
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() +": Ergänze um neue Kommentarzeilen vom StringType01.");
+					ienumaFormatLogStringIn = StringFormatManagerUtilZZZ.appendLines_StringType01(ienumaFormatLogStringIn, iLinesDifference);					
+				} else if(iMaxType == iNumberOfFormats_StringType02){
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() +": Ergänze um neue Kommentarzeilen vom StringType02.");
+					//ienumaFormatLogStringIn = StringFormatManagerUtilZZZ.appendLines_StringType02(ienumaFormatLogStringIn, iLinesDifference);	
+				} else if(iMaxType == iNumberOfFormats_StringType03) {					
+					System.out.println(ReflectCodeZZZ.getPositionCurrent() +": Ergänze um neue Kommentarzeilen vom StringType03.");
+					//ienumaFormatLogStringIn = StringFormatManagerUtilZZZ.appendLines_StringType03(ienumaFormatLogStringIn, iLinesDifference);	
+				} else {
+					ReflectCodeZZZ.printStackTrace("unexpected StringType counted");					
+				}
+			}
 			
 						
 			//#######################

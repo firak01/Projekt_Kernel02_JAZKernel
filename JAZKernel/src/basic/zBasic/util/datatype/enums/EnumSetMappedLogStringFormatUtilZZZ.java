@@ -510,6 +510,21 @@ public class EnumSetMappedLogStringFormatUtilZZZ extends EnumSetUtilZZZ{
 			return listaeReturn;	
 		}
 		
+		public static <E extends Enum<E> & IEnumSetMappedStringFormatZZZ> ArrayList<IEnumSetMappedStringFormatZZZ> toEnumMappedArrayList(IEnumSetMappedStringFormatZZZ[] enuma) throws ExceptionZZZ{
+			ArrayList<IEnumSetMappedStringFormatZZZ> listaeReturn = null;			
+			main:{
+				if(enuma==null) break main;
+				if(!(enuma instanceof IEnumSetMappedStringFormatZZZ[])) break main; //sicherstellen, das der Datentyp "Castfaehig" ist.
+				
+				listaeReturn = new ArrayList<IEnumSetMappedStringFormatZZZ>();
+				for(IEnumSetMappedStringFormatZZZ objEnum : enuma) {
+					IEnumSetMappedStringFormatZZZ objEnumMapped = (IEnumSetMappedStringFormatZZZ) objEnum;
+					listaeReturn.add(objEnumMapped);
+				}
+			}//end main:
+			return listaeReturn;	
+		}
+		
 		
 //Es darf kein Array mit Interface zurueckgegeben werden, s. ChatGPT 20260110	
 //		public static <E extends IEnumSetMappedStatusZZZ> E[] toEnumMappedStatusArray(Enum[] enuma){

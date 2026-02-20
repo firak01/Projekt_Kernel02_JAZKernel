@@ -13,7 +13,7 @@ public interface IStringFormatManagerZZZ extends IStringFormatManagerComputerZZZ
 	//### FLAGZ
 	//#############################################################
 	public enum FLAGZ{
-		DUMMY
+		DUMMY,USE_STATIC_FORMAT
 	}
 		
 	boolean getFlag(FLAGZ objEnumFlag) throws ExceptionZZZ;

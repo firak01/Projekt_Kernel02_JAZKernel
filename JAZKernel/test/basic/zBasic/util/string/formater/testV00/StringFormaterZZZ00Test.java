@@ -100,8 +100,11 @@ public class StringFormaterZZZ00Test extends TestCase{
 		}
 	}
 	
-	public void testCompute_FormatDefined_Using_Single_Double_Array(){
+	public void testCompute_FormatStatic_Using_Defined_MessageArray(){
 		try{
+			//Merke: Der Formater kann das Format-Array nicht veraendern.
+			//       Dies dynamisch zu machen waere Aufgabe des FormatManagers.
+			
 			String sLog1 = null; String sLog2 = null; String sThread = null; String sClassName = null;
 			String sLogValue = null; 
 			int iLogIndex1 = -1; int iLogIndex2 = -1; int iThreadIndex = -1; int iClassNameIndex = -1;
