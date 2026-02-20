@@ -253,7 +253,8 @@ public class StringFormatManagerZZZ00Test extends TestCase {
 			sClassName = objDummy.getClass().getSimpleName();
 			
 			IEnumSetMappedStringFormatZZZ[] ienumaFormat01= {
-							IStringFormatZZZ.LOGSTRINGFORMAT.CLASSNAME_STRING,						
+							IStringFormatZZZ.LOGSTRINGFORMAT.CLASSNAME_STRING,	
+							IStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORMESSAGE_STRING,
 							IStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
 							IStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,																						
 							};
@@ -321,7 +322,7 @@ public class StringFormatManagerZZZ00Test extends TestCase {
 			//#############################################
 			//### Vergleiche das Ergebnis des - basierend auf dynamischem Fomat - erstellten Strings
 			//### mit dem erstellten String   - basierende auf dem statischen Format.
-			//TODOGOON20260220
+			TODOGOON20260220
 			
 		} catch (ExceptionZZZ ez) {
 			ez.printStackTrace();
