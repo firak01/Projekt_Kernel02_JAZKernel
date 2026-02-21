@@ -291,45 +291,26 @@ public class StringFormatManagerZZZ extends AbstractStringFormatManagerZZZ imple
 			}
 			
 			//#######################
-			//0. Vergleiche die Formatanweisung, hinsichtlicher Stringausgaben mit der Anzahl der sLogs.
-			//   Wenn zuwenig Stringausgaben sind, ergänze diese in jeweils einer neuen Zeile, mit vorangestelltem Kommentarseparator.
-			int iNumberOfFormats_StringType01 = StringFormatManagerUtilZZZ.evaluateNumberOf_StringType01(ienumaFormatLogStringIn);
-			int iNumberOfFormats_StringType02 = 0;
-			int iNumberOfFormats_StringType03 = 0;
-			
-			int iNumberOfStringFormats = MathZZZ.sum(iNumberOfFormats_StringType01, iNumberOfFormats_StringType02, iNumberOfFormats_StringType03);
-			int iLinesDifference = sLogs.length - iNumberOfStringFormats;					
-			if(iLinesDifference>=1) {
-				int iMaxType = MathZZZ.max(iNumberOfFormats_StringType01, iNumberOfFormats_StringType02, iNumberOfFormats_StringType03);
-				
-				//Strategie: Mache als Format der neuen Zeile das meist verwendete
-				if(iMaxType == iNumberOfFormats_StringType01) {					
-					System.out.println(ReflectCodeZZZ.getPositionCurrent() +": Ergänze um neue Kommentarzeilen vom StringType01.");
-					ienumaFormatLogStringIn = StringFormatManagerUtilZZZ.appendLines_StringType01(ienumaFormatLogStringIn, iLinesDifference);					
-				} else if(iMaxType == iNumberOfFormats_StringType02){
-					System.out.println(ReflectCodeZZZ.getPositionCurrent() +": Ergänze um neue Kommentarzeilen vom StringType02.");
-					//ienumaFormatLogStringIn = StringFormatManagerUtilZZZ.appendLines_StringType02(ienumaFormatLogStringIn, iLinesDifference);	
-				} else if(iMaxType == iNumberOfFormats_StringType03) {					
-					System.out.println(ReflectCodeZZZ.getPositionCurrent() +": Ergänze um neue Kommentarzeilen vom StringType03.");
-					//ienumaFormatLogStringIn = StringFormatManagerUtilZZZ.appendLines_StringType03(ienumaFormatLogStringIn, iLinesDifference);	
-				} else {
-					ReflectCodeZZZ.printStackTrace("unexpected StringType counted");					
-				}
-			}
-			
-						
+			//0. Ergänze ggfs. die Zeilen um weitere Zeilen fuer LogEintraege 
+			IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString;
+			if(!this.getFlag(IStringFormatManagerZZZ.FLAGZ.USE_STATIC_FORMAT)) {
+				ienumaFormatLogString = StringFormatManagerUtilZZZ.appendLines_StringType(ienumaFormatLogStringIn, sLogs);
+			}else {
+				System.out.println(ReflectCodeZZZ.getPositionCurrent() +": Verwende die Formatvorlage statisch und ergänze keine zusätzliche Kommentarzeilen.");
+				ienumaFormatLogString = ienumaFormatLogStringIn;
+			}//end if getFlag			
 			//#######################
 						
 			//1. Teile Formatierung an den Zeilentrennern auf.
-			List<IEnumSetMappedStringFormatZZZ[]> listaEnumLine = ArrayUtilZZZ.splitArrayByValue(ienumaFormatLogStringIn, (IEnumSetMappedStringFormatZZZ)IStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_LINENEXT_, IEnumSetMappedStringFormatZZZ.class);
+			List<IEnumSetMappedStringFormatZZZ[]> listaEnumLine = ArrayUtilZZZ.splitArrayByValue(ienumaFormatLogString, (IEnumSetMappedStringFormatZZZ)IStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_LINENEXT_, IEnumSetMappedStringFormatZZZ.class);
 			
 			//TODOGOON20260210: 2. Formatanweisung jeder Zeile normieren. (d.h. fehlende Spalten etc. ergänzen, Reihenfolge angleichen)
 						
 			//3. Alle Zeilen unbündig holen
 			ArrayListZZZ<String>listasJaggedTemp;
 			ArrayListZZZ<String>listasJaggedReturn=new ArrayListZZZ<String>();
-			for(IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString : listaEnumLine) { 
-				listasJaggedTemp = super.computeJaggedArrayList_(classObj, ienumaFormatLogString, sLogs);
+			for(IEnumSetMappedStringFormatZZZ[] ienumaFormatLogStringTemp : listaEnumLine) { 
+				listasJaggedTemp = super.computeJaggedArrayList_(classObj, ienumaFormatLogStringTemp, sLogs);
 				listasJaggedReturn.addAll(listasJaggedTemp);
 			}
 			
@@ -337,8 +318,8 @@ public class StringFormatManagerZZZ extends AbstractStringFormatManagerZZZ imple
 			ArrayListZZZ<String> listasJustifiedReturn=listasJaggedReturn;
 			IStringJustifierManagerZZZ objJustifierManager = StringJustifierManagerZZZ.getInstance();
 			
-			for(IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString : listaEnumLine) {
-				listasJustifiedReturn = objJustifierManager.compute(listasJustifiedReturn, ienumaFormatLogString);
+			for(IEnumSetMappedStringFormatZZZ[] ienumaFormatLogStringTemp : listaEnumLine) {
+				listasJustifiedReturn = objJustifierManager.compute(listasJustifiedReturn, ienumaFormatLogStringTemp);
 			}
 			
 			ArrayListZZZ<String> listasReturn = listasJustifiedReturn; 
