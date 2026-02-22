@@ -290,13 +290,24 @@ public class StringFormatManagerZZZ extends AbstractStringFormatManagerZZZ imple
 				throw ez;	
 			}
 
-			TODOGOON20260210: 0. Formatanweisung (auch ueber mehrere Spalten) normieren.
+			//TODOGOON20260210: 0. Formatanweisung (auch ueber mehrere Spalten) normieren.
 			//d.h.0.1. aufteilen auf ggfs. mehrere Zeilen (bisherige version, neue Version)
 			//    0.2. fehlende Spalten etc. ergänzen, Reihenfolge angleichen
+			IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString;
+			if(!this.getFlag(IStringFormatManagerZZZ.FLAGZ.USE_INDIVIDUAL_FORMAT)) {
+				ienumaFormatLogString = this.getStringFormatArrayCurrent();
+				ienumaFormatLogString = StringFormatManagerUtilZZZ.adaptFormatArray(ienumaFormatLogString, ienumaFormatLogStringIn);
+				this.setStringFormatArrayCurrent(ienumaFormatLogString);
+			}else {
+				System.out.println(ReflectCodeZZZ.getPositionCurrent() +": Verwende die Formatvorlage statisch und ergänze keine zusätzliche Kommentarzeilen.");
+				ienumaFormatLogString = ienumaFormatLogStringIn;
+			}//end if getFlag			
+			//#######################
+				
+			
 			
 			//#######################
-			//1. Ergänze ggfs. die Zeilen um weitere Zeilen fuer LogEintraege 
-			IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString;
+			//1. Ergänze ggfs. die Zeilen um weitere Zeilen fuer LogEintraege 			
 			if(!this.getFlag(IStringFormatManagerZZZ.FLAGZ.USE_STATIC_FORMAT)) {
 				ienumaFormatLogString = StringFormatManagerUtilZZZ.appendLines_StringType(ienumaFormatLogStringIn, sLogs);
 			}else {

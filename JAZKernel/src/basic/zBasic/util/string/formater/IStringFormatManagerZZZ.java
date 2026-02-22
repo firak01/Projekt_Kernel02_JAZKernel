@@ -7,13 +7,13 @@ import basic.zBasic.util.abstractList.ArrayListUniqueZZZ;
 import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.string.justifier.IStringJustifierZZZ;
 
-public interface IStringFormatManagerZZZ extends IStringFormatManagerComputerZZZ{
+public interface IStringFormatManagerZZZ extends IStringFormatUserZZZ, IStringFormatManagerComputerZZZ{
 		
 	//#############################################################
 	//### FLAGZ
 	//#############################################################
 	public enum FLAGZ{
-		DUMMY,USE_STATIC_FORMAT
+		DUMMY,USE_STATIC_FORMAT,USE_INDIVIDUAL_FORMAT
 	}
 		
 	boolean getFlag(FLAGZ objEnumFlag) throws ExceptionZZZ;

@@ -5,11 +5,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang.ArrayUtils;
 
 import base.util.abstractArray.ArrayUtil;
+import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.util.datatype.string.StringArrayZZZ;
 
 /** Erweitere nach Bedarf:
  *  base.util.abstractArray.ArrayUtil
@@ -22,6 +27,265 @@ import base.util.abstractArray.ArrayUtil;
 public class ArrayUtilZZZ<T>{
 	private ArrayUtilZZZ() {}//static methods only
 	
+//	public static String[] intersect(String[] saString01, String[] saString02) throws ExceptionZZZ{
+//		String[]saReturn = null;
+//		main:{
+//			if(saString01==null)break main;
+//			if(saString02==null)break main;
+//			if(saString01.length==0) break main;
+//			if(saString02.length==0) break main;
+//						
+//			ArrayList<String>listasTemp = new ArrayList<String>();
+//			for(String s01 : saString01){
+//				if(StringArrayZZZ.contains(saString02, s01)){
+//					listasTemp.add(s01);
+//				}				
+//			}			
+//			saReturn = listasTemp.toArray(new String[listasTemp.size()]);
+//		}//End main:
+//		return saReturn;
+//	}	
+//	
+//	
+//	public static String[] intersectOrNotNull(String[] saString01, String[] saString02) throws ExceptionZZZ{
+//		String[]saReturn = null;
+//		main:{
+//			if(saString01==null && saString02==null)break main;
+//			if(saString01==null) {
+//				if(saString02.length==0) break main;
+//				
+//				saReturn = saString02;
+//				break main;
+//			}
+//			
+//			
+//			if(saString02==null) {
+//				if(saString01.length==0) break main;
+//				
+//				saReturn = saString01;
+//				break main;
+//			}
+//			
+//			
+//			saReturn = StringArrayZZZ.intersect(saString01, saString02);
+//		}//End main:
+//		return saReturn;
+//	}	
+	
+	// ======================================================
+    // Generische contains-Methode
+    // ======================================================
+    public static <T> boolean contains(T[] array, T element) {
+        if (array == null) return false;
+
+        for (T current : array) {
+            if (element == null) {
+                if (current == null) return true;
+            } else {
+                if (element.equals(current)) return true;
+            }
+        }
+        return false;
+    }
+
+
+	
+	//##################################################################
+    // Variante Arraymaessige Betrachtung
+    // ======================================================
+    // Schnittmenge
+    // ======================================================
+    public static <T> T[] intersect(T[] array01, T[] array02, Class<T> clazz) throws ExceptionZZZ {
+        T[] returnArray = null;
+
+        main: {
+            if (array01 == null) break main;
+            if (array02 == null) break main;
+            if (array01.length == 0) break main;
+            if (array02.length == 0) break main;
+
+            List<T> tempList = new ArrayList<T>();
+
+            for (T element01 : array01) {
+                if (contains(array02, element01)) {
+                    tempList.add(element01);
+                }
+            }
+
+            @SuppressWarnings("unchecked")
+            T[] result = (T[]) Array.newInstance(clazz, tempList.size());
+            returnArray = tempList.toArray(result);
+        }
+
+        return returnArray;
+    }
+
+    // ======================================================
+    // Schnittmenge oder Nicht-Null-Array zurückgeben
+    // ======================================================
+    public static <T> T[] intersectOrNotNull(T[] array01, T[] array02, Class<T> clazz) throws ExceptionZZZ {
+        T[] returnArray = null;
+
+        main: {
+            if (array01 == null && array02 == null) break main;
+
+            if (array01 == null) {
+                if (array02.length == 0) break main;
+                returnArray = array02;
+                break main;
+            }
+
+            if (array02 == null) {
+                if (array01.length == 0) break main;
+                returnArray = array01;
+                break main;
+            }
+
+            returnArray = intersect(array01, array02, clazz);
+        }
+
+        return returnArray;
+    }
+    
+	 // ======================================================
+	 // Differnzmenge (array01 ohne Elemente aus array02)
+	 // ======================================================
+	 /**Z.B.
+	  * 
+	  * String[] a1 = {"A", "B", "C", "D"};
+		String[] a2 = {"B", "D"};
+
+		String[] result = ArrayUtilZZZ.subset(a1, a2, String.class);
+
+		Ergebnis {"A", "C"}
+		
+		
+	 * @param array01
+	 * @param array02
+	 * @param clazz
+	 * @return
+	 * @throws ExceptionZZZ
+	 * @author Fritz Lindhauer, 22.02.2026, 17:28:48
+	 */
+	public static <T> T[] difference(T[] array01, T[] array02, Class<T> clazz) throws ExceptionZZZ {
+	     T[] returnArray = null;
+	
+	     main: {
+	         if (array01 == null) break main;
+	         if (array01.length == 0) break main;
+	
+	         // Wenn array02 null oder leer → komplette array01 ist Teilmenge
+	         if (array02 == null || array02.length == 0) {
+	             returnArray = array01;
+	             break main;
+	         }
+	
+	         List<T> tempList = new ArrayList<T>();
+	
+	         for (T element01 : array01) {
+	             if (!contains(array02, element01)) {
+	                 tempList.add(element01);
+	             }
+	         }
+	
+	         @SuppressWarnings("unchecked")
+	         T[] result = (T[]) Array.newInstance(clazz, tempList.size());
+	         returnArray = tempList.toArray(result);
+	     }
+	
+	     return returnArray;
+	 }
+
+	//############################################################################
+	//### Variante Mengenmaessige Betrachtung
+	//### Falls Reihenfolg nicht wichtig waere: Set<T> resultSet = new HashSet<T>();
+	//### Da in einer Array-Sortierung ggfs. die Reihenfolge wichtig ist:  Set<T> resultSet = new LinkedHashSet<T>();
+	// ======================================================
+	// Mathematische Schnittmenge (ohne Duplikate)
+	// ======================================================
+	public static <T> T[] intersectSet(T[] array01, T[] array02, Class<T> clazz) throws ExceptionZZZ {
+	    if (array01 == null || array02 == null) {
+	        return null;
+	    }
+
+	    Set<T> set1 = new LinkedHashSet<T>();
+	    Set<T> resultSet = new LinkedHashSet<T>();
+
+	    for (T element : array01) {
+	        set1.add(element);
+	    }
+
+	    for (T element : array02) {
+	        if (set1.contains(element)) {
+	            resultSet.add(element);
+	        }
+	    }
+
+	    @SuppressWarnings("unchecked")
+	    T[] result = (T[]) Array.newInstance(clazz, resultSet.size());
+	    return resultSet.toArray(result);
+	}
+	
+	
+	// ======================================================
+	// Mathematische Differenzmenge (ohne Duplikate)
+	// ======================================================
+	public static <T> T[] differenceSet(T[] array01, T[] array02, Class<T> clazz) throws ExceptionZZZ {
+	    if (array01 == null) {
+	        return null;
+	    }
+
+	    Set<T> resultSet = new LinkedHashSet<T>();
+	    Set<T> set2 = new LinkedHashSet<T>();
+
+	    if (array02 != null) {
+	        for (T element : array02) {
+	            set2.add(element);
+	        }
+	    }
+
+	    for (T element : array01) {
+	        if (!set2.contains(element)) {
+	            resultSet.add(element);
+	        }
+	    }
+
+	    @SuppressWarnings("unchecked")
+	    T[] result = (T[]) Array.newInstance(clazz, resultSet.size());
+	    return resultSet.toArray(result);
+	}
+	
+	
+	// ======================================================
+	// Mathematische Vereinigungsmenge (ohne Duplikate)
+	// ======================================================
+	public static <T> T[] unionSet(T[] array01, T[] array02, Class<T> clazz) throws ExceptionZZZ {
+	    if (array01 == null && array02 == null) {
+	        return null;
+	    }
+
+	    Set<T> resultSet = new LinkedHashSet<T>();
+
+	    if (array01 != null) {
+	        for (T element : array01) {
+	            resultSet.add(element);
+	        }
+	    }
+
+	    if (array02 != null) {
+	        for (T element : array02) {
+	            resultSet.add(element);
+	        }
+	    }
+
+	    @SuppressWarnings("unchecked")
+	    T[] result = (T[]) Array.newInstance(clazz, resultSet.size());
+	    return resultSet.toArray(result);
+	}
+	
+ 	
+	//############################################################################
+	//############################################################################
 	public static <T> boolean isEmpty(T[] objArray) {
 		boolean bReturn = false;
 		main:{

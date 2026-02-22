@@ -515,10 +515,36 @@ public class EnumSetUtilZZZ extends AbstractObjectWithExceptionZZZ{
 		return objReturn;
 	}
 	
+		//###################################################
+		//### Mengenoperationen
+	//TODOGOON ChatGPT vom 20260222: Das muss getestet werden.
+	public static IEnumSetZZZ difference(EnumSet<?> setEnumCurrent, EnumSet<?> setEnumToCompare) throws ExceptionZZZ{
+		IEnumSetZZZ objReturn = null;
+		main:{
+			if(setEnumCurrent==null && setEnumToCompare==null) break main; 
+			
+			//merke: removeAll veraendert das Set also vorher kopieren
+			EnumSet<?> enumCopied = EnumSet.copyOf(setEnumCurrent);
+			enumCopied.removeAll(setEnumToCompare);
+			
+			objReturn = (IEnumSetZZZ) enumCopied;
+		}
+		return objReturn;
+	}
+	
+	/*
+	 EnumSet<MyType> intersection = EnumSet.copyOf(set1);
+intersection.retainAll(set2);
+	 */
+	
+	/*
+	 EnumSet<MyType> union = EnumSet.copyOf(set1);
+union.addAll(set2);
+	 */
 		
 		
 		
-		
+		//##################################################
 		
 			
 		/* TODO GOON: Weitere Ideen für die Utitlity Klasse
@@ -535,5 +561,7 @@ Give two EnumSets, how can I create a new EnumSet which contains the union of bo
 redAndBlack.addAll(blacks);
 		 * 
 		 */
+	
+	
 
 }

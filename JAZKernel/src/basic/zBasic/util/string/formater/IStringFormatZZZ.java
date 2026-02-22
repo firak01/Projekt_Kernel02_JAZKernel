@@ -292,7 +292,7 @@ public interface IStringFormatZZZ extends ITagTypeMethodZZZ, ITagTypeLineNumberZ
 		}
 		throw new IllegalArgumentException("Not a correct abbreviation: " + s);
 		}
-	
+		
 		//##################################################
 		//#### Folgende Methoden bring Enumeration von Hause aus mit. 
 				//Merke: Diese Methoden können aber nicht in eine abstrakte Klasse verschoben werden, zum daraus Erben. Grund: Enum erweitert schon eine Klasse.

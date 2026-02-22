@@ -592,4 +592,10 @@ redAndBlack.addAll(blacks);
 		 * 
 		 */
 
+		
+		TODODOON20260222;//Hier Vergleichsoperation von 2 Arrays machen
+		public static IEnumSetMappedStringFormatZZZ[] differenceArray(IEnumSetMappedStringFormatZZZ[] enuma01, IEnumSetMappedStringFormatZZZ[] enuma02) throws ExceptionZZZ{
+			
+			
+		}
 }

@@ -154,6 +154,10 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 	//### Da diese Formate an mehreren Stellen verwendet werden .compute...Justified,  .compute...Jagged
 	//### werden hier die Arrays einmal definiert durch diese Methoden.
 	//#######################################################
+	public static IEnumSetMappedStringFormatZZZ[] getFormatForComputeLineDefault() throws ExceptionZZZ{
+		return getFormatForComputeLine();
+	}
+	
 	public static IEnumSetMappedStringFormatZZZ[] getFormatForComputeLine() throws ExceptionZZZ{
 		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
 		 IEnumSetMappedStringFormatZZZ[]iaFormat = {

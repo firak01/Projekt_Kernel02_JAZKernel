@@ -18,6 +18,7 @@ import basic.zBasic.util.string.justifier.SeparatorMessageStringJustifierZZZ;
 import basic.zBasic.util.string.justifier.StringJustifierManagerUtilZZZ;
 import basic.zBasic.util.string.justifier.StringJustifierManagerZZZ;
 import basic.zKernel.flag.IFlagZEnabledZZZ;
+import custom.zKernel.LogZZZ;
 
 /** Abstrakte Klasse der FormatManager.
  *  
@@ -48,6 +49,9 @@ public abstract class AbstractStringFormatManagerZZZ extends AbstractObjectWithF
 	
 	
 	// --- Globale Objekte ---
+	//Das zuletzt verwendete Format, ggfs. durch weitere Anwendung mit anderen Formaten erweitert
+	protected volatile IEnumSetMappedStringFormatZZZ[] ienumaFormatStringCurrent=null; 
+	
 	//Der LogString-Index - also von den reinen String ( nicht ggfs. hinzugefuegte XML Strings wie von ReflectCodeZZZ.getPositionCurrent() )
 	//Hier als Array aller schon benutzter "einfacher" Strings. Das wird gemacht, damit die XML Strings auch weiterhin bei jeder Operation beruecksichtigt werden können.
 	protected volatile ArrayListUniqueZZZ<Integer>listaintStringIndexRead=null;
@@ -63,7 +67,27 @@ public abstract class AbstractStringFormatManagerZZZ extends AbstractObjectWithF
 	
 	//##########################################################	
 	//### GETTER / SETTER
+	
+	//##########################################################################
+	//### aus IStringFormatUserZZZ
+	@Override
+	public IEnumSetMappedStringFormatZZZ[] getStringFormatArrayCurrent() throws ExceptionZZZ{
+		IEnumSetMappedStringFormatZZZ[] objaReturn=null;
+		if(this.ienumaFormatStringCurrent==null) {
+			objaReturn = LogZZZ.getFormatForComputeLineDefault();
+			this.ienumaFormatStringCurrent = objaReturn;
+		}else {
+			objaReturn = this.ienumaFormatStringCurrent;
+		}
+		return objaReturn;
+	}
+	
+	@Override
+	public void setStringFormatArrayCurrent(IEnumSetMappedStringFormatZZZ[] ienumaFormatString) throws ExceptionZZZ{
+		this.ienumaFormatStringCurrent = ienumaFormatStringCurrent;
+	}
 
+	
 	
 	//##########################################################################
 	//### aus IStringFormatComputerZZZ
