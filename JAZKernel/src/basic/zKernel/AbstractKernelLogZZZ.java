@@ -168,12 +168,12 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 	
 	public static IEnumSetMappedStringFormatZZZ[] getFormatForComputeLine_withObject() throws ExceptionZZZ{
 		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
-		 IEnumSetMappedStringFormatZZZ[]iaFormat = {
-				 IStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATOR01_STRING,
+		 IEnumSetMappedStringFormatZZZ[]iaFormat = {				 
 				 IStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,
 				 IStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME_STRING,
 				 IStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORMESSAGE_STRING,
 				 IStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
+				 IStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATOR01_STRING,
 				 IStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
 		 };
 		 return iaFormat;
@@ -206,10 +206,10 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
 		 IEnumSetMappedStringFormatZZZ[]iaFormat= {
 				 IStringFormatZZZ.LOGSTRINGFORMAT.DATE_STRING,
-				 IStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATOR01_STRING,
 				 IStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,
 				 IStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORMESSAGE_STRING,
 				 IStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
+				 IStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATOR01_STRING,
 				 IStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
 		 };
 		 return iaFormat;
@@ -218,12 +218,12 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 	public static IEnumSetMappedStringFormatZZZ[] getFormatForComputeLineDate_withObject() throws ExceptionZZZ{
 		 //20240427;//Baue den LogString nun mit einer konfigurierbaren Klasse
 		 IEnumSetMappedStringFormatZZZ[]iaFormat= {
-				 IStringFormatZZZ.LOGSTRINGFORMAT.DATE_STRING,
-				 IStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATOR01_STRING,
+				 IStringFormatZZZ.LOGSTRINGFORMAT.DATE_STRING,				 
 				 IStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,	
 				 IStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME_STRING,
 				 IStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORMESSAGE_STRING,
 				 IStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
+				 IStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATOR01_STRING,
 				 IStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
 		 };
 		 return iaFormat;
@@ -239,14 +239,15 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 		 //       sReturn = ReflectCodeZZZ.removePositionCurrentTagPartsFrom(sReturn);
 		IEnumSetMappedStringFormatZZZ[]iaFormat= {
 				 IStringFormatZZZ.LOGSTRINGFORMAT.DATE_STRING,
-				 IStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATOR01_STRING,
 				 IStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,
 				 IStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME_STRING,
 				 IStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATOR03_STRING,
 				 IStringFormatZZZ.LOGSTRINGFORMAT.CLASSMETHOD_STRING_BY_XML,
 				 IStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORMESSAGE_STRING,
 				 IStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,
+				 IStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATOR01_STRING,
 				 IStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_STRING_BY_STRING,	
+				 IStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORPOSITION_STRING,
 				 IStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILEPOSITION_STRING_BY_XML,				 
 		 };
 		return iaFormat;
@@ -259,8 +260,7 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 		//Wenn das der Fall ist, gib diesen an der durch die Formatanweisung festgelegten Position aus.
 	
 		IEnumSetMappedStringFormatZZZ[]iaFormat= {
-			IStringFormatZZZ.LOGSTRINGFORMAT.DATE_XML,
-			IStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATOR01_XML,
+			IStringFormatZZZ.LOGSTRINGFORMAT.DATE_XML,			
 			IStringFormatZZZ.LOGSTRINGFORMAT.THREADID_XML,
 			IStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILENAME_XML,
 			//Merke: Die Methode aus ReflectCodeZZZ.getPositionCurrent stammt (nicht anders zu bekommen), ist die Quelle XML
@@ -268,8 +268,10 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 			IStringFormatZZZ.LOGSTRINGFORMAT.CLASSMETHOD_XML_BY_XML,
 			IStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORMESSAGE_XML,
 			IStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_XML_BY_STRING,
+			IStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATOR01_XML,
 			IStringFormatZZZ.LOGSTRINGFORMAT.STRINGTYPE01_XML_BY_STRING,
 			//Merke: Die Zeilenummer aus ReflectCodeZZZ.getPositionCurrent stammt (nicht anders zu bekommen), ist die Quelle XML
+			IStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_SEPARATORPOSITION_XML,
 			IStringFormatZZZ.LOGSTRINGFORMAT.CLASSFILEPOSITION_XML_BY_XML,
 		};
 		return iaFormat;

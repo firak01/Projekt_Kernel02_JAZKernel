@@ -289,9 +289,13 @@ public class StringFormatManagerZZZ extends AbstractStringFormatManagerZZZ imple
 				ExceptionZZZ ez = new ExceptionZZZ("IEnumSetMappedLogStringFormatZZZ[]", iERROR_PARAMETER_EMPTY, this, ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;	
 			}
+
+			TODOGOON20260210: 0. Formatanweisung (auch ueber mehrere Spalten) normieren.
+			//d.h.0.1. aufteilen auf ggfs. mehrere Zeilen (bisherige version, neue Version)
+			//    0.2. fehlende Spalten etc. ergänzen, Reihenfolge angleichen
 			
 			//#######################
-			//0. Ergänze ggfs. die Zeilen um weitere Zeilen fuer LogEintraege 
+			//1. Ergänze ggfs. die Zeilen um weitere Zeilen fuer LogEintraege 
 			IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString;
 			if(!this.getFlag(IStringFormatManagerZZZ.FLAGZ.USE_STATIC_FORMAT)) {
 				ienumaFormatLogString = StringFormatManagerUtilZZZ.appendLines_StringType(ienumaFormatLogStringIn, sLogs);
@@ -301,10 +305,8 @@ public class StringFormatManagerZZZ extends AbstractStringFormatManagerZZZ imple
 			}//end if getFlag			
 			//#######################
 						
-			//1. Teile Formatierung an den Zeilentrennern auf.
+			//2. Teile Formatierung an den Zeilentrennern auf.
 			List<IEnumSetMappedStringFormatZZZ[]> listaEnumLine = ArrayUtilZZZ.splitArrayByValue(ienumaFormatLogString, (IEnumSetMappedStringFormatZZZ)IStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_LINENEXT_, IEnumSetMappedStringFormatZZZ.class);
-			
-			//TODOGOON20260210: 2. Formatanweisung jeder Zeile normieren. (d.h. fehlende Spalten etc. ergänzen, Reihenfolge angleichen)
 						
 			//3. Alle Zeilen unbündig holen
 			ArrayListZZZ<String>listasJaggedTemp;

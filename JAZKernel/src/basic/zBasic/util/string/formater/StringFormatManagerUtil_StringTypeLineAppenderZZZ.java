@@ -14,7 +14,7 @@ import basic.zBasic.util.math.MathZZZ;
  * @author Fritz Lindhauer, 21.02.2026, 08:49:16
  * 
  */
-public class StringFormatManagerUtilZZZ implements IConstantZZZ {
+public class StringFormatManagerUtil_StringTypeLineAppenderZZZ implements IConstantZZZ {
 
     // #############################################################
     // Konfiguration der StringTypes
@@ -67,10 +67,11 @@ public class StringFormatManagerUtilZZZ implements IConstantZZZ {
             throw new ExceptionZZZ(
                     "IEnumSetMappedLogStringFormatZZZ[]",
                     iERROR_PARAMETER_MISSING,
-                    StringFormatManagerUtilZZZ.class,
+                    StringFormatManagerUtil_StringTypeLineAppenderZZZ.class,
                     ReflectCodeZZZ.getMethodCurrentName());
         }
-
+        
+        if(logs==null) return formats;
         if (ArrayUtilZZZ.isEmpty(formats)) return formats;
 
         int maxCount = 0;
@@ -115,7 +116,7 @@ public class StringFormatManagerUtilZZZ implements IConstantZZZ {
             throw new ExceptionZZZ(
                     "IEnumSetMappedLogStringFormatZZZ[]",
                     iERROR_PARAMETER_MISSING,
-                    StringFormatManagerUtilZZZ.class,
+                    StringFormatManagerUtil_StringTypeLineAppenderZZZ.class,
                     ReflectCodeZZZ.getMethodCurrentName());
         }
 
