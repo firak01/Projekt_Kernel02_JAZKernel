@@ -96,11 +96,7 @@ public class StringFormatManagerUtil_StringTypeLineAppenderZZZ implements IConst
             return formats;
         }
 
-        System.out.println(
-                ReflectCodeZZZ.getPositionCurrent()
-                        + ": Ergänze um neue Kommentarzeilen vom "
-                        + maxType.name());
-
+        //System.out.println(ReflectCodeZZZ.getPositionCurrent()+ ": Ergänze um neue Kommentarzeilen vom Typ " + maxType.name());
         return appendLines_StringType(formats, difference, maxType.enumValue);
     }
 

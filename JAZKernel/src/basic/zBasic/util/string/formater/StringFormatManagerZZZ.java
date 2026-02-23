@@ -295,12 +295,12 @@ public class StringFormatManagerZZZ extends AbstractStringFormatManagerZZZ imple
 			//    0.2. fehlende Spalten etc. ergänzen, Reihenfolge angleichen
 			IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString;
 			if(!this.getFlag(IStringFormatManagerZZZ.FLAGZ.USE_INDIVIDUAL_FORMAT)) {
-				System.out.println(ReflectCodeZZZ.getPositionCurrent() +": Verwende individuelle Formatvorlage, ggfs. als Vermischung mit zuvor verwendeter.");
+				//System.out.println(ReflectCodeZZZ.getPositionCurrent() +": Verwende individuelle Formatvorlage, ggfs. als Vermischung mit zuvor verwendeter.");
 				ienumaFormatLogString = this.getStringFormatArrayCurrent();
 				ienumaFormatLogString = StringFormatManagerUtilZZZ.adaptFormatArray(ienumaFormatLogString, ienumaFormatLogStringIn);
 				this.setStringFormatArrayCurrent(ienumaFormatLogString);
 			}else {
-				System.out.println(ReflectCodeZZZ.getPositionCurrent() +": Verwende die individuelle Formatvorlage und keine Vermischung mit zuvor verwendeter.");
+				//System.out.println(ReflectCodeZZZ.getPositionCurrent() +": Verwende die individuelle Formatvorlage und keine Vermischung mit zuvor verwendeter.");
 				ienumaFormatLogString = ienumaFormatLogStringIn;
 			}//end if getFlag			
 			//#######################
@@ -312,7 +312,7 @@ public class StringFormatManagerZZZ extends AbstractStringFormatManagerZZZ imple
 			if(!this.getFlag(IStringFormatManagerZZZ.FLAGZ.USE_STATIC_FORMAT)) {
 				ienumaFormatLogString = StringFormatManagerUtilZZZ.appendLines_StringType(ienumaFormatLogStringIn, sLogs);
 			}else {
-				System.out.println(ReflectCodeZZZ.getPositionCurrent() +": Verwende die Formatvorlage statisch und ergänze keine zusätzliche Kommentarzeilen.");
+				//System.out.println(ReflectCodeZZZ.getPositionCurrent() +": Verwende die Formatvorlage statisch und ergänze keine zusätzliche Kommentarzeilen.");
 				ienumaFormatLogString = ienumaFormatLogStringIn;
 			}//end if getFlag			
 			//#######################
