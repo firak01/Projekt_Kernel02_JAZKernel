@@ -20,6 +20,7 @@ import basic.zBasic.util.abstractEnum.IEnumSetFactoryZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusLocalZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
+import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.string.formater.IEnumSetMappedStringFormatZZZ;
@@ -593,9 +594,41 @@ redAndBlack.addAll(blacks);
 		 */
 
 		
-		TODODOON20260222;//Hier Vergleichsoperation von 2 Arrays machen
-		public static IEnumSetMappedStringFormatZZZ[] differenceArray(IEnumSetMappedStringFormatZZZ[] enuma01, IEnumSetMappedStringFormatZZZ[] enuma02) throws ExceptionZZZ{
-			
-			
+		//TODODOON20260222;
+		/* Hier Vergleichsoperation von 2 Arrays des EnumSets machen. 
+		 * Es geht darum die Werte zu ermitteln, die in enuma02 enthalten sind, aber in enum01 nicht.
+		 */
+		public static <E extends IEnumSetMappedStringFormatZZZ> IEnumSetMappedStringFormatZZZ[] differenceMappedArray_rightSet(IEnumSetMappedStringFormatZZZ[] enuma01, IEnumSetMappedStringFormatZZZ[] enuma02) throws ExceptionZZZ{
+			//E[] objaReturn=null;
+			//ArrayListZZZ<IEnumSetMappedStringFormatZZZ>listaReturn=new ArrayListZZZ<IEnumSetMappedStringFormatZZZ>();
+			IEnumSetMappedStringFormatZZZ[] objaReturn;
+			main:{
+				//Merke: Einzelnes EnumSet würde so gemacht:
+				//EnumSetUtilZZZ.difference(setEnumCurrent, setEnumToCompare)
+				//Aber hier haben wir ein Array[]
+				//Da es aber ein Array von EnumSets ist funktioniert die Array_Methode (basierend auf .equals() im Hintergrund nicht)
+				//ArrayUtilZZZ.differenceSet(enuma01, enuma02, IEnumSetMappedStringFormatZZZ.class);
+				
+				//Ergo spezielle Methode hier - ... auch wg. der Typcast Problematik				
+				ArrayListZZZ<IEnumSetMappedStringFormatZZZ>listaReturn=new ArrayListZZZ<IEnumSetMappedStringFormatZZZ>();
+				for(IEnumSetMappedStringFormatZZZ enum02temp : enuma02) {
+					String sName02temp = enum02temp.getName();
+					boolean bfound = false;
+					for(IEnumSetMappedStringFormatZZZ enum01temp : enuma01) {
+						String sName01temp = enum01temp.getName();
+						if(sName02temp.equals(sName01temp)) {
+							bfound=true;
+							break;
+						}else {							
+						}
+					}
+					if((!bfound)) {
+						listaReturn.add(enum02temp);										
+					}					
+				}
+				
+				objaReturn = EnumSetMappedLogStringFormatUtilZZZ.toEnumMappedArray(listaReturn);
+			}//end main:
+			return objaReturn;
 		}
 }

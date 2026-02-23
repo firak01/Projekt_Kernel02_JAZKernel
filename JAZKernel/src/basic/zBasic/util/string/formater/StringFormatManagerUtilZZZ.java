@@ -37,16 +37,16 @@ public class StringFormatManagerUtilZZZ implements IConstantZZZ {
 			//Hier werden aus dem neuen Array alle Elemente entfernt, die es schon im bestehenden Array gibt.
 			//Passiert ueber Differenzmengenbildung
 			//aber kein echtes Array, sondern ein enumSet... objaReturn = ArrayUtilZZZ.differenceSet(ienumaFormatStringVorhanden, ienumaFormatLogStringNeu, IEnumSetMappedStringFormatZZZ.class);
-			objaReturn = EnumSetMappedLogStringFormatUtilZZZ.differenceArray(ienumaFormatStringVorhanden, ienumaFormatLogStringNeu);
+			objaReturn = EnumSetMappedLogStringFormatUtilZZZ.differenceMappedArray_rightSet(ienumaFormatStringVorhanden, ienumaFormatLogStringNeu);
 			
 			//Wenn es keine Differenzmenge gibt, dann ist die Anpassung = AusgangsFormatArray
-			if(objaReturn==null) {
+			if(objaReturn==null || ArrayUtilZZZ.isEmpty(objaReturn)) {
 				objaReturn = ienumaFormatStringVorhanden;
 				break main;
 			}
 			
 			//Wenn es eine Differenzmenge gibt, dann wird diese an das Ausgangsformat angehaengt.
-			objaReturn = ArrayUtilZZZ.join(ienumaFormatStringVorhanden, ienumaFormatLogStringNeu);
+			objaReturn = ArrayUtilZZZ.join(ienumaFormatStringVorhanden, objaReturn);
 			
 		}//end main:
 		return objaReturn;
