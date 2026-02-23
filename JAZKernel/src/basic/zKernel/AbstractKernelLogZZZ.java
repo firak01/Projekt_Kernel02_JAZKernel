@@ -17,6 +17,7 @@ import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.file.FileTextWriterZZZ;
 import basic.zBasic.util.string.formater.AbstractStringFormaterZZZ;
 import basic.zBasic.util.string.formater.IEnumSetMappedStringFormatZZZ;
+import basic.zBasic.util.string.formater.IStringFormatManagerZZZ;
 import basic.zBasic.util.string.formater.IStringFormatZZZ;
 import basic.zBasic.util.string.formater.StringFormatManagerXmlZZZ;
 import basic.zBasic.util.string.formater.StringFormatManagerZZZ;
@@ -24,6 +25,7 @@ import basic.zBasic.util.string.formater.StringFormaterUtilZZZ;
 import basic.zBasic.util.string.formater.StringFormaterZZZ;
 import basic.zBasic.util.string.justifier.IStringJustifierZZZ;
 import basic.zBasic.util.string.justifier.SeparatorMessageStringJustifierZZZ;
+import basic.zKernel.file.ini.IKernelCallIniSolverZZZ;
 import basic.zKernel.flag.IFlagZEnabledZZZ;
 import basic.zUtil.io.IFileExpansionEnabledZZZ;
 import basic.zUtil.io.IFileExpansionZZZ;
@@ -56,6 +58,7 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 	private String sLogFilename=null;
 	private String sLogDirectorypath=null;
 	
+	protected IStringFormatManagerZZZ objStringFormatManager = null;
 	protected IFileExpansionZZZ objFileExpansion = null;
 	private FileTextWriterZZZ objFileTextWriter = null;
 	private FileZZZ objFileZZZ = null;
@@ -148,6 +151,21 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 		
 	}
 
+	//### aus IStringFormatManagerUserZZZ #########################
+	public IStringFormatManagerZZZ getStringFormatManager() throws ExceptionZZZ{
+		if(this.objStringFormatManager==null) {
+			this.objStringFormatManager = StringFormatManagerZZZ.getInstance();
+		}
+		return this.objStringFormatManager;
+	}
+	
+	public void setStringFormatManager(IStringFormatManagerZZZ objStringFormatManager) throws ExceptionZZZ{
+		this.objStringFormatManager = objStringFormatManager;
+	}
+	
+	
+	
+	
 	//#### static Methoden #########################################
 	
 	//#######################################################
@@ -286,7 +304,6 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 	//### Da PositionCurrent - XML ist, kann das hier nicht vorkommen.
 	//#######################################################
 	
-		
 	public synchronized static String computeLine(Object objIn, String sLog) throws ExceptionZZZ {
 		Object obj=null;
 		if(objIn==null) {
@@ -299,7 +316,9 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 		
 		String[]saLog = new String[1];
 		saLog[0] = sLog;
-		return computeLine__(classObj, saLog);
+		
+		IStringFormatManagerZZZ objFormatManager = StringFormatManagerZZZ.getInstance();
+		return computeLine__(objFormatManager, classObj, saLog);
 	}
 	
 	public synchronized static String computeLine(Object objIn, IEnumSetMappedStringFormatZZZ[]iaFormat, String sLog) throws ExceptionZZZ {
@@ -314,7 +333,9 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 		
 		String[]saLog = new String[1];
 		saLog[0] = sLog;
-		return computeLine__(classObj, 1, iaFormat, saLog);
+		
+		IStringFormatManagerZZZ objFormatManager = StringFormatManagerZZZ.getInstance();		
+		return computeLine__(objFormatManager, classObj, 1, iaFormat, saLog);
 	}
 	
 	public synchronized static String computeLine(Object objIn, String... sLogs) throws ExceptionZZZ {
@@ -327,7 +348,9 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 		}
 		Class classObj = obj.getClass();
 		String[]saLog = sLogs;
-		return computeLine__(classObj, saLog);
+		
+		IStringFormatManagerZZZ objFormatManager = StringFormatManagerZZZ.getInstance();
+		return computeLine__(objFormatManager, classObj, saLog);
 	}	
 	
 	public synchronized static String computeLine(Object objIn, IEnumSetMappedStringFormatZZZ[]iaFormat, String... sLogs) throws ExceptionZZZ {		
@@ -340,32 +363,40 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 		}
 		Class classObj = obj.getClass();
 		String[]saLog = sLogs;
-		return computeLine__(classObj, 1, iaFormat, saLog);
+		
+		IStringFormatManagerZZZ objFormatManager = StringFormatManagerZZZ.getInstance();
+		return computeLine__(objFormatManager, classObj, 1, iaFormat, saLog);
 	}
 	
 	public synchronized static String computeLine(Class classObj, String sLog) throws ExceptionZZZ {	
 		String[]saLog = new String[1];
 		saLog[0] = sLog;
-		return computeLine__(classObj, saLog);
+		
+		IStringFormatManagerZZZ objFormatManager = StringFormatManagerZZZ.getInstance(); 
+		return computeLine__(objFormatManager, classObj, saLog);
 	}
 	
 	public synchronized static String computeLine(Class classObj, IEnumSetMappedStringFormatZZZ[]iaFormat, String sLog) throws ExceptionZZZ {
 		String[]saLog = new String[1];
 		saLog[0] = sLog;
-		return computeLine__(classObj, 1, iaFormat, saLog);
+		
+		IStringFormatManagerZZZ objFormatManager = StringFormatManagerZZZ.getInstance();
+		return computeLine__(objFormatManager, classObj, 1, iaFormat, saLog);
 	}
 	
 	public synchronized static String computeLine(Class classObj, String... sLogs) throws ExceptionZZZ {
 		String[]saLog = sLogs;
-		return computeLine__(classObj, saLog);
+		
+		IStringFormatManagerZZZ objFormatManager = StringFormatManagerZZZ.getInstance();
+		return computeLine__(objFormatManager, classObj, saLog);
 	}
 	
-	private static String computeLine__(Class classObj, String[] saLog) throws ExceptionZZZ{
+	private static String computeLine__(IStringFormatManagerZZZ objFormatManager, Class classObj, String[] saLog) throws ExceptionZZZ{
 		IEnumSetMappedStringFormatZZZ[]iaFormat = getFormatForComputeLine_withObject();		
-		return StringFormatManagerZZZ.getInstance().compute(classObj, iaFormat, saLog);
+		return objFormatManager.compute(classObj, iaFormat, saLog);
 	}
 	
-	private static String computeLine__(Class classObj, int iStackTraceLevelIn, IEnumSetMappedStringFormatZZZ[]iaFormatIn, String[] saLogIn) throws ExceptionZZZ{
+	private static String computeLine__(IStringFormatManagerZZZ objFormatManager, Class classObj, int iStackTraceLevelIn, IEnumSetMappedStringFormatZZZ[]iaFormatIn, String[] saLogIn) throws ExceptionZZZ{
 		String[]saLog = null;
 		IEnumSetMappedStringFormatZZZ[]iaFormat = null;
 		if(iaFormatIn==null) {
@@ -384,7 +415,7 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 			saLog = StringArrayZZZ.prepend(saLogIn, sPositionCalling);			
 		}
 		
-		return StringFormatManagerZZZ.getInstance().compute(classObj, iaFormat, saLog);
+		return objFormatManager.compute(classObj, iaFormat, saLog);
 	}
 	
 	//##################################################################################
@@ -404,7 +435,8 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 		}
 		Class classObj = obj.getClass();
 		
-		return computeLineDate__(classObj, null);
+		IStringFormatManagerZZZ objFormatManager = StringFormatManagerZZZ.getInstance();
+		return computeLineDate__(objFormatManager, classObj, null);
 	}
 	
 	public synchronized static String computeLineDate(Object objIn, String sLog) throws ExceptionZZZ {	
@@ -419,7 +451,9 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 		
 		String[]saLog = new String[1];
 		saLog[0] = sLog;
-		return computeLineDate__(classObj, saLog);
+		
+		IStringFormatManagerZZZ objFormatManager = StringFormatManagerZZZ.getInstance();
+		return computeLineDate__(objFormatManager, classObj, saLog);
 	}
 	
 	public synchronized static String computeLineDate(Object objIn, String... sLogs) throws ExceptionZZZ {	
@@ -433,24 +467,29 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 		Class classObj = obj.getClass();
 		
 		String[]saLog=sLogs;
-		return computeLineDate__(classObj, saLog);
+		
+		IStringFormatManagerZZZ objFormatManager = StringFormatManagerZZZ.getInstance();
+		return computeLineDate__(objFormatManager, classObj, saLog);
 	}
 	
 	
 	public synchronized static String computeLineDate(Class classObj, String sLog) throws ExceptionZZZ {	
 		String[]saLog = new String[1];
 		saLog[0] = sLog;
-		return computeLineDate__(classObj, saLog);
+		IStringFormatManagerZZZ objFormatManager = StringFormatManagerZZZ.getInstance();
+		return computeLineDate__(objFormatManager, classObj, saLog);
 	}
 	
 	public synchronized static String computeLineDate(Class classObj, String... sLogs) throws ExceptionZZZ {	
 		String[]saLog=sLogs;
-		return computeLineDate__(classObj, saLog);
+		
+		IStringFormatManagerZZZ objFormatManager = StringFormatManagerZZZ.getInstance();
+		return computeLineDate__(objFormatManager, classObj, saLog);
 	}
 	
-	private static String computeLineDate__(Class classObj, String[] saLog) throws ExceptionZZZ {	
-		IEnumSetMappedStringFormatZZZ[]iaFormat = getFormatForComputeLineDate_withObject();
-		return StringFormatManagerZZZ.getInstance().compute(classObj, iaFormat, saLog);
+	private static String computeLineDate__(IStringFormatManagerZZZ objFormatManager, Class classObj, String[] saLog) throws ExceptionZZZ {	
+		IEnumSetMappedStringFormatZZZ[]iaFormat = getFormatForComputeLineDate_withObject();		
+		return objFormatManager.compute(classObj, iaFormat, saLog);
 	}
 	
 
@@ -625,7 +664,9 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 		
 		String[]saLog = new String[1];
 		saLog[0] = sLog;
-		return computeLineDateWithPositionXml__(classObj, 1, saLog);
+		
+		IStringFormatManagerZZZ objFormatManager = StringFormatManagerZZZ.getInstance();
+		return computeLineDateWithPositionXml__(objFormatManager, classObj, 1, saLog);
 	}
 	
 	public synchronized static String computeLineDateWithPositionXml(Object objIn, int iStackTraceOffset, String sLog) throws ExceptionZZZ {	
@@ -640,7 +681,9 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 		
 		String[]saLog = new String[1];
 		saLog[0] = sLog;
-		return computeLineDateWithPositionXml__(classObj, iStackTraceOffset, saLog);
+		
+		IStringFormatManagerZZZ objFormatManager = StringFormatManagerXmlZZZ.getInstance();
+		return computeLineDateWithPositionXml__(objFormatManager, classObj, iStackTraceOffset, saLog);
 	}
 	
 	
@@ -655,7 +698,9 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 		Class classObj = obj.getClass();
 		
 		String[]saLog = sLogs;
-		return computeLineDateWithPositionXml__(classObj, 1, saLog);
+		
+		IStringFormatManagerZZZ objFormatManager = StringFormatManagerXmlZZZ.getInstance();
+		return computeLineDateWithPositionXml__(objFormatManager, classObj, 1, saLog);
 	}
 	
 	
@@ -663,27 +708,35 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 	public synchronized static String computeLineDateWithPositionXml(Class classObj, String sLog) throws ExceptionZZZ {	
 		String[]saLog = new String[1];
 		saLog[0] = sLog;
-		return computeLineDateWithPositionXml__(classObj, 1, saLog);
+		
+		IStringFormatManagerZZZ objFormatManager = StringFormatManagerXmlZZZ.getInstance();
+		return computeLineDateWithPositionXml__(objFormatManager, classObj, 1, saLog);
 	}
 	
 	public synchronized static String computeLineDateWithPositionXml(Class classObj, int iStackTraceLevelIn, String sLog) throws ExceptionZZZ {	
 		String[]saLog = new String[1];
 		saLog[0] = sLog;
-		return computeLineDateWithPositionXml__(classObj, iStackTraceLevelIn, saLog);
+		
+		IStringFormatManagerZZZ objFormatManager = StringFormatManagerXmlZZZ.getInstance();
+		return computeLineDateWithPositionXml__(objFormatManager, classObj, iStackTraceLevelIn, saLog);
 	}
 	
 	
 	public synchronized static String computeLineDateWithPositionXml(Class classObj, String... sLogs) throws ExceptionZZZ {	
 		String[]saLog = sLogs;
-		return computeLineDateWithPositionXml__(classObj, 1, saLog);
+		
+		IStringFormatManagerZZZ objFormatManager = StringFormatManagerXmlZZZ.getInstance();
+		return computeLineDateWithPositionXml__(objFormatManager, classObj, 1, saLog);
 	}
 	
 	public synchronized static String computeLineDateWithPositionXml(Class classObj, int iStackTraceLevelIn, String... sLogs) throws ExceptionZZZ {
 		String[]saLog = sLogs;
-		return computeLineDateWithPositionXml__(classObj, iStackTraceLevelIn, saLog);
+		
+		IStringFormatManagerZZZ objFormatManager = StringFormatManagerXmlZZZ.getInstance();
+		return computeLineDateWithPositionXml__(objFormatManager, classObj, iStackTraceLevelIn, saLog);
 	}
 	
-	private static String computeLineDateWithPositionXml__(Class classObj, int iStackTraceLevelIn, String[] saLogIn) throws ExceptionZZZ {
+	private static String computeLineDateWithPositionXml__(IStringFormatManagerZZZ objFormatManager, Class classObj, int iStackTraceLevelIn, String[] saLogIn) throws ExceptionZZZ {
 		int iStackTraceLevel = iStackTraceLevelIn + 1;
 	
 		IEnumSetMappedStringFormatZZZ[]iaFormat = getFormatForComputeLineDateWithPositionXml_withObject();		
@@ -695,7 +748,7 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 		String[] saLog = StringArrayZZZ.prepend(saLogIn, sPositionCalling);
 		 
 		//return StringFormatManagerZZZ.getInstance().computeJagged_(classObj, iaFormat, saLog);
-		return StringFormatManagerXmlZZZ.getInstance().compute(classObj, iaFormat, saLog);
+		return objFormatManager.compute(classObj, iaFormat, saLog);
 	}
 	
 	
@@ -1148,7 +1201,7 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 	
 	@Override
 	public IFileExpansionZZZ getFileExpansionObject() throws ExceptionZZZ{	
-		if(this.getFlag(ILogZZZ.FLAGZ.USE_FILE_EXPANSION.name())) {
+		if(this.getFlag(IFileExpansionEnabledZZZ.FLAGZ.USE_FILE_EXPANSION.name())) {
 			if(this.objFileExpansion==null) {
 				String sDir = this.getDirectory();			
 				String sName = this.getFilename();
@@ -1197,4 +1250,46 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 	public void setConfigObject(IKernelConfigZZZ objConfig){
 		this.objConfig = objConfig;
 	}
+	
+	
+	//#######################################
+		//### FLAG Handling
+		
+		//### Aus Interface IStringFormatManagerUserZZZ
+		@Override
+		public boolean getFlag(IStringFormatManagerZZZ.FLAGZ objEnum_IStringFormatManagerZZZ) throws ExceptionZZZ {
+			return this.getFlag(objEnum_IStringFormatManagerZZZ.name());
+		}
+		
+		@Override
+		public boolean setFlag(IStringFormatManagerZZZ.FLAGZ objEnum_IStringFormatManagerZZZ, boolean bFlagValue) throws ExceptionZZZ {
+			return this.setFlag(objEnum_IStringFormatManagerZZZ.name(), bFlagValue);
+		}
+		
+		@Override
+		public boolean[] setFlag(IStringFormatManagerZZZ.FLAGZ[] objaEnum_IStringFormatManagerZZZ, boolean bFlagValue) throws ExceptionZZZ {
+			boolean[] baReturn=null;
+			main:{
+				if(!ArrayUtilZZZ.isNull(objaEnum_IStringFormatManagerZZZ)) {
+					baReturn = new boolean[objaEnum_IStringFormatManagerZZZ.length];
+					int iCounter=-1;
+					for(IStringFormatManagerZZZ.FLAGZ objEnum_IStringFormatManagerZZZ:objaEnum_IStringFormatManagerZZZ) {
+						iCounter++;
+						boolean bReturn = this.setFlag(objEnum_IStringFormatManagerZZZ, bFlagValue);
+						baReturn[iCounter]=bReturn;
+					}
+				}
+			}//end main:
+			return baReturn;
+		}
+		
+		@Override
+		public boolean proofFlagExists(IStringFormatManagerZZZ.FLAGZ objEnum_IStringFormatManagerZZZ) throws ExceptionZZZ {
+			return this.proofFlagExists(objEnum_IStringFormatManagerZZZ.name());
+		}
+		
+		@Override
+		public boolean proofFlagSetBefore(IStringFormatManagerZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+				return this.proofFlagSetBefore(objEnumFlag.name());
+		}
 }//end class

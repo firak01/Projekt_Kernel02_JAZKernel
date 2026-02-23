@@ -5,11 +5,13 @@ import static basic.zKernel.IKernelConfigConstantZZZ.sLOG_FILE_DIRECTORY_DEFAULT
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.file.FileTextWriterZZZ;
+import basic.zBasic.util.string.formater.IStringFormatManagerUserZZZ;
+import basic.zBasic.util.string.formater.IStringFormatManagerZZZ;
 import basic.zKernel.IKernelConfigUserZZZ;
 import basic.zUtil.io.IFileExpansionEnabledZZZ;
 import custom.zUtil.io.FileZZZ;
 
-public interface ILogZZZ extends IFileExpansionEnabledZZZ, IKernelConfigUserZZZ{
+public interface ILogZZZ extends IFileExpansionEnabledZZZ, IKernelConfigUserZZZ, IStringFormatManagerUserZZZ{
 //	public enum FLAGZ{
 //		USE_FILE_EXPANSION; //Merke: DEBUG und INIT aus ObjectZZZ sollen über IObjectZZZ eingebunden werden, weil von ObjectkZZZ kann man ja nicht erben. Es wird schon von File geerbt.
 //	}

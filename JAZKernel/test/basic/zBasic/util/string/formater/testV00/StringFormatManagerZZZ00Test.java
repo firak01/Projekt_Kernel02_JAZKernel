@@ -70,6 +70,7 @@ public class StringFormatManagerZZZ00Test extends TestCase {
 			sClassName = objDummy.getClass().getSimpleName();
 
 			objFormatManager = StringFormatManagerZZZ.getNewInstance();
+			objFormatManager.setFlag(IStringFormatManagerZZZ.FLAGZ.USE_INDIVIDUAL_FORMAT, true);
 			sLogValue = objFormatManager.compute(objDummy, sLog);
 			assertNotNull(sLogValue);
 			System.out.println("In der nächsten Zeile erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);
@@ -307,6 +308,7 @@ public class StringFormatManagerZZZ00Test extends TestCase {
 			//+++ Bei 1x Strintype soll der 1te Logeintrag nur 1x erscheinen.					
 			//                          der 2te Logeintrag soll NICHT erscheinen.   			
 			objFormatManager = StringFormatManagerZZZ.getNewInstance();
+			objFormatManager.setFlag(IStringFormatManagerZZZ.FLAGZ.USE_INDIVIDUAL_FORMAT, true);
 			objFormatManager.setFlag(IStringFormatManagerZZZ.FLAGZ.USE_STATIC_FORMAT, true);
 			objFormatManager.resetStringIndexRead();
 			sValue = objFormatManager.compute(objDummy, ienumaFormat01, sLog1, sLog2);
@@ -348,6 +350,7 @@ public class StringFormatManagerZZZ00Test extends TestCase {
 			
 			
 			objFormatManager = StringFormatManagerZZZ.getNewInstance();
+			objFormatManager.setFlag(IStringFormatManagerZZZ.FLAGZ.USE_INDIVIDUAL_FORMAT, true);
 			objFormatManager.setFlag(IStringFormatManagerZZZ.FLAGZ.USE_STATIC_FORMAT, true);
 			objFormatManager.resetStringIndexRead();
 			sValue = objFormatManager.compute(objDummy, ienumaFormat02, sLog1, sLog2);
@@ -382,6 +385,7 @@ public class StringFormatManagerZZZ00Test extends TestCase {
 			//                          Dazu wird das Format um eine LINENEXT - Anweisung, einen COMMENT - Separator, einen StringTyp erweitert.
 			//                          Dieses "Normieren" des Formatanweisungsarrays macht der Formatmanager.
 			objFormatManager = StringFormatManagerZZZ.getNewInstance();
+			objFormatManager.setFlag(IStringFormatManagerZZZ.FLAGZ.USE_INDIVIDUAL_FORMAT, true);
 			objFormatManager.setFlag(IStringFormatManagerZZZ.FLAGZ.USE_STATIC_FORMAT, false);
 			objFormatManager.resetStringIndexRead();
 			sValue = objFormatManager.compute(objDummy, ienumaFormat01, sLog1, sLog2);
@@ -454,6 +458,7 @@ public class StringFormatManagerZZZ00Test extends TestCase {
 			
 			//+++ Bei 2x Strintype soll der Logeintrag nur 1x erscheinen auch mit LINENEXT.		
 			objFormatManager = StringFormatManagerZZZ.getNewInstance();
+			objFormatManager.setFlag(IStringFormatManagerZZZ.FLAGZ.USE_INDIVIDUAL_FORMAT, true);
 			objFormatManager.setFlag(IStringFormatManagerZZZ.FLAGZ.USE_STATIC_FORMAT, true); //Damit werden keine neuen Zeilen im Format erstellt.
 			sLogValue = objFormatManager.compute(objDummy, ienumaFormat03, sLog1);
 			System.out.println("In der nächsten Zeile erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);			
@@ -477,6 +482,7 @@ public class StringFormatManagerZZZ00Test extends TestCase {
 			//+++ Bei 2x Strintype (MIT LINENEXT voneinandere trennen) soll jeder Logeintrag in einer anderen der Zeile erscheinen.	
 			//b) unterschiedliche Logeintraege							
 			objFormatManager = StringFormatManagerZZZ.getNewInstance();
+			objFormatManager.setFlag(IStringFormatManagerZZZ.FLAGZ.USE_INDIVIDUAL_FORMAT, true);
 			objFormatManager.setFlag(IStringFormatManagerZZZ.FLAGZ.USE_STATIC_FORMAT, true); //Damit werden keine neuen Zeilen im Format erstellt.
 			sLogValue = objFormatManager.compute(objDummy, ienumaFormat03, sLog1, sLog2);
 			System.out.println("In der nächsten Zeile erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);			
@@ -512,6 +518,7 @@ public class StringFormatManagerZZZ00Test extends TestCase {
 			saLog[1]=sLog2;
 			saLog[2]=sLog3;
 			objFormatManager = StringFormatManagerZZZ.getNewInstance();
+			objFormatManager.setFlag(IStringFormatManagerZZZ.FLAGZ.USE_INDIVIDUAL_FORMAT, true);
 			objFormatManager.setFlag(IStringFormatManagerZZZ.FLAGZ.USE_STATIC_FORMAT, true); //Damit werden keine neuen Zeilen im Format erstellt.			
 			sLogValue = objFormatManager.compute(objDummy, ienumaFormat03, saLog);
 			System.out.println("In der nächsten Zeile erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);			
@@ -577,6 +584,7 @@ public class StringFormatManagerZZZ00Test extends TestCase {
 			
 			//+++ Bei 2x Strintype soll der Logeintrag nur 1x erscheinen auch mit LINENEXT.		
 			objFormatManager = StringFormatManagerZZZ.getNewInstance();
+			objFormatManager.setFlag(IStringFormatManagerZZZ.FLAGZ.USE_INDIVIDUAL_FORMAT, true);
 			objFormatManager.setFlag(IStringFormatManagerZZZ.FLAGZ.USE_STATIC_FORMAT, true); //Damit werden keine neuen Zeilen im Format erstellt.
 			sLogValue = objFormatManager.compute(objDummy, ienumaFormat03, sLog1);
 			System.out.println("In der nächsten Zeile erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);			
@@ -600,6 +608,7 @@ public class StringFormatManagerZZZ00Test extends TestCase {
 			//+++ Bei 2x Strintype (MIT LINENEXT voneinandere trennen) soll jeder Logeintrag in einer anderen der Zeile erscheinen.	
 			//b) unterschiedliche Logeintraege							
 			objFormatManager = StringFormatManagerZZZ.getNewInstance();
+			objFormatManager.setFlag(IStringFormatManagerZZZ.FLAGZ.USE_INDIVIDUAL_FORMAT, true);
 			objFormatManager.setFlag(IStringFormatManagerZZZ.FLAGZ.USE_STATIC_FORMAT, true); //Damit werden keine neuen Zeilen im Format erstellt.			
 			sLogValue = objFormatManager.compute(objDummy, ienumaFormat03, sLog1, sLog2);
 			System.out.println("In der nächsten Zeile erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);			
@@ -635,6 +644,7 @@ public class StringFormatManagerZZZ00Test extends TestCase {
 			saLog[1]=sLog2;
 			saLog[2]=sLog3;
 			objFormatManager = StringFormatManagerZZZ.getNewInstance();
+			objFormatManager.setFlag(IStringFormatManagerZZZ.FLAGZ.USE_INDIVIDUAL_FORMAT, true);
 			objFormatManager.setFlag(IStringFormatManagerZZZ.FLAGZ.USE_STATIC_FORMAT, true); //Damit werden keine neuen Zeilen im Format erstellt.						
 			sLogValue = objFormatManager.compute(objDummy, ienumaFormat03, saLog);
 			System.out.println("In der nächsten Zeile erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);			
@@ -728,24 +738,28 @@ public class StringFormatManagerZZZ00Test extends TestCase {
 			//       in den Beispielen häufig zustande.
 			System.out.println("++++++++++++");
 			objFormatManager = StringFormatManagerZZZ.getNewInstance();
+			objFormatManager.setFlag(IStringFormatManagerZZZ.FLAGZ.USE_INDIVIDUAL_FORMAT, true);
 			objFormatManager.setFlag(IStringFormatManagerZZZ.FLAGZ.USE_STATIC_FORMAT, true);//Verwende also nur das definiert Array und ergaenze keine weiteren Kommentarzeilen.
 			sLogValue = objFormatManager.computeJustified(objDummy, ienumaFormat04, sLog1);
 			System.out.println("In der nächsten Zeile erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);			
 			
 			System.out.println("++++++++++++");
 			objFormatManager = StringFormatManagerZZZ.getNewInstance();
+			objFormatManager.setFlag(IStringFormatManagerZZZ.FLAGZ.USE_INDIVIDUAL_FORMAT, true);
 			objFormatManager.setFlag(IStringFormatManagerZZZ.FLAGZ.USE_STATIC_FORMAT, true);//Verwende also nur das definiert Array und ergaenze keine weiteren Kommentarzeilen.			
 			sLogValue = objFormatManager.computeJustified(objDummy, ienumaFormat04, sLog1, sLog2);
 			System.out.println("In der nächsten Zeile erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);			
 			
 			System.out.println("++++++++++++");
 			objFormatManager = StringFormatManagerZZZ.getNewInstance();
+			objFormatManager.setFlag(IStringFormatManagerZZZ.FLAGZ.USE_INDIVIDUAL_FORMAT, true);
 			objFormatManager.setFlag(IStringFormatManagerZZZ.FLAGZ.USE_STATIC_FORMAT, true);//Verwende also nur das definiert Array und ergaenze keine weiteren Kommentarzeilen.			
 			sLogValue = objFormatManager.computeJustified(objDummy, ienumaFormat04, sLog1, sLog2, sLog3);
 			System.out.println("In der nächsten Zeile erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);
 						
 			System.out.println("++++++++++++");
 			objFormatManager = StringFormatManagerZZZ.getNewInstance();
+			objFormatManager.setFlag(IStringFormatManagerZZZ.FLAGZ.USE_INDIVIDUAL_FORMAT, true);
 			objFormatManager.setFlag(IStringFormatManagerZZZ.FLAGZ.USE_STATIC_FORMAT, true);//Verwende also nur das definiert Array und ergaenze keine weiteren Kommentarzeilen.			
 			sLogValue = objFormatManager.computeJustified(objDummy, ienumaFormat04, sLog1, sLog2, sLog3, sLog4);
 			System.out.println("In der nächsten Zeile erst geht der Logeintrag los...: "+ReflectCodeZZZ.getPositionCurrent()+"\n" + sLogValue);

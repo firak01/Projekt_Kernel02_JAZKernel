@@ -72,6 +72,7 @@ import basic.zKernel.file.ini.KernelZFormulaIniConverterZZZ;
 import basic.zKernel.file.ini.KernelZFormulaIni_EmptyZZZ;
 import basic.zKernel.file.ini.ZTagFormulaIni_NullZZZ;
 import basic.zKernel.flag.util.FlagZFassadeZZZ;
+import basic.zUtil.io.IFileExpansionEnabledZZZ;
 import custom.zKernel.ConfigZZZ;
 import custom.zKernel.FileFilterModuleZZZ;
 import custom.zKernel.ILogZZZ;
@@ -7486,7 +7487,7 @@ MeinTestParameter=blablaErgebnis
 					}
 					
 					if(this.getFlag ("DEBUG")) System.out.println("Initialisiere KernelLog mit folgendem Pfad, Dateinamen: '" + sDirectoryLog +"', '" + sFileLog + "'");
-					objLog = new LogZZZ(sDirectoryLog, sFileLog,ILogZZZ.FLAGZ.USE_FILE_EXPANSION.name());
+					objLog = new LogZZZ(sDirectoryLog, sFileLog,IFileExpansionEnabledZZZ.FLAGZ.USE_FILE_EXPANSION.name());
 				}else{
 					System.out.println("Verwende LogObject erneut");
 					objLog = objLogIn;

@@ -4,7 +4,11 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.string.formater.IEnumSetMappedStringFormatZZZ;
+import basic.zBasic.util.string.formater.IStringFormatManagerFlagZZZ;
+import basic.zBasic.util.string.formater.IStringFormatManagerUserZZZ;
+import basic.zBasic.util.string.formater.IStringFormatManagerZZZ;
 import basic.zBasic.util.string.formater.IStringFormatZZZ;
+import basic.zBasic.util.string.formater.StringFormatManagerZZZ;
 import basic.zKernel.KernelContextZZZ;
 import basic.zKernel.KernelZZZ;
 import custom.zKernel.LogZZZ;
@@ -217,6 +221,11 @@ public class LogZZZTest extends TestCase{
 			//Zeile mit 1x Logstring
 			sLog1 = "XXXTESTLAENGERXXX";
 			iLine = ReflectCodeZZZ.getMethodCurrentLine()+1;//+1, weil halt die naechste Zeile im Code.
+			
+			objLogTest.setFlag(IStringFormatManagerFlagZZZ.FLAGZ.USE_INDIVIDUAL_FORMAT, false);
+			objLogTest.setFlag(IStringFormatManagerFlagZZZ.FLAGZ.USE_STATIC_FORMAT, false);
+			IStringFormatManagerZZZ objFormatManager = StringFormatManagerZZZ.getInstance();
+			objFormatManager.adoptFlagZrelevantFrom(objLogTest);
 			sValue = objLogTest.computeLine(this, sLog1);
 			System.out.println("LogZZZTest.testComputeLine_DEFAULT(): Logausgabe in nächster Zeile.\n" + sValue);
 			

@@ -419,6 +419,22 @@ public abstract class AbstractObjectWithFlagZZZ<T> extends AbstractObjectWithExc
 	}
 	
 	@Override
+	public int adoptFlagZrelevantFrom(IFlagZEnabledZZZ objUsingFlagZ) throws ExceptionZZZ{
+		int iReturn = 0;		
+		main:{
+			String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, objUsingFlagZ);
+			if(StringArrayZZZ.isEmpty(saFlagZpassed)) break main;
+			
+			for(String sFlag: saFlagZpassed) {
+				boolean bValue = objUsingFlagZ.getFlag(sFlag);
+				boolean btemp = this.setFlag(sFlag, bValue);
+				if(btemp) iReturn++;
+			}
+		}//end main:
+		return iReturn;
+	}
+	
+	@Override
 	public int adoptFlagZrelevantFrom(IFlagZEnabledZZZ objUsingFlagZ, boolean bValueToSearchFor) throws ExceptionZZZ{
 		int iReturn = 0;		
 		main:{

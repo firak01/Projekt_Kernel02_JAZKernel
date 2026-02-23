@@ -41,11 +41,13 @@ public class StringFormatManagerUtilZZZ implements IConstantZZZ {
 			
 			//Wenn es keine Differenzmenge gibt, dann ist die Anpassung = AusgangsFormatArray
 			if(objaReturn==null || ArrayUtilZZZ.isEmpty(objaReturn)) {
+				System.out.println(ReflectCodeZZZ.getPositionCurrent() +": Keine neuen Felder in der individuellen Formatvorlage. Verwende die Feldreihenfolge wie in zuvor verwendeter (" + ienumaFormatStringVorhanden.length + " Felder) Formatvorlage .");
 				objaReturn = ienumaFormatStringVorhanden;
 				break main;
 			}
 			
 			//Wenn es eine Differenzmenge gibt, dann wird diese an das Ausgangsformat angehaengt.
+			System.out.println(ReflectCodeZZZ.getPositionCurrent() +": Mische "+objaReturn.length+ " neue Felder der individuelle Formatvorlage in zuvor verwendeter (" + ienumaFormatStringVorhanden.length + " Felder) Formatvorlage ein. ");
 			objaReturn = ArrayUtilZZZ.join(ienumaFormatStringVorhanden, objaReturn);
 			
 		}//end main:

@@ -59,5 +59,6 @@ public interface IFlagZEnabledZZZ{
 	
 	//20250816: Damit können Flags von einem Objekt zu einem anderen "vererbt bzw. uebergeben" werden.
 	//          Nicht relevante Flags wie "INIT", "DEBUG" werden dabei ignoriert.
+	public abstract int adoptFlagZrelevantFrom(IFlagZEnabledZZZ objUsingFlagZ) throws ExceptionZZZ;
 	public abstract int adoptFlagZrelevantFrom(IFlagZEnabledZZZ objUsingFlagZ, boolean bValueToSearchFor) throws ExceptionZZZ;
 }
