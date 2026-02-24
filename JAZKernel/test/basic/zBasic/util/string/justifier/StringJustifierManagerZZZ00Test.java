@@ -14,7 +14,6 @@ import basic.zBasic.util.string.formater.IStringFormatManagerJustifiedZZZ;
 import basic.zBasic.util.string.formater.IStringFormatManagerZZZ;
 import basic.zBasic.util.string.formater.IStringFormatZZZ;
 import basic.zBasic.util.string.formater.StringFormatManagerZZZ;
-import basic.zBasic.util.string.formater.IStringFormatManagerZZZ.FLAGZ;
 import basic.zBasic.util.string.formater.IStringFormatZZZ.LOGSTRINGFORMAT;
 import basic.zBasic.util.string.justifier.IStringJustifierZZZ;
 import junit.framework.TestCase;

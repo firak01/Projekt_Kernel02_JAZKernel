@@ -61,9 +61,13 @@ public class LogZZZTest extends TestCase{
 			
 			//Zeile mit 1x Logstring
 			sLog1 = "XXXTESTLAENGERXXX";			
-			iLine = ReflectCodeZZZ.getMethodCurrentLine()+1;//+1, weil halt die naechste Zeile im Code.			
-			objLogTest.setFlag(IStringFormatManagerEnabledZZZ.FLAGZ.USE_INDIVIDUAL_FORMAT, true);
-			objLogTest.setFlag(IStringFormatManagerEnabledZZZ.FLAGZ.USE_STATIC_FORMAT, true);
+			iLine = ReflectCodeZZZ.getMethodCurrentLine()+1;//+1, weil halt die naechste Zeile im Code.	
+			
+			IStringFormatManagerZZZ objFormatManager = StringFormatManagerZZZ.getInstance();
+			objLogTest.registerForFlagEventAdopted(objFormatManager);
+			
+			objLogTest.setFlag(IStringFormatManagerEnabledZZZ.FLAGZ.USE_INDIVIDUAL_FORMAT, false);
+			objLogTest.setFlag(IStringFormatManagerEnabledZZZ.FLAGZ.USE_STATIC_FORMAT, false);
 			sValue = objLogTest.computeLine(this, sLog1);
 			System.out.println("LogZZZTest.testComputeLine_CUSTOM(): Logausgabe in nächster Zeile.\n" + sValue);
 						

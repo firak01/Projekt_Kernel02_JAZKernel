@@ -240,6 +240,46 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 		sReturn = ReflectionToStringBuilder.toString(this);
 		return sReturn;
 	}
+	
+	//###################################################
+	//### FLAG HANDLING #################################
+	//###################################################
+	
+	//### aus IFlagEnabledZZZ
+	@Override
+	public int adoptFlagZrelevantFrom(IFlagZEnabledZZZ objUsingFlagZ) throws ExceptionZZZ{
+		int iReturn = 0;		
+		main:{
+			String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, objUsingFlagZ);
+			if(StringArrayZZZ.isEmpty(saFlagZpassed)) break main;
+			
+			for(String sFlag: saFlagZpassed) {
+				boolean bValue = objUsingFlagZ.getFlag(sFlag);
+				boolean btemp = this.setFlag(sFlag, bValue);
+				if(btemp) iReturn++;
+			}
+		}//end main:
+		return iReturn;
+	}
+	
+	/* (non-Javadoc)
+	 * @see basic.zKernel.flag.IFlagZEnabledZZZ#adoptFlagZrelevantFrom(basic.zKernel.flag.IFlagZEnabledZZZ, boolean)
+	 */
+	@Override
+	public int adoptFlagZrelevantFrom(IFlagZEnabledZZZ objUsingFlagZ, boolean bValueToSearchFor) throws ExceptionZZZ{
+		int iReturn = 0;		
+		main:{
+			String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, objUsingFlagZ, bValueToSearchFor);
+			if(StringArrayZZZ.isEmpty(saFlagZpassed)) break main;
+			
+			for(String sFlag: saFlagZpassed) {
+				boolean btemp = this.setFlag(sFlag, bValueToSearchFor);
+				if(btemp) iReturn++;
+			}
+		}//end main:
+		return iReturn;
+	}
+	
 
 	//### Aus IFlagUserZZZ
 	@Override
@@ -491,23 +531,6 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 		}
 		
 		
-		/* (non-Javadoc)
-		 * @see basic.zKernel.flag.IFlagZEnabledZZZ#adoptFlagZrelevantFrom(basic.zKernel.flag.IFlagZEnabledZZZ, boolean)
-		 */
-		@Override
-		public int adoptFlagZrelevantFrom(IFlagZEnabledZZZ objUsingFlagZ, boolean bValueToSearchFor) throws ExceptionZZZ{
-			int iReturn = 0;		
-			main:{
-				String[] saFlagZpassed = FlagZFassadeZZZ.seekFlagZrelevantForObject(this, objUsingFlagZ, bValueToSearchFor);
-				if(StringArrayZZZ.isEmpty(saFlagZpassed)) break main;
-				
-				for(String sFlag: saFlagZpassed) {
-					boolean btemp = this.setFlag(sFlag, bValueToSearchFor);
-					if(btemp) iReturn++;
-				}
-			}//end main:
-			return iReturn;
-		}
 		
 		//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				//++++++++++++++++++++++++
@@ -1172,4 +1195,6 @@ private String PathNameTotalExpandedCurrentCompute_(String sDirectoryIn, String 
 				
 		}
 	}
+
+	
 }//end class

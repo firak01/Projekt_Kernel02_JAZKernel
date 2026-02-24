@@ -21,34 +21,34 @@ public class StringFormatManagerUtilZZZ implements IConstantZZZ {
     // Öffentliche Hauptmethoden (Hier u.a. Weiterleiten auf besondere Util-Klassen, die gekapselt sind
     // #############################################################
 
-	public static IEnumSetMappedStringFormatZZZ[] adaptFormatArray(IEnumSetMappedStringFormatZZZ[] ienumaFormatStringVorhanden, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogStringNeu) throws ExceptionZZZ{
+	public static IEnumSetMappedStringFormatZZZ[] adaptFormatArray(IEnumSetMappedStringFormatZZZ[] ienumaFormatStringNeu, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogStringVorhanden) throws ExceptionZZZ{
 		IEnumSetMappedStringFormatZZZ[]objaReturn=null;
 		main:{
-			if(ienumaFormatStringVorhanden==null) {
-				objaReturn = ienumaFormatLogStringNeu;
+			if(ienumaFormatStringNeu==null) {
+				objaReturn = ienumaFormatLogStringVorhanden;
 				break main;
 			}
 			
-			if(ienumaFormatLogStringNeu==null) {
-				objaReturn = ienumaFormatStringVorhanden;
+			if(ienumaFormatLogStringVorhanden==null) {
+				objaReturn = ienumaFormatStringNeu;
 				break main;
 			}
 			
 			//Hier werden aus dem neuen Array alle Elemente entfernt, die es schon im bestehenden Array gibt.
 			//Passiert ueber Differenzmengenbildung
 			//aber kein echtes Array, sondern ein enumSet... objaReturn = ArrayUtilZZZ.differenceSet(ienumaFormatStringVorhanden, ienumaFormatLogStringNeu, IEnumSetMappedStringFormatZZZ.class);
-			objaReturn = EnumSetMappedLogStringFormatUtilZZZ.differenceMappedArray_rightSet(ienumaFormatStringVorhanden, ienumaFormatLogStringNeu);
+			objaReturn = EnumSetMappedLogStringFormatUtilZZZ.differenceMappedArray_rightSet(ienumaFormatStringNeu, ienumaFormatLogStringVorhanden);
 			
 			//Wenn es keine Differenzmenge gibt, dann ist die Anpassung = AusgangsFormatArray
 			if(objaReturn==null || ArrayUtilZZZ.isEmpty(objaReturn)) {
 				//System.out.println(ReflectCodeZZZ.getPositionCurrent() +": Keine neuen Felder in der individuellen Formatvorlage. Verwende die Feldreihenfolge wie in zuvor verwendeter (" + ienumaFormatStringVorhanden.length + " Felder) Formatvorlage .");
-				objaReturn = ienumaFormatStringVorhanden;
+				objaReturn = ienumaFormatStringNeu;
 				break main;
 			}
 			
 			//Wenn es eine Differenzmenge gibt, dann wird diese an das Ausgangsformat angehaengt.
 			//System.out.println(ReflectCodeZZZ.getPositionCurrent() +": Mische "+objaReturn.length+ " neue Felder der individuelle Formatvorlage in zuvor verwendeter (" + ienumaFormatStringVorhanden.length + " Felder) Formatvorlage ein. ");
-			objaReturn = ArrayUtilZZZ.join(ienumaFormatStringVorhanden, objaReturn);
+			objaReturn = ArrayUtilZZZ.join(ienumaFormatStringNeu, objaReturn);
 			
 		}//end main:
 		return objaReturn;

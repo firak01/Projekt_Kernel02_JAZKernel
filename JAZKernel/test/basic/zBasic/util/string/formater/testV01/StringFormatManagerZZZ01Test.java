@@ -9,10 +9,10 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.math.PrimeFactorizationZZZ;
 import basic.zBasic.util.math.PrimeNumberZZZ;
 import basic.zBasic.util.string.formater.IEnumSetMappedStringFormatZZZ;
+import basic.zBasic.util.string.formater.IStringFormatManagerEnabledZZZ;
 import basic.zBasic.util.string.formater.IStringFormatManagerZZZ;
 import basic.zBasic.util.string.formater.IStringFormatZZZ;
 import basic.zBasic.util.string.formater.StringFormatManagerZZZ;
-import basic.zBasic.util.string.formater.IStringFormatManagerZZZ.FLAGZ;
 import basic.zBasic.util.string.formater.IStringFormatZZZ.LOGSTRINGFORMAT;
 import junit.framework.TestCase;
 
@@ -41,7 +41,7 @@ public class StringFormatManagerZZZ01Test extends TestCase {
 		try{
 			//Das soll ein Singleton sein. Einmal definiert, ueberall verfuegbar.
 			IStringFormatManagerZZZ objLogManager = StringFormatManagerZZZ.getNewInstance();
-			boolean btemp1a = objLogManager.setFlag(IStringFormatManagerZZZ.FLAGZ.DUMMY, true);
+			boolean btemp1a = objLogManager.setFlag(IStringFormatManagerEnabledZZZ.FLAGZ.DUMMY, true);
 			assertTrue(btemp1a);
 						
 			StringFormatManagerZZZ.destroyInstance();
@@ -50,7 +50,7 @@ public class StringFormatManagerZZZ01Test extends TestCase {
 			//Nun mal eine neue Version holen. Das Flag sollte fehlen.
 			IStringFormatManagerZZZ objLogManager2 = StringFormatManagerZZZ.getNewInstance();
 			
-			boolean btemp2a = objLogManager2.getFlag(IStringFormatManagerZZZ.FLAGZ.DUMMY);
+			boolean btemp2a = objLogManager2.getFlag(IStringFormatManagerEnabledZZZ.FLAGZ.DUMMY);
 			assertFalse(btemp2a);
 			
 			

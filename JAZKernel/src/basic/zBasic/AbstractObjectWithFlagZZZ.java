@@ -722,8 +722,13 @@ public abstract class AbstractObjectWithFlagZZZ<T> extends AbstractObjectWithExc
 	
 
 	@Override
-	public void registerForFlagEvent(IListenerObjectFlagZsetZZZ objEventListener) throws ExceptionZZZ {		
-		this.getSenderFlagUsed().addListenerObjectFlagZset(objEventListener);
+	public void registerForFlagEvent(IListenerObjectFlagZsetZZZ objEventListener) throws ExceptionZZZ {
+		main:{
+			if(objEventListener==null)break main;
+			if(objEventListener.getFlag("INIT")) break main; 
+		
+			this.getSenderFlagUsed().addListenerObjectFlagZset(objEventListener);
+		}//end main:
 	}
 	
 	

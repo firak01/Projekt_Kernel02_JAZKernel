@@ -611,7 +611,7 @@ redAndBlack.addAll(blacks);
 				
 				//Ergo spezielle Methode hier - ... auch wg. der Typcast Problematik				
 				ArrayListZZZ<IEnumSetMappedStringFormatZZZ>listaReturn=new ArrayListZZZ<IEnumSetMappedStringFormatZZZ>();
-				for(IEnumSetMappedStringFormatZZZ enum02temp : enuma02) {
+				for(IEnumSetMappedStringFormatZZZ enum02temp : enuma02){
 					String sName02temp = enum02temp.getName();
 					boolean bfound = false;
 					for(IEnumSetMappedStringFormatZZZ enum01temp : enuma01) {

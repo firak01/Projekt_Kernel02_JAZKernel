@@ -78,27 +78,27 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 	 */
 	public AbstractKernelLogZZZ(String sDirectoryPathIn, String sLogFileIn) throws ExceptionZZZ {
 		super();
-		KernelLogNew_(null, sDirectoryPathIn, sLogFileIn, null, (String[])null);
+		AbstractKernelLogNew_(null, sDirectoryPathIn, sLogFileIn, null, (String[])null);
 	}
 	
 	public AbstractKernelLogZZZ(String sDirectoryPathIn, String sLogFileIn, String sFlagControl) throws ExceptionZZZ {
 		super();
 		String[] saFlagControl = new String[1];
 		saFlagControl[0] = sFlagControl;
-		KernelLogNew_(null, sDirectoryPathIn, sLogFileIn, null, saFlagControl);
+		AbstractKernelLogNew_(null, sDirectoryPathIn, sLogFileIn, null, saFlagControl);
 	}
 	
 	public AbstractKernelLogZZZ(String sDirectoryPathIn, String sLogFileIn, String[] saFlagControl) throws ExceptionZZZ {
 		super();
-		KernelLogNew_(null, sDirectoryPathIn, sLogFileIn, null, saFlagControl);
+		AbstractKernelLogNew_(null, sDirectoryPathIn, sLogFileIn, null, saFlagControl);
 	}
 	
 	public AbstractKernelLogZZZ(IKernelConfigZZZ objConfig) throws ExceptionZZZ {
 		super();
-		KernelLogNew_(objConfig, null, null,  null, (String[]) null);
+		AbstractKernelLogNew_(objConfig, null, null,  null, (String[]) null);
 	}
 	
-	private void KernelLogNew_(IKernelConfigZZZ objConfig, String sDirectoryPathIn, String sLogFileIn, IFileExpansionZZZ objFileExpansion, String[] saFlagControl) throws ExceptionZZZ{
+	private void AbstractKernelLogNew_(IKernelConfigZZZ objConfig, String sDirectoryPathIn, String sLogFileIn, IFileExpansionZZZ objFileExpansion, String[] saFlagControl) throws ExceptionZZZ{
 		
 		TODOGOON20260224;//1. Checken ob "init" in Array, dann break
 		                 //2. objStringFormatManger als instanz holen
