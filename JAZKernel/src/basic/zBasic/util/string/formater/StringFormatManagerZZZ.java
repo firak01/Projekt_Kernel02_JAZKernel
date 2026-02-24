@@ -18,6 +18,7 @@ import basic.zBasic.util.string.justifier.StringJustifierManagerZZZ;
 import basic.zBasic.xml.tagtype.ITagByTypeZZZ;
 import basic.zBasic.xml.tagtype.ITagTypeZZZ;
 import basic.zBasic.xml.tagtype.TagByTypeFactoryZZZ;
+import basic.zKernel.flag.event.IEventObjectFlagZsetZZZ;
 
 public class StringFormatManagerZZZ extends AbstractStringFormatManagerZZZ implements IStringFormatManagerJustifiedZZZ{
 	private static final long serialVersionUID = 5164996113432507434L;
@@ -294,7 +295,7 @@ public class StringFormatManagerZZZ extends AbstractStringFormatManagerZZZ imple
 			//d.h.0.1. aufteilen auf ggfs. mehrere Zeilen (bisherige version, neue Version)
 			//    0.2. fehlende Spalten etc. ergänzen, Reihenfolge angleichen
 			IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString;
-			if(!this.getFlag(IStringFormatManagerZZZ.FLAGZ.USE_INDIVIDUAL_FORMAT)) {
+			if(!this.getFlag(IStringFormatManagerEnabledZZZ.FLAGZ.USE_INDIVIDUAL_FORMAT)) {
 				//System.out.println(ReflectCodeZZZ.getPositionCurrent() +": Verwende individuelle Formatvorlage, ggfs. als Vermischung mit zuvor verwendeter.");
 				ienumaFormatLogString = this.getStringFormatArrayCurrent();
 				ienumaFormatLogString = StringFormatManagerUtilZZZ.adaptFormatArray(ienumaFormatLogString, ienumaFormatLogStringIn);
@@ -309,7 +310,7 @@ public class StringFormatManagerZZZ extends AbstractStringFormatManagerZZZ imple
 			
 			//#######################
 			//1. Ergänze ggfs. die Zeilen um weitere Zeilen fuer LogEintraege 			
-			if(!this.getFlag(IStringFormatManagerZZZ.FLAGZ.USE_STATIC_FORMAT)) {
+			if(!this.getFlag(IStringFormatManagerEnabledZZZ.FLAGZ.USE_STATIC_FORMAT)) {
 				ienumaFormatLogString = StringFormatManagerUtilZZZ.appendLines_StringType(ienumaFormatLogStringIn, sLogs);
 			}else {
 				//System.out.println(ReflectCodeZZZ.getPositionCurrent() +": Verwende die Formatvorlage statisch und ergänze keine zusätzliche Kommentarzeilen.");

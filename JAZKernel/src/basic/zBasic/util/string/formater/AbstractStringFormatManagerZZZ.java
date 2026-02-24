@@ -18,6 +18,8 @@ import basic.zBasic.util.string.justifier.SeparatorMessageStringJustifierZZZ;
 import basic.zBasic.util.string.justifier.StringJustifierManagerUtilZZZ;
 import basic.zBasic.util.string.justifier.StringJustifierManagerZZZ;
 import basic.zKernel.flag.IFlagZEnabledZZZ;
+import basic.zKernel.flag.event.IEventObjectFlagZsetZZZ;
+import basic.zKernel.flag.event.IListenerObjectFlagZsetZZZ;
 import custom.zKernel.LogZZZ;
 
 /** Abstrakte Klasse der FormatManager.
@@ -723,29 +725,92 @@ public abstract class AbstractStringFormatManagerZZZ extends AbstractObjectWithF
 	//### Merke: COMPUTE JUSTIFIED gibt es nicht bei XML-Format Manager, darum die entsprechenden Methoden direkt in FormatManager-Klasse
 	//###################################################
 
-	
-	
-	//###################################################
-	//### FLAG: ILogStringFormatManagerZZZ
-	//###################################################
+	//### IListenerObjectFlagZsetZZZ
+	//Der FormatManager soll hinsichtlich der Flags von z.B. LogZZZ gesteuert werden koennen. Also wenn registriert, dann dort gesetzte Flags uebernehmen.
 	@Override
-	public boolean getFlag(IStringFormatManagerZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+	public boolean getFlag(IListenerObjectFlagZsetZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.getFlag(objEnumFlag.name());
-	}	
-	
+	}
 	@Override
-	public boolean setFlag(IStringFormatManagerZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+	public boolean setFlag(IListenerObjectFlagZsetZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		return this.setFlag(objEnumFlag.name(), bFlagValue);
 	}
-
+	
 	@Override
-	public boolean[] setFlag(IStringFormatManagerZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+	public boolean[] setFlag(IListenerObjectFlagZsetZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
 		boolean[] baReturn=null;
 		main:{
 			if(!ArrayUtilZZZ.isNull(objaEnumFlag)) {
 				baReturn = new boolean[objaEnumFlag.length];
 				int iCounter=-1;
-				for(IStringFormatManagerZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
+				for(IListenerObjectFlagZsetZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
+					iCounter++;
+					boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
+					baReturn[iCounter]=bReturn;
+				}
+				
+				//!!! Ein mögliches init-Flag ist beim direkten setzen der Flags unlogisch.
+				//    Es wird entfernt.
+				this.setFlag(IFlagZEnabledZZZ.FLAGZ.INIT, false);
+			}
+		}//end main:
+		return baReturn;
+	}
+	
+	@Override
+	public boolean proofFlagExists(IListenerObjectFlagZsetZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+		return this.proofFlagExists(objEnumFlag.name());
+	}	
+	
+	@Override
+	public boolean proofFlagSetBefore(IListenerObjectFlagZsetZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+		return this.proofFlagSetBefore(objEnumFlag.name());
+	}
+		
+	@Override
+	public boolean flagChanged(IEventObjectFlagZsetZZZ eventFlagZset) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			if(eventFlagZset==null) break main;
+			
+			//Wenn das Objekt ueber die Aenderung des Setzen des Flags informiert wird. 
+			//Dieses Setzen des Flags ggfs. nachvollziehen.
+			String sFlagText = eventFlagZset.getFlagText();
+			boolean bFlagValue = eventFlagZset.getFlagValue();
+			
+			try {
+				bReturn = this.setFlag(sFlagText, bFlagValue);
+			} catch (ExceptionZZZ e) {
+				//Falls es das Flag hier nicht gibt, wird die Exception hier nicht weitergeworfen.
+				//Es kann aber auch ggfs. anders verfahren werden. 
+			}
+			
+		}//end main:
+		return bReturn;
+	}
+	
+	
+	//###################################################
+	//### FLAG: ILogStringFormatManagerEnabledZZZ
+	//###################################################
+	@Override
+	public boolean getFlag(IStringFormatManagerEnabledZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+		return this.getFlag(objEnumFlag.name());
+	}	
+	
+	@Override
+	public boolean setFlag(IStringFormatManagerEnabledZZZ.FLAGZ objEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+		return this.setFlag(objEnumFlag.name(), bFlagValue);
+	}
+
+	@Override
+	public boolean[] setFlag(IStringFormatManagerEnabledZZZ.FLAGZ[] objaEnumFlag, boolean bFlagValue) throws ExceptionZZZ {
+		boolean[] baReturn=null;
+		main:{
+			if(!ArrayUtilZZZ.isNull(objaEnumFlag)) {
+				baReturn = new boolean[objaEnumFlag.length];
+				int iCounter=-1;
+				for(IStringFormatManagerEnabledZZZ.FLAGZ objEnumFlag:objaEnumFlag) {
 					iCounter++;
 					boolean bReturn = this.setFlag(objEnumFlag, bFlagValue);
 					baReturn[iCounter]=bReturn;
@@ -760,12 +825,12 @@ public abstract class AbstractStringFormatManagerZZZ extends AbstractObjectWithF
 	}
 
 	@Override
-	public boolean proofFlagExists(IStringFormatManagerZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+	public boolean proofFlagExists(IStringFormatManagerEnabledZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.proofFlagExists(objEnumFlag.name());
 	}
 
 	@Override
-	public boolean proofFlagSetBefore(IStringFormatManagerZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+	public boolean proofFlagSetBefore(IStringFormatManagerEnabledZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 		return this.proofFlagSetBefore(objEnumFlag.name());
 	}
 }

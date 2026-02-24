@@ -2,7 +2,7 @@ package basic.zBasic.util.string.formater;
 
 import basic.zBasic.ExceptionZZZ;
 
-public interface IStringFormatManagerUserZZZ extends IStringFormatManagerFlagZZZ{
+public interface IStringFormatManagerUserZZZ extends IStringFormatManagerEnabledZZZ{
 	public IStringFormatManagerZZZ getStringFormatManager() throws ExceptionZZZ;
 	public void setStringFormatManager(IStringFormatManagerZZZ objFormatManager) throws ExceptionZZZ;
 }

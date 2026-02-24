@@ -1765,7 +1765,7 @@ public class KernelFileIniZZZ<T> extends AbstractKernelUseObjectZZZ<T> implement
 	//###################################################
 	//### Flag Handling
 	
-	//+++ Aus Interface: IListenerObjectFlagZsetZZZ
+	//### aus IListenerObjectFlagZsetZZZ
 	@Override
 	public boolean flagChanged(IEventObjectFlagZsetZZZ eventFlagZset) throws ExceptionZZZ{
 		boolean bReturn = false;

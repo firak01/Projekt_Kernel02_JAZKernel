@@ -8,7 +8,7 @@ import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.string.justifier.IStringJustifierZZZ;
 import basic.zKernel.flag.IFlagZEnabledZZZ;
 
-public interface IStringFormatManagerFlagZZZ extends IFlagZEnabledZZZ{
+public interface IStringFormatManagerEnabledZZZ extends IFlagZEnabledZZZ{
 		
 	//#############################################################
 	//### FLAGZ

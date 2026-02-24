@@ -17,6 +17,7 @@ import basic.zBasic.util.file.FileEasyZZZ;
 import basic.zBasic.util.file.FileTextWriterZZZ;
 import basic.zBasic.util.string.formater.AbstractStringFormaterZZZ;
 import basic.zBasic.util.string.formater.IEnumSetMappedStringFormatZZZ;
+import basic.zBasic.util.string.formater.IStringFormatManagerEnabledZZZ;
 import basic.zBasic.util.string.formater.IStringFormatManagerZZZ;
 import basic.zBasic.util.string.formater.IStringFormatZZZ;
 import basic.zBasic.util.string.formater.StringFormatManagerXmlZZZ;
@@ -27,6 +28,7 @@ import basic.zBasic.util.string.justifier.IStringJustifierZZZ;
 import basic.zBasic.util.string.justifier.SeparatorMessageStringJustifierZZZ;
 import basic.zKernel.file.ini.IKernelCallIniSolverZZZ;
 import basic.zKernel.flag.IFlagZEnabledZZZ;
+import basic.zKernel.flag.event.IListenerObjectFlagZsetZZZ;
 import basic.zUtil.io.IFileExpansionEnabledZZZ;
 import basic.zUtil.io.IFileExpansionZZZ;
 import basic.zUtil.io.KernelFileExpansionZZZ;
@@ -98,6 +100,10 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 	
 	private void KernelLogNew_(IKernelConfigZZZ objConfig, String sDirectoryPathIn, String sLogFileIn, IFileExpansionZZZ objFileExpansion, String[] saFlagControl) throws ExceptionZZZ{
 		
+		TODOGOON20260224;//1. Checken ob "init" in Array, dann break
+		                 //2. objStringFormatManger als instanz holen
+		                 //3. den objStringFormatManager am LogObjekt für die Flagset Operation registrieren
+		                 //4. nun erst die Flags setzen
 		main:{
 		if(saFlagControl!=null){
 			boolean btemp = false;
@@ -106,7 +112,7 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 				btemp = this.setFlag(stemp, true);
 				
 				if(btemp==false){ 								   
-					   ExceptionZZZ ez = new ExceptionZZZ( IFlagZEnabledZZZ.sERROR_FLAG_UNAVAILABLE + stemp, IFlagZEnabledZZZ.iERROR_FLAG_UNAVAILABLE, ReflectCodeZZZ.getMethodCurrentName(), ""); 
+					   ExceptionZZZ ez = new ExceptionZZZ(IFlagZEnabledZZZ.sERROR_FLAG_UNAVAILABLE + stemp, IFlagZEnabledZZZ.iERROR_FLAG_UNAVAILABLE, ReflectCodeZZZ.getMethodCurrentName(), ""); 
 					   throw ez;		 
 				}
 			}
@@ -155,6 +161,7 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 	public IStringFormatManagerZZZ getStringFormatManager() throws ExceptionZZZ{
 		if(this.objStringFormatManager==null) {
 			this.objStringFormatManager = StringFormatManagerZZZ.getInstance();
+			this.registerForFlagEventAdopted((IListenerObjectFlagZsetZZZ) this.objStringFormatManager);//Damit wird dieser an die Flags gekoppelt
 		}
 		return this.objStringFormatManager;
 	}
@@ -163,10 +170,17 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 		this.objStringFormatManager = objStringFormatManager;
 	}
 	
+	//### aus ILogStringComputerZZZ ################################
+	public String computeLine(Object object, String sLog) throws ExceptionZZZ{
+		IStringFormatManagerZZZ objFormatManager = this.getStringFormatManager();
+		return AbstractKernelLogZZZ.computeLine(object, objFormatManager, sLog);				
+	}
 	
 	
-	
+	//#########################################################################################################
+	//#########################################################################################################
 	//#### static Methoden #########################################
+	
 	
 	//#######################################################
 	//### Da diese Formate an mehreren Stellen verwendet werden .compute...Justified,  .compute...Jagged
@@ -299,12 +313,13 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 		return iaFormat;
 	}
 	
+	
 	//#######################################################
 	//### als einfache STRING Rueckgabe, basierend nur auf STRING Werte.
 	//### Da PositionCurrent - XML ist, kann das hier nicht vorkommen.
 	//#######################################################
 	
-	public synchronized static String computeLine(Object objIn, String sLog) throws ExceptionZZZ {
+	public synchronized static String computeLine(Object objIn, IStringFormatManagerZZZ objFormatManagerIn, String sLog) throws ExceptionZZZ {
 		Object obj=null;
 		if(objIn==null) {
 			ExceptionZZZ ez = new ExceptionZZZ("Object", iERROR_PARAMETER_MISSING, AbstractKernelLogZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
@@ -314,10 +329,17 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 		}
 		Class classObj = obj.getClass();
 		
+		IStringFormatManagerZZZ objFormatManager=null; 
+		if(objFormatManagerIn==null) {
+			objFormatManager = StringFormatManagerZZZ.getInstance();		
+		}else {
+			objFormatManager = objFormatManagerIn;
+		}
+		
+		
 		String[]saLog = new String[1];
 		saLog[0] = sLog;
 		
-		IStringFormatManagerZZZ objFormatManager = StringFormatManagerZZZ.getInstance();
 		return computeLine__(objFormatManager, classObj, saLog);
 	}
 	
@@ -1255,25 +1277,25 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 	//#######################################
 		//### FLAG Handling
 		
-		//### Aus Interface IStringFormatManagerUserZZZ
+		//### Aus Interface IStringFormatManagerEnabledZZZ
 		@Override
-		public boolean getFlag(IStringFormatManagerZZZ.FLAGZ objEnum_IStringFormatManagerZZZ) throws ExceptionZZZ {
+		public boolean getFlag(IStringFormatManagerEnabledZZZ.FLAGZ objEnum_IStringFormatManagerZZZ) throws ExceptionZZZ {
 			return this.getFlag(objEnum_IStringFormatManagerZZZ.name());
 		}
 		
 		@Override
-		public boolean setFlag(IStringFormatManagerZZZ.FLAGZ objEnum_IStringFormatManagerZZZ, boolean bFlagValue) throws ExceptionZZZ {
+		public boolean setFlag(IStringFormatManagerEnabledZZZ.FLAGZ objEnum_IStringFormatManagerZZZ, boolean bFlagValue) throws ExceptionZZZ {
 			return this.setFlag(objEnum_IStringFormatManagerZZZ.name(), bFlagValue);
 		}
 		
 		@Override
-		public boolean[] setFlag(IStringFormatManagerZZZ.FLAGZ[] objaEnum_IStringFormatManagerZZZ, boolean bFlagValue) throws ExceptionZZZ {
+		public boolean[] setFlag(IStringFormatManagerEnabledZZZ.FLAGZ[] objaEnum_IStringFormatManagerZZZ, boolean bFlagValue) throws ExceptionZZZ {
 			boolean[] baReturn=null;
 			main:{
 				if(!ArrayUtilZZZ.isNull(objaEnum_IStringFormatManagerZZZ)) {
 					baReturn = new boolean[objaEnum_IStringFormatManagerZZZ.length];
 					int iCounter=-1;
-					for(IStringFormatManagerZZZ.FLAGZ objEnum_IStringFormatManagerZZZ:objaEnum_IStringFormatManagerZZZ) {
+					for(IStringFormatManagerEnabledZZZ.FLAGZ objEnum_IStringFormatManagerZZZ:objaEnum_IStringFormatManagerZZZ) {
 						iCounter++;
 						boolean bReturn = this.setFlag(objEnum_IStringFormatManagerZZZ, bFlagValue);
 						baReturn[iCounter]=bReturn;
@@ -1284,12 +1306,12 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 		}
 		
 		@Override
-		public boolean proofFlagExists(IStringFormatManagerZZZ.FLAGZ objEnum_IStringFormatManagerZZZ) throws ExceptionZZZ {
+		public boolean proofFlagExists(IStringFormatManagerEnabledZZZ.FLAGZ objEnum_IStringFormatManagerZZZ) throws ExceptionZZZ {
 			return this.proofFlagExists(objEnum_IStringFormatManagerZZZ.name());
 		}
 		
 		@Override
-		public boolean proofFlagSetBefore(IStringFormatManagerZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
+		public boolean proofFlagSetBefore(IStringFormatManagerEnabledZZZ.FLAGZ objEnumFlag) throws ExceptionZZZ {
 				return this.proofFlagSetBefore(objEnumFlag.name());
 		}
 }//end class

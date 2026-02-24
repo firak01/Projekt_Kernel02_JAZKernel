@@ -1,5 +1,6 @@
 package basic.zBasic;
 
+import basic.zBasic.util.string.formater.IStringFormatManagerZZZ;
 import basic.zKernel.AbstractKernelLogZZZ;
 import custom.zKernel.LogZZZ;
 
@@ -32,7 +33,7 @@ public class ObjectZZZ extends AbstractObjectWithExceptionZZZ{
 	}
 	
 	public static void logLine(Object obj, String sLog) throws ExceptionZZZ{		
-		String sTemp = LogZZZ.computeLine(obj, sLog);
+		String sTemp = LogZZZ.computeLine(obj, (IStringFormatManagerZZZ) null, sLog);
 		System.out.println(sTemp);
 	}
 	
