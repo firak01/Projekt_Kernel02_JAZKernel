@@ -7,6 +7,7 @@ package basic.zBasic.util.datatype.string;
 import junit.framework.TestCase;
 
 import java.util.Iterator;
+import java.util.Map;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -132,6 +133,25 @@ public class StringArrayZZZTest extends TestCase implements IConstantZZZ {
 			
 			
 		}catch(ExceptionZZZ ez){
+			ez.printStackTrace();
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
+	}
+	
+	public void testSplitByKeyToMap() {
+		try {
+			String[] sa01 = {"a","b","#","c","d","e","f","g","*","h","i","j","~","x","y"}; 
+			String[] saKey = {"#","~","!","*"};
+			
+			Map<String, String[]> hmValue = StringArrayZZZ.splitByKeysToMap(sa01, saKey);
+			assertNotNull(hmValue);
+			assertEquals(4,hmValue.size());
+			
+			
+			
+			
+		}catch(ExceptionZZZ ez){
+			ez.printStackTrace();
 			fail("Method throws an exception." + ez.getMessageLast());
 		}
 	}
@@ -146,6 +166,7 @@ public class StringArrayZZZTest extends TestCase implements IConstantZZZ {
 			
 			
 		}catch(ExceptionZZZ ez){
+			ez.printStackTrace();
 			fail("Method throws an exception." + ez.getMessageLast());
 		}
 	}
@@ -174,6 +195,7 @@ public class StringArrayZZZTest extends TestCase implements IConstantZZZ {
 				System.out.println(stemp);								
 			}
 		}catch(ExceptionZZZ ez){
+			ez.printStackTrace();
 			fail("Method throws an exception." + ez.getMessageLast());
 		}
 	}

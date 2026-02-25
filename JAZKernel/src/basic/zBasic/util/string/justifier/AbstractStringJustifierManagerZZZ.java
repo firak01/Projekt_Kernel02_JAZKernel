@@ -270,7 +270,7 @@ public class AbstractStringJustifierManagerZZZ extends AbstractObjectWithFlagZZZ
 			//#######################
 						
 			//1. Teile Formatierung an den Zeilentrennern auf.
-			List<IEnumSetMappedStringFormatZZZ[]> listaEnumLine = ArrayUtilZZZ.splitArrayByValue(ienumaFormatLogStringIn, (IEnumSetMappedStringFormatZZZ)IStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_LINENEXT_, IEnumSetMappedStringFormatZZZ.class);
+			List<IEnumSetMappedStringFormatZZZ[]> listaEnumLine = ArrayUtilZZZ.splitByValue(ienumaFormatLogStringIn, (IEnumSetMappedStringFormatZZZ)IStringFormatZZZ.LOGSTRINGFORMAT.CONTROL_LINENEXT_, IEnumSetMappedStringFormatZZZ.class);
 			
 			//2. Mache jede Zeile bündig, per den notwendigen Justifiern
 			ArrayListZZZ<IStringJustifierZZZ> listaStringJustifier; 

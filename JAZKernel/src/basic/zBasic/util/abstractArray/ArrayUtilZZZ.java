@@ -6,14 +6,17 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.ArrayUtils;
 
 import base.util.abstractArray.ArrayUtil;
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 
 /** Erweitere nach Bedarf:
@@ -27,50 +30,6 @@ import basic.zBasic.util.datatype.string.StringArrayZZZ;
 public class ArrayUtilZZZ<T>{
 	private ArrayUtilZZZ() {}//static methods only
 	
-//	public static String[] intersect(String[] saString01, String[] saString02) throws ExceptionZZZ{
-//		String[]saReturn = null;
-//		main:{
-//			if(saString01==null)break main;
-//			if(saString02==null)break main;
-//			if(saString01.length==0) break main;
-//			if(saString02.length==0) break main;
-//						
-//			ArrayList<String>listasTemp = new ArrayList<String>();
-//			for(String s01 : saString01){
-//				if(StringArrayZZZ.contains(saString02, s01)){
-//					listasTemp.add(s01);
-//				}				
-//			}			
-//			saReturn = listasTemp.toArray(new String[listasTemp.size()]);
-//		}//End main:
-//		return saReturn;
-//	}	
-//	
-//	
-//	public static String[] intersectOrNotNull(String[] saString01, String[] saString02) throws ExceptionZZZ{
-//		String[]saReturn = null;
-//		main:{
-//			if(saString01==null && saString02==null)break main;
-//			if(saString01==null) {
-//				if(saString02.length==0) break main;
-//				
-//				saReturn = saString02;
-//				break main;
-//			}
-//			
-//			
-//			if(saString02==null) {
-//				if(saString01.length==0) break main;
-//				
-//				saReturn = saString01;
-//				break main;
-//			}
-//			
-//			
-//			saReturn = StringArrayZZZ.intersect(saString01, saString02);
-//		}//End main:
-//		return saReturn;
-//	}	
 	
 	// ======================================================
     // Generische contains-Methode
@@ -651,7 +610,7 @@ public class ArrayUtilZZZ<T>{
      * @return
      * @author Fritz Lindhauer, 09.11.2025, 07:21:33
      */
-    public static <T> List<T[]> splitArrayByValue(T[] sourceArray, T splitValue, Class<T> clazz) {
+    public static <T> List<T[]> splitByValue(T[] sourceArray, T splitValue, Class<T> clazz) {
     	List<T[]> listaReturn = new ArrayList<T[]>();
     	main:{
 	        List<T> currentList = new ArrayList<T>();
@@ -677,6 +636,43 @@ public class ArrayUtilZZZ<T>{
     	}//end main:
         return listaReturn;
     }
+    
+    public static <T> Map<String, T[]> splitByKeysToMap(T[] values, String[] keys, Class<T> clazz) throws ExceptionZZZ{
+
+        Map<String, T[]> result = new LinkedHashMap<String, T[]>();
+        Set<String> keySet = new HashSet<String>(Arrays.asList(keys));
+
+        List<T> currentList = new ArrayList<T>();
+        String currentKey = "pre";
+
+        for (T value : values) {
+
+            if (value instanceof String && keySet.contains(value)) {
+
+                //result.put(currentKey, listToArray(currentList, clazz));
+            	result.put(currentKey, ArrayListUtilZZZ.toArray(currentList, clazz));
+
+                currentKey = (String) value;
+                currentList = new ArrayList<T>();
+            } else {
+                currentList.add(value);
+            }
+        }
+
+       //result.put(currentKey, listToArray(currentList, clazz));
+        result.put(currentKey, ArrayListUtilZZZ.toArray(currentList, clazz));
+
+        return result;
+    }
+
+//    private static <T> T[] listToArray(List<T> list, Class<T> clazz) {
+//        @SuppressWarnings("unchecked")
+//        T[] array = (T[]) Array.newInstance(clazz, list.size());
+//        return list.toArray(array);
+//    }
+
+    
+    //#############################################################
     
     /** Ein und Ausgabearray unterscheiden sich
      * @param objArray

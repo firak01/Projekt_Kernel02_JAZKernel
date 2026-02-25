@@ -2,6 +2,11 @@ package basic.zBasic.util.datatype.string;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.Vector;
 
 import org.apache.commons.lang.ArrayUtils;
@@ -1147,6 +1152,37 @@ output:
 		StringArrayZZZ saObj = new StringArrayZZZ(saSource);
 		return saObj.sort();					
 	}
+	
+	public static Map<String, String[]> splitByKeysToMap(String[] values, String[] keys) throws ExceptionZZZ {
+
+        Map<String, String[]> result = new LinkedHashMap<String, String[]>();
+        Set<String> keySet = new HashSet<String>(Arrays.asList(keys));
+
+        List<String> currentList = new ArrayList<String>();
+        String currentKey = "pre";
+
+        for (String value : values) {
+
+            if (keySet.contains(value)) {
+                // aktuelles Segment speichern
+                result.put(currentKey,
+                        currentList.toArray(new String[currentList.size()]));
+
+                // neues Segment beginnen
+                currentKey = value;
+                currentList = new ArrayList<String>();
+            } else {
+                currentList.add(value);
+            }
+        }
+
+        // letztes Segment speichern
+        result.put(currentKey,
+                currentList.toArray(new String[currentList.size()]));
+
+        return result;
+    }
+
 	
 	/**Trimme hier nicht leere Array-Elemente (einzeln wie mit String.trim() )
 	 * @param saString

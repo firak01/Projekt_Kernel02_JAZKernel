@@ -547,6 +547,31 @@ public class ArrayListUtilZZZ<T>  implements IConstantZZZ{
 		return aReturn;
 	}
 	
+	
+//	private static <T> T[] listToArray(List<T> list, Class<T> clazz) {
+//      @SuppressWarnings("unchecked")
+//      T[] array = (T[]) Array.newInstance(clazz, list.size());
+//      return list.toArray(array);
+//  }
+		
+	@SuppressWarnings("unchecked")
+	public static <T> T[] toArray(List<T> lista, Class<T> classObjIn) throws ExceptionZZZ {
+		T[]aReturn = null;
+		main:{
+			if(lista==null) break main;
+			
+			Class<T> classObj = null; 
+			if(classObjIn == null) {
+				classObj = (Class<T>) Object.class;
+			}else {
+				classObj = classObjIn;				
+			}
+			
+			aReturn = lista.toArray((T[]) java.lang.reflect.Array.newInstance(classObj, lista.size()));
+		}
+		return aReturn;
+	}
+	
 	public static ArrayListZZZ<String> toArrayList(String[] sa) throws ExceptionZZZ{
 		ArrayListZZZ<String> listaReturn = null;
 		main:{
