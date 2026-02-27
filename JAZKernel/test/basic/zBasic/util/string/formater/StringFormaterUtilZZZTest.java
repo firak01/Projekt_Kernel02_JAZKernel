@@ -3,6 +3,7 @@ package basic.zBasic.util.string.formater;
 import java.util.HashMap;
 
 import basic.zBasic.ExceptionZZZ;
+import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.string.formater.IEnumSetMappedStringFormatZZZ;
 import basic.zBasic.util.string.formater.IStringFormatZZZ;
 import basic.zBasic.util.string.formater.StringFormaterUtilZZZ;
@@ -22,19 +23,7 @@ public class StringFormaterUtilZZZTest  extends TestCase{
 	}//END setup
 
 	
-	public void testGetHashMapFormatPositionStringAll() {
-		try {
-			//Hole den Formatierten String des "Kommentartrenners"
-			HashMap<Integer, String> hmValue = StringFormaterUtilZZZ.getHashMapFormatPositionStringAll();
-			assertNotNull(hmValue);
-			
-			int iSize = hmValue.size();
-			assertEquals(38, iSize);
-		} catch (ExceptionZZZ ez) {
-			ez.printStackTrace();
-			fail("Method throws an exception." + ez.getMessageLast());
-		}	
-	}
+	
 	
 	public void testComputeLinePartInLog() {
 		try {
@@ -54,6 +43,4 @@ public class StringFormaterUtilZZZTest  extends TestCase{
 			fail("Method throws an exception." + ez.getMessageLast());
 		}	
 	}
-	
-	
 }//end class

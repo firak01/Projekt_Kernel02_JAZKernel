@@ -54,7 +54,9 @@ public interface IStringFormatZZZ extends ITagTypeMethodZZZ, ITagTypeLineNumberZ
 	
 	//Argumente der compute Methode (sofern vorhanden und != null)
 	//TODO IDEE: Wenn man eine Zahl angibt, soll die Zusammenstellung des Formats definiert sein.
-	//           Darum sind das alles Primzahlen...			
+	//           Darum sind das alles Primzahlen...
+	public static int iFACTOR_NULL_STRING_=0;
+	
 	public static int iFACTOR_STRINGTYPE01_STRING_BY_STRING=1;
 	public static int iFACTOR_STRINGTYPE02_STRING_BY_STRING=2;     
 	public static int iFACTOR_STRINGTYPE03_STRING_BY_STRING=3;
@@ -137,11 +139,13 @@ public interface IStringFormatZZZ extends ITagTypeMethodZZZ, ITagTypeLineNumberZ
 	//Aufbau des Enum:
 	//ALIAS("Uniquename bzw. Tag",Faktor, "Format... Merke %s für den String wert muss für String.format() sein",Kennzeichen des Argumenttyps,"PostfixSeparatorString", "Beschreibung, wird nicht genutzt....")	
 	public enum LOGSTRINGFORMAT implements IEnumSetMappedStringFormatZZZ{//Folgendes geht nicht, da alle Enums schon von einer Java BasisKlasse erben... extends EnumSetMappedBaseZZZ{		
+	CONTROL_NULL_STRING_("null",IStringFormatZZZ.iFACTOR_NULL_STRING_, "", "null", IStringFormatZZZ.iARG_CONTROL, "","Dummy Null Wert. Z.B. fuer die linke Begrenzung, statt eines Separtors"),	
+		
 	STRINGTYPE01_STRING_BY_STRING("stringtype01",IStringFormatZZZ.iFACTOR_STRINGTYPE01_STRING_BY_STRING, IStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[A01]", "%s",IStringFormatZZZ.iARG_STRING,  "[/A01]" + IStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Gib den naechsten Log String - sofern vorhanden - in diesem Format aus."),
 	STRINGTYPE02_STRING_BY_STRING("stringtype02",IStringFormatZZZ.iFACTOR_STRINGTYPE02_STRING_BY_STRING, IStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[A02]", "%s",IStringFormatZZZ.iARG_STRING, "[/A02]" + IStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Gib den naechsten Log String - sofern vorhanden - in diesem Format aus."),
 	//STRINGTYPE03_STRING_BY_STRING("stringtype03",ILogStringFormatZZZ.iFACTOR_STRINGTYPE03_STRING_BY_STRING, ILogStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[A03]", "%s",ILogStringFormatZZZ.iARG_STRING, sPOSITION_MESSAGE_SEPARATOR + "[/A03]" + ILogStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Gib den naechsten Log String - sofern vorhanden - in diesem Format aus."),
 	STRINGTYPE03_STRING_BY_STRING("stringtype03",IStringFormatZZZ.iFACTOR_STRINGTYPE03_STRING_BY_STRING, IStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[A03]", "%s",IStringFormatZZZ.iARG_STRING, "[/A03]" + IStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Gib den naechsten Log String - sofern vorhanden - in diesem Format aus."),
-	CONTROL_LINENEXT_("linenext",IStringFormatZZZ.iFACTOR_LINENEXT_STRING, IStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[A05/]", "%s",IStringFormatZZZ.iARG_CONTROL, "" + IStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Teile an dieser Stelle die Formatanweisungen auf. Alles danach ist fure eine Folgezeile. Ohne Ausgabe des aktuellen LogString."),				
+	CONTROL_LINENEXT_("linenext",IStringFormatZZZ.iFACTOR_LINENEXT_STRING, IStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[A05/]", "%s",IStringFormatZZZ.iARG_CONTROL, "" + IStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Teile an dieser Stelle die Formatanweisungen auf. Alles danach ist fuer eine Folgezeile. Ohne Ausgabe des aktuellen LogString."),				
 	
 	CLASSMETHOD_STRING_BY_HASHMAP("methodbystring",IStringFormatZZZ.iFACTOR_CLASSMETHOD_STRING_BY_HASHMAP, IStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "", "%s",IStringFormatZZZ.iARG_STRING,"" + IStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Gib den Methodennamen in diesem  in diesem String Format aus, ermittelt in ReflectCodeZZZ.getPositionCurrent()."),		
 	CLASSFILELINE_STRING_BY_HASHMAP("linenrbystring",IStringFormatZZZ.iFACTOR_CLASSFILELINE_STRING_BY_HASHMAP, IStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "", "%s",IStringFormatZZZ.iARG_STRING, "" + IStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Gib die errechnete Codezeil in der Java-Datei in diesem String Format aus, ermittelt in ReflectCodeZZZ.getPositionCurrent()."),

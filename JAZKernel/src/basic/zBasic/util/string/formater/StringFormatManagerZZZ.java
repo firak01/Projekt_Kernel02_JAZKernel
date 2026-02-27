@@ -2,6 +2,7 @@ package basic.zBasic.util.string.formater;
 
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
@@ -295,6 +296,12 @@ public class StringFormatManagerZZZ extends AbstractStringFormatManagerZZZ imple
 			//d.h.0.1. aufteilen auf ggfs. mehrere Zeilen (bisherige version, neue Version)
 			//    0.2. fehlende Spalten etc. ergänzen, Reihenfolge angleichen
 			IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString;
+			
+			
+			//TODOGOON20260227 das noch mit einem Flag "absichern".
+			ienumaFormatLogString = this.getStringFormatArrayCurrent();
+			ienumaFormatLogString = StringFormatManagerUtilZZZ.mergeFormatArrays(ienumaFormatLogStringIn, ienumaFormatLogString);
+			
 			if(!this.getFlag(IStringFormatManagerEnabledZZZ.FLAGZ.USE_INDIVIDUAL_FORMAT)) {
 				//System.out.println(ReflectCodeZZZ.getPositionCurrent() +": Verwende individuelle Formatvorlage, ggfs. als Vermischung mit zuvor verwendeter.");
 				ienumaFormatLogString = this.getStringFormatArrayCurrent();

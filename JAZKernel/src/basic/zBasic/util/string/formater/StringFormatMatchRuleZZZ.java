@@ -16,7 +16,7 @@ public class StringFormatMatchRuleZZZ<V extends IStringJustifierZZZ,K extends IE
 			if(value==null) break main;
 			if(key==null) break main;
 		
-			HashMap<Integer, String> hmSeparator = StringFormaterUtilZZZ.getHashMapLogStringSeparatorAllForLine();
+			HashMap<Integer, String> hmSeparator = StringFormatManagerUtilZZZ.getHashMapLogStringSeparatorAllForLine();
 			
 			//Hole den Faktor aus dem IEnum, damit ein ggfs. vorhandener Faktor mit Steuerkennzeichen und Separator 
 			//mit dem Separtor des Justifiers verglichen werden kann.

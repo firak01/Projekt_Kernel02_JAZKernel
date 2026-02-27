@@ -634,6 +634,7 @@ public class ArrayUtilZZZ<T>{
 	            listaReturn.add(subArray);
 	        }
     	}//end main:
+    	
         return listaReturn;
     }
     
@@ -648,20 +649,45 @@ public class ArrayUtilZZZ<T>{
         for (T value : values) {
 
             if (value instanceof String && keySet.contains(value)) {
-
-                //result.put(currentKey, listToArray(currentList, clazz));
+            	//also neuen Separator gefunden            	
             	result.put(currentKey, ArrayListUtilZZZ.toArray(currentList, clazz));
 
                 currentKey = (String) value;
-                currentList = new ArrayList<T>();
+                currentList = new ArrayList<T>();                
             } else {
-                currentList.add(value);
+            	currentList.add(value);
             }
         }
-
-       //result.put(currentKey, listToArray(currentList, clazz));
+        
+        //das letzte Array auch noch hinzufuegen
         result.put(currentKey, ArrayListUtilZZZ.toArray(currentList, clazz));
+        return result;
+    }
+    
+    public static <T> Map<T, T[]> splitByKeysToMap(T[] values, T[] keys, T firstKey, Class<T> clazz) throws ExceptionZZZ{
 
+        Map<T, T[]> result = new LinkedHashMap<T, T[]>();
+        Set<T> keySet = new HashSet<T>(Arrays.asList(keys));
+
+        List<T> currentList = new ArrayList<T>();
+        T currentKey = firstKey;
+        
+        for (T value : values) {
+        	
+            if (keySet.contains(value)) {
+
+            	//also neuen Separator gefunden              
+            	result.put(currentKey, ArrayListUtilZZZ.toArray(currentList, clazz));
+
+                currentKey = value;
+                currentList = new ArrayList<T>();
+            } else {
+            	 currentList.add(value); 
+            }
+        }
+        
+        //das letzte Array auch noch hinzufuegen
+        result.put(currentKey, ArrayListUtilZZZ.toArray(currentList, clazz));
         return result;
     }
 

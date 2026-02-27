@@ -230,11 +230,11 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 				classObj = classObjIn;
 			}
 			
-			boolean bFormatUsingControl = StringFormaterUtilZZZ.isFormatUsingControl(ienumFormatLogString);
-			boolean bFormatUsingObject = StringFormaterUtilZZZ.isFormatUsingObject(ienumFormatLogString);
-			boolean bFormatUsingString = StringFormaterUtilZZZ.isFormatUsingString(ienumFormatLogString);
-			boolean bFormatUsingStringXml = StringFormaterUtilZZZ.isFormatUsingStringXml(ienumFormatLogString);
-			boolean bFormatUsingStringHashMap = StringFormaterUtilZZZ.isFormatUsingHashMap(ienumFormatLogString);
+			boolean bFormatUsingControl = StringFormatManagerUtilZZZ.isFormatUsingControl(ienumFormatLogString);
+			boolean bFormatUsingObject = StringFormatManagerUtilZZZ.isFormatUsingObject(ienumFormatLogString);
+			boolean bFormatUsingString = StringFormatManagerUtilZZZ.isFormatUsingString(ienumFormatLogString);
+			boolean bFormatUsingStringXml = StringFormatManagerUtilZZZ.isFormatUsingStringXml(ienumFormatLogString);
+			boolean bFormatUsingStringHashMap = StringFormatManagerUtilZZZ.isFormatUsingHashMap(ienumFormatLogString);
 									
 			//Merke: Das Log-String-Array kann nur hier verarbeitet werden.
 			//       Es in einer aufrufenden Methode zu verarbeitet, wuerde ggfs. mehrmals .computeByObject_ ausfuehren, was falsch ist.
@@ -311,11 +311,11 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 				classObj = classObjIn;
 			}
 									
-			boolean bFormatUsingControl = StringFormaterUtilZZZ.isFormatUsingControl(ienumFormatLogString);
-			boolean bFormatUsingObject = StringFormaterUtilZZZ.isFormatUsingObject(ienumFormatLogString);
-			boolean bFormatUsingString = StringFormaterUtilZZZ.isFormatUsingString(ienumFormatLogString);
-			boolean bFormatUsingStringXml = StringFormaterUtilZZZ.isFormatUsingStringXml(ienumFormatLogString);
-			boolean bFormatUsingStringHashMap = StringFormaterUtilZZZ.isFormatUsingHashMap(ienumFormatLogString);
+			boolean bFormatUsingControl = StringFormatManagerUtilZZZ.isFormatUsingControl(ienumFormatLogString);
+			boolean bFormatUsingObject = StringFormatManagerUtilZZZ.isFormatUsingObject(ienumFormatLogString);
+			boolean bFormatUsingString = StringFormatManagerUtilZZZ.isFormatUsingString(ienumFormatLogString);
+			boolean bFormatUsingStringXml = StringFormatManagerUtilZZZ.isFormatUsingStringXml(ienumFormatLogString);
+			boolean bFormatUsingStringHashMap = StringFormatManagerUtilZZZ.isFormatUsingHashMap(ienumFormatLogString);
 									
 			//Merke: Das Log-String-Array kann nur hier verarbeitet werden.
 			//       Es in einer aufrufenden Methode zu verarbeitet, wuerde ggfs. mehrmals .computeByObject_ ausfuehren, was falsch ist.
@@ -492,7 +492,7 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 				ExceptionZZZ ez = new ExceptionZZZ("IEnumSetMappedLogStringFormatZZZ", iERROR_PARAMETER_MISSING, AbstractStringFormaterZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;				
 			}
-			if (!StringFormaterUtilZZZ.isFormatUsingControl(ienumFormatLogString)) break main; // Hier werden also nur Werte errechnet aufgrund des Objekts selbst
+			if (!StringFormatManagerUtilZZZ.isFormatUsingControl(ienumFormatLogString)) break main; // Hier werden also nur Werte errechnet aufgrund des Objekts selbst
 		
 		    					   
 			String sFormat=null; String sLeft=null; String sMid = null; String sRight=null;
@@ -698,7 +698,7 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 				ExceptionZZZ ez = new ExceptionZZZ("IEnumSetMappedLogStringFormatZZZ", iERROR_PARAMETER_MISSING, AbstractStringFormaterZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;				
 			}
-			if (!StringFormaterUtilZZZ.isFormatUsingControl(ienumFormatLogString)) break main; // Hier werden also nur Werte errechnet aufgrund des Objekts selbst
+			if (!StringFormatManagerUtilZZZ.isFormatUsingControl(ienumFormatLogString)) break main; // Hier werden also nur Werte errechnet aufgrund des Objekts selbst
 		
 		    					   
 			String sFormat=null; String sLeft=null; String sMid = null; String sRight=null;
@@ -928,11 +928,11 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 		String sReturn = null;
 		main:{
 						
-			boolean bFormatUsingControl = StringFormaterUtilZZZ.isFormatUsingControl(ienumFormatLogString);
-			boolean bFormatUsingObject = StringFormaterUtilZZZ.isFormatUsingObject(ienumFormatLogString);
-			boolean bFormatUsingString = StringFormaterUtilZZZ.isFormatUsingString(ienumFormatLogString);
-			boolean bFormatUsingStringXml = StringFormaterUtilZZZ.isFormatUsingStringXml(ienumFormatLogString);
-			boolean bFormatUsingStringHashMap = StringFormaterUtilZZZ.isFormatUsingHashMap(ienumFormatLogString);
+			boolean bFormatUsingControl = StringFormatManagerUtilZZZ.isFormatUsingControl(ienumFormatLogString);
+			boolean bFormatUsingObject = StringFormatManagerUtilZZZ.isFormatUsingObject(ienumFormatLogString);
+			boolean bFormatUsingString = StringFormatManagerUtilZZZ.isFormatUsingString(ienumFormatLogString);
+			boolean bFormatUsingStringXml = StringFormatManagerUtilZZZ.isFormatUsingStringXml(ienumFormatLogString);
+			boolean bFormatUsingStringHashMap = StringFormatManagerUtilZZZ.isFormatUsingHashMap(ienumFormatLogString);
 									
 			//Merke: Das Log-String-Array kann nur hier verarbeitet werden.
 			//       Es in einer aufrufenden Methode zu verarbeitet, wuerde ggfs. mehrmals .computeByObject_ ausfuehren, was falsch ist.
@@ -988,7 +988,7 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 				ExceptionZZZ ez = new ExceptionZZZ("IEnumSetMappedLogStringFormatZZZ", iERROR_PARAMETER_MISSING, AbstractStringFormaterZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;				
 			}
-			if (!StringFormaterUtilZZZ.isFormatUsingObject(ienumFormatLogString)) break main; // Hier werden also nur Werte errechnet aufgrund des Objekts selbst
+			if (!StringFormatManagerUtilZZZ.isFormatUsingObject(ienumFormatLogString)) break main; // Hier werden also nur Werte errechnet aufgrund des Objekts selbst
 	    
 			String sLog=null; String sFormat=null; String sLeft=null; String sMid = null; String sRight=null;
 			String sDate = null;
@@ -1085,11 +1085,11 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 		String sReturn = null;
 		main:{
 						
-			boolean bFormatUsingControl = StringFormaterUtilZZZ.isFormatUsingControl(ienumFormatLogString);
-			boolean bFormatUsingObject = StringFormaterUtilZZZ.isFormatUsingObject(ienumFormatLogString);
-			boolean bFormatUsingString = StringFormaterUtilZZZ.isFormatUsingString(ienumFormatLogString);
-			boolean bFormatUsingStringXml = StringFormaterUtilZZZ.isFormatUsingStringXml(ienumFormatLogString);
-			boolean bFormatUsingStringHashMap = StringFormaterUtilZZZ.isFormatUsingHashMap(ienumFormatLogString);
+			boolean bFormatUsingControl = StringFormatManagerUtilZZZ.isFormatUsingControl(ienumFormatLogString);
+			boolean bFormatUsingObject = StringFormatManagerUtilZZZ.isFormatUsingObject(ienumFormatLogString);
+			boolean bFormatUsingString = StringFormatManagerUtilZZZ.isFormatUsingString(ienumFormatLogString);
+			boolean bFormatUsingStringXml = StringFormatManagerUtilZZZ.isFormatUsingStringXml(ienumFormatLogString);
+			boolean bFormatUsingStringHashMap = StringFormatManagerUtilZZZ.isFormatUsingHashMap(ienumFormatLogString);
 									
 			//Merke: Das Log-String-Array kann nur hier verarbeitet werden.
 			//       Es in einer aufrufenden Methode zu verarbeitet, wuerde ggfs. mehrmals .computeByObject_ ausfuehren, was falsch ist.
@@ -1173,7 +1173,7 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 				ExceptionZZZ ez = new ExceptionZZZ("IEnumSetMappedLogStringFormatZZZ", iERROR_PARAMETER_MISSING, AbstractStringFormaterZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;				
 			}
-			if (!StringFormaterUtilZZZ.isFormatUsingObject(ienumFormatLogString)) break main; // Hier werden also nur Werte errechnet aufgrund des Objekts selbst
+			if (!StringFormatManagerUtilZZZ.isFormatUsingObject(ienumFormatLogString)) break main; // Hier werden also nur Werte errechnet aufgrund des Objekts selbst
 	    
 			String sLog=null; String sFormat=null; String sLeft=null; String sMid = null; String sRight=null;
 			String sDate = null;
@@ -1423,7 +1423,7 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 				ExceptionZZZ ez = new ExceptionZZZ("IEnumSetMappedLogStringFormatZZZ", iERROR_PARAMETER_MISSING, AbstractStringFormaterZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;				
 			}
-			if (!StringFormaterUtilZZZ.isFormatUsingString(ienumFormatLogString)) break main; // Hier werden also nur Werte errechnet aufgrund des Objekts selbst
+			if (!StringFormatManagerUtilZZZ.isFormatUsingString(ienumFormatLogString)) break main; // Hier werden also nur Werte errechnet aufgrund des Objekts selbst
 		
 			
 			
@@ -1703,7 +1703,7 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 				ExceptionZZZ ez = new ExceptionZZZ("IEnumSetMappedLogStringFormatZZZ", iERROR_PARAMETER_MISSING, AbstractStringFormaterZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;				
 			}
-			if (!StringFormaterUtilZZZ.isFormatUsingStringXml(ienumMappedFormat)) break main; // Hier werden also nur Werte errechnet aufgrund des Objekts selbst
+			if (!StringFormatManagerUtilZZZ.isFormatUsingStringXml(ienumMappedFormat)) break main; // Hier werden also nur Werte errechnet aufgrund des Objekts selbst
 		
 			//###### Ohne irgendeinen String
 			if(ArrayUtilZZZ.isNull(sLogs)) {
@@ -1744,7 +1744,7 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 				ExceptionZZZ ez = new ExceptionZZZ("IEnumSetMappedLogStringFormatZZZ", iERROR_PARAMETER_MISSING, AbstractStringFormaterZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;				
 			}
-			if (!StringFormaterUtilZZZ.isFormatUsingStringXml(ienumMappedFormat)) break main; // Hier werden also nur Werte errechnet aufgrund des Objekts selbst
+			if (!StringFormatManagerUtilZZZ.isFormatUsingStringXml(ienumMappedFormat)) break main; // Hier werden also nur Werte errechnet aufgrund des Objekts selbst
 		
 			String sPrefixSeparator = ienumMappedFormat.getPrefixSeparator();
 			String sPostfixSeparator = ienumMappedFormat.getPostfixSeparator();					    
@@ -1881,7 +1881,7 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 				ExceptionZZZ ez = new ExceptionZZZ("IEnumSetMappedLogStringFormatZZZ", iERROR_PARAMETER_MISSING, AbstractStringFormaterZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;				
 			}
-			if (!StringFormaterUtilZZZ.isFormatUsingStringXml(ienumMappedFormat)) break main; // Hier werden also nur Werte errechnet aufgrund des Objekts selbst
+			if (!StringFormatManagerUtilZZZ.isFormatUsingStringXml(ienumMappedFormat)) break main; // Hier werden also nur Werte errechnet aufgrund des Objekts selbst
 		
 			//###### Ohne irgendeinen String
 			if(ArrayUtilZZZ.isNull(sLogs)) {
@@ -1914,7 +1914,7 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 				ExceptionZZZ ez = new ExceptionZZZ("IEnumSetMappedLogStringFormatZZZ", iERROR_PARAMETER_MISSING, AbstractStringFormaterZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;				
 			}
-			if (!StringFormaterUtilZZZ.isFormatUsingStringXml(ienumMappedFormat)) break main; // Hier werden also nur Werte errechnet aufgrund des Objekts selbst
+			if (!StringFormatManagerUtilZZZ.isFormatUsingStringXml(ienumMappedFormat)) break main; // Hier werden also nur Werte errechnet aufgrund des Objekts selbst
 		
 			String sPrefixSeparator = ienumMappedFormat.getPrefixSeparator();
 			String sPostfixSeparator = ienumMappedFormat.getPostfixSeparator();					    
@@ -2055,7 +2055,7 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 				ExceptionZZZ ez = new ExceptionZZZ("IEnumSetMappedLogStringFormatZZZ", iERROR_PARAMETER_MISSING, AbstractStringFormaterZZZ.class.getName(), ReflectCodeZZZ.getMethodCurrentName());
 				throw ez;				
 			}
-			if (!StringFormaterUtilZZZ.isFormatUsingString(ienumFormatLogString)) break main; // Hier werden also nur Werte errechnet aufgrund des Objekts selbst
+			if (!StringFormatManagerUtilZZZ.isFormatUsingString(ienumFormatLogString)) break main; // Hier werden also nur Werte errechnet aufgrund des Objekts selbst
 		
 			
 			
@@ -2489,7 +2489,7 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 				throw ez;				
 			}
 			
-			if (!StringFormaterUtilZZZ.isFormatUsingHashMap(ienumMappedFormat)) break main; // Hier werden also nur Werte errechnet aufgrund des Objekts selbst
+			if (!StringFormatManagerUtilZZZ.isFormatUsingHashMap(ienumMappedFormat)) break main; // Hier werden also nur Werte errechnet aufgrund des Objekts selbst
 		
 			String sPrefixSeparator = ienumMappedFormat.getPrefixSeparator();
 			String sPostfixSeparator = ienumMappedFormat.getPostfixSeparator();
@@ -2600,7 +2600,7 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 				throw ez;				
 			}
 			
-			if (!StringFormaterUtilZZZ.isFormatUsingHashMap(ienumMappedFormat)) break main; // Hier werden also nur Werte errechnet aufgrund des Objekts selbst
+			if (!StringFormatManagerUtilZZZ.isFormatUsingHashMap(ienumMappedFormat)) break main; // Hier werden also nur Werte errechnet aufgrund des Objekts selbst
 		
 			String sPrefixSeparator = ienumMappedFormat.getPrefixSeparator();
 			String sPostfixSeparator = ienumMappedFormat.getPostfixSeparator();

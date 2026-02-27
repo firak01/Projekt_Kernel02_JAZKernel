@@ -331,9 +331,9 @@ public class HashMapUtilZZZ {
 	//	 */
 		
 		//TODOGOON: Das ist nicht im Einsatz, testen. 
-		public static HashMap<Integer, List<?>> copyWithList(HashMap<Integer, List<?>> original) throws ExceptionZZZ {
+		public static HashMap<Integer, List<?>> copyWithList(HashMap<Integer, List<?>> listOriginal) throws ExceptionZZZ {
 		    HashMap<Integer, List<?>> copy = new HashMap<Integer, List<?>>();
-		    for (Map.Entry<Integer, List<?>> entry : original.entrySet())
+		    for (Map.Entry<Integer, List<?>> entry : listOriginal.entrySet())
 		    {
 		        copy.put(entry.getKey(),
 		           // Or whatever List implementation you'd like here.
@@ -341,6 +341,22 @@ public class HashMapUtilZZZ {
 		    }
 		    return copy;
 		}
+		
+		//##############################################################################
+		public static <K,V> HashMap<K,V> fromMap(Map<K,V> mapOriginal) throws ExceptionZZZ {
+			HashMap<K,V> hmReturn = null;
+			main:{
+				if(mapOriginal==null) break main;
+				
+				hmReturn = new HashMap<K,V>();
+				 for (Map.Entry<K, V> entry : mapOriginal.entrySet()){
+				        hmReturn.put(entry.getKey(), entry.getValue());
+				 }				
+			}//end main:
+			return hmReturn;
+		}
+		
+		//##############################################################################
 
 		/** Gehe einfach das KeySet durch und gib den ersten Eintrag zurueck.
 		 * @param map

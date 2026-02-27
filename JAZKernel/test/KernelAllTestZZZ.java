@@ -97,6 +97,9 @@ public class KernelAllTestZZZ {
 		objReturn.addTestSuite(ReflectClassZZZTest.class);
 		
 		//Tests fuer das bauen eines FORMATIERTEN (ggfs. buendigen) Strings
+		objReturn.addTestSuite(basic.zBasic.util.string.formater.StringFormatManagerUtilZZZTest.class);
+		objReturn.addTestSuite(basic.zBasic.util.string.formater.StringFormaterUtilZZZTest.class);
+		
 		objReturn.addTestSuite(basic.zBasic.util.string.formater.testV00.StringFormaterZZZ00Test.class);
 		objReturn.addTestSuite(basic.zBasic.util.string.formater.testV00.StringFormatManagerZZZ00Test.class);
 		

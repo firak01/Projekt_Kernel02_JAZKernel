@@ -23,8 +23,8 @@ import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilZZZ;
 import basic.zBasic.util.string.formater.IEnumSetMappedStringFormatZZZ;
+import basic.zBasic.util.string.formater.StringFormatManagerUtilZZZ;
 import basic.zBasic.util.string.formater.StringFormatMatchRuleZZZ;
-import basic.zBasic.util.string.formater.StringFormaterUtilZZZ;
 import basic.zBasic.xml.tagtype.ITagByTypeZZZ;
 import basic.zBasic.xml.tagtype.TagByTypeFactoryZZZ;
 
@@ -94,7 +94,7 @@ public class StringJustifierManagerUtilZZZ implements IConstantZZZ{
 			if(listaStringJustifier == null) break main;
 			
 			//Hole aus der HashMap die Bestandteile, die Kontrollformat sind als Arraylist						
-			ArrayListZZZ<IEnumSetMappedStringFormatZZZ> listaEnumFormatLogString= StringFormaterUtilZZZ.getArrayListLogStringSeparatorFrom(hm);
+			ArrayListZZZ<IEnumSetMappedStringFormatZZZ> listaEnumFormatLogString= StringFormatManagerUtilZZZ.filterSeparatorsAsArrayList(hm);
 			 
 			IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString = EnumSetMappedLogStringFormatUtilZZZ.toEnumMappedArray(listaEnumFormatLogString);
 			

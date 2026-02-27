@@ -73,6 +73,11 @@ public abstract class AbstractStringFormatManagerZZZ extends AbstractObjectWithF
 	//##########################################################################
 	//### aus IStringFormatUserZZZ
 	@Override
+	public IEnumSetMappedStringFormatZZZ[] getStringFormatArrayDefault() throws ExceptionZZZ{
+		return LogZZZ.getFormatForComputeLineDefault();			
+	}
+	
+	@Override
 	public IEnumSetMappedStringFormatZZZ[] getStringFormatArrayCurrent() throws ExceptionZZZ{
 		IEnumSetMappedStringFormatZZZ[] objaReturn=null;
 		if(this.ienumaFormatStringCurrent==null) {
