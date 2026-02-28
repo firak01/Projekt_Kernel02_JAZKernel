@@ -27,7 +27,7 @@ import basic.zBasic.util.math.MathZZZ;
  * @author lindhaueradmin
  *
  */
-public class HashMapZZZ<T,X> extends HashMap implements  IObjectZZZ, IHashMapZZZ{
+public class HashMapZZZ<K,V> extends HashMap implements  IObjectZZZ, IHashMapZZZ{
 	private static final long serialVersionUID = -576703130885041379L;
 		
 	protected volatile String sDebugKeyDelimiterUsed = null; //zum Formatieren einer Debug Ausgabe

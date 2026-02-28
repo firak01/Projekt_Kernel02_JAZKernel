@@ -17,6 +17,7 @@ import basic.zBasic.util.abstractList.HashMapMultiIndexedZZZTest;
 import basic.zBasic.util.abstractList.HashMapMultiZZZTest;
 import basic.zBasic.util.abstractList.HashMapUtilZZZTest;
 import basic.zBasic.util.abstractList.HashtableSortedZZZTest;
+import basic.zBasic.util.abstractList.MapUtilZZZTest;
 import basic.zBasic.util.abstractList.Vector3ZZZTest;
 import basic.zBasic.util.abstractList.VectorLimitedZZZTest;
 import basic.zBasic.util.abstractList.VectorUtilZZZTest;
@@ -131,6 +132,7 @@ public class KernelAllTestZZZ {
 		objReturn.addTestSuite(VectorLimitedZZZTest.class);
 		objReturn.addTestSuite(Vector3ZZZTest.class);
 		
+		objReturn.addTestSuite(MapUtilZZZTest.class);
 		objReturn.addTestSuite(HashMapUtilZZZTest.class);
 		objReturn.addTestSuite(HashMapIterableKeyZZZTest.class);
 		objReturn.addTestSuite(HashMapIndexedObjectZZZTest.class);

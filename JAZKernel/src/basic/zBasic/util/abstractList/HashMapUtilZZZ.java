@@ -18,9 +18,16 @@ import basic.zBasic.IOutputDebugNormedZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 
-public class HashMapUtilZZZ {
+public class HashMapUtilZZZ extends MapUtilZZZ {
 	
-	public static boolean isEmpty(HashMap hm) {
+	//Private Konstruktor, zum Verbergen, damit die Klasse nicht instanziiert werden kann.
+	//Ist hier protected, damit HashMapUtilZZZ erben kann, wg. Fehlermeldung:
+	//"Implicit super constructor MapUtilZZZ<K,V>() is not visible for default constructor. Must define an explicit constructor"
+	//Zudem: <K,V> nicht auf Klassenebene definieren, sondern damit das für static Methoden möglich ist, nur auf Methodenebene. 
+	//       oder <?,?> verwenden.		
+	protected HashMapUtilZZZ() {}
+	
+	public static boolean isEmpty(HashMap<?,?> hm) {
 		boolean bReturn = false;
 		main:{
 			if(hm==null) {
@@ -34,6 +41,8 @@ public class HashMapUtilZZZ {
 		}
 		return bReturn;
 	}
+	
+	
 	
 	//### fuer IOutputNormedZZ	
 	

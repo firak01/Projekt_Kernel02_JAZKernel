@@ -70,6 +70,7 @@ public class HashMapUtilZZZTest extends TestCase{
 					assertNull(objTestZ3);
 					
 				} catch (ExceptionZZZ ez) {
+					ez.printStackTrace();
 					fail("Method throws an exception." + ez.getMessageLast());
 				} 
 		    }
@@ -112,6 +113,7 @@ public class HashMapUtilZZZTest extends TestCase{
 					DummyTestObjecWithDefaultValuesZZZ objTestZ = (DummyTestObjecWithDefaultValuesZZZ) hmIndexed.getValueNext();
 					assertNull(objTestZ);
 				} catch (ExceptionZZZ ez) {
+					ez.printStackTrace();
 					fail("Method throws an exception." + ez.getMessageLast());
 				} 
 		    }
@@ -137,6 +139,7 @@ public class HashMapUtilZZZTest extends TestCase{
 				objTest02.setValue("2");
 				hmTest.put("80",objTest02);
 				} catch (ExceptionZZZ ez) {
+					ez.printStackTrace();
 					fail("Method throws an exception." + ez.getMessageLast());
 				} 
 				
@@ -144,34 +147,35 @@ public class HashMapUtilZZZTest extends TestCase{
 		return hmTest;		
 	}
 		
-		private Map<Integer,Object>setUp_fillTest_IntegerObject(){
-			Map<Integer,Object> hmTest = new HashMap<Integer,Object>();
-			main:{	
-				try {
-				//### Das spezielle Generics Testobjekt
-				DummyTestObjecWithDefaultValuesZZZ objTest01 = new DummyTestObjecWithDefaultValuesZZZ();
-				objTest01.setFlag("init", true);
-				objTest01.setValue("1");
-				Integer intKey1 = new Integer(75);
-				hmTest.put(intKey1,objTest01);
-											
-				DummyTestObjecWithDefaultValuesZZZ objTest03 = new DummyTestObjecWithDefaultValuesZZZ();
-				objTest03.setFlag("init", true);
-				objTest03.setValue("3");
-				Integer intKey2 = new Integer(85);
-				hmTest.put(intKey2,objTest03);
-				
-				DummyTestObjecWithDefaultValuesZZZ objTest02 = new DummyTestObjecWithDefaultValuesZZZ();
-				objTest02.setFlag("init", true);
-				objTest02.setValue("2");
-				Integer intKey3 = new Integer(80);
-				hmTest.put(intKey3,objTest02);
-				} catch (ExceptionZZZ ez) {
-					fail("Method throws an exception." + ez.getMessageLast());
-				} 
-				
-			}//end main:
-		return hmTest;		
-	}
+	private Map<Integer,Object>setUp_fillTest_IntegerObject(){
+		Map<Integer,Object> hmTest = new HashMap<Integer,Object>();
+		main:{	
+			try {
+			//### Das spezielle Generics Testobjekt
+			DummyTestObjecWithDefaultValuesZZZ objTest01 = new DummyTestObjecWithDefaultValuesZZZ();
+			objTest01.setFlag("init", true);
+			objTest01.setValue("1");
+			Integer intKey1 = new Integer(75);
+			hmTest.put(intKey1,objTest01);
+										
+			DummyTestObjecWithDefaultValuesZZZ objTest03 = new DummyTestObjecWithDefaultValuesZZZ();
+			objTest03.setFlag("init", true);
+			objTest03.setValue("3");
+			Integer intKey2 = new Integer(85);
+			hmTest.put(intKey2,objTest03);
+			
+			DummyTestObjecWithDefaultValuesZZZ objTest02 = new DummyTestObjecWithDefaultValuesZZZ();
+			objTest02.setFlag("init", true);
+			objTest02.setValue("2");
+			Integer intKey3 = new Integer(80);
+			hmTest.put(intKey3,objTest02);
+			} catch (ExceptionZZZ ez) {
+				ez.printStackTrace();
+				fail("Method throws an exception." + ez.getMessageLast());
+			} 
+			
+		}//end main:
+	return hmTest;		
+}
 		
 }

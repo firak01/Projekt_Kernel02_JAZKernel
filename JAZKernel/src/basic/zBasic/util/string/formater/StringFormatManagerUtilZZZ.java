@@ -34,6 +34,7 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.abstractList.ArrayListZZZ;
+import basic.zBasic.util.abstractList.HashMapUtilZZZ;
 import basic.zBasic.util.datatype.enums.EnumMappedLogStringFormatAvailableHelperZZZ;
 import basic.zBasic.util.datatype.enums.EnumSetMappedLogStringFormatUtilZZZ;
 import basic.zBasic.util.datatype.enums.EnumSetUtilZZZ;
@@ -337,7 +338,12 @@ public class StringFormatManagerUtilZZZ implements IConstantZZZ {
 			//2. Mischen der beiden HashMaps, so dass pro Separator ein Array ohne Redundante Einträge übrigbleibt 
 			//   und neue Separatoren mit ihren Arrays nach hinten wandern. (also LinkedHashMap)... mergeSorted()...
 			TODOGOON20260227;
-					
+			Map<IEnumSetMappedStringFormatZZZ,IEnumSetMappedStringFormatZZZ[]> mFormatReturn = HashMapUtilZZZ.mergeMapsAndJoinArrayValues(mFormatCurrent, mFormatNew);
+			
+			//3. Nun die HashMap durchiterieren und das Rückgabearray zusammensetzen. 
+			//   Von jedem Element den Key hinzufügen, danach die Value-Arrays joinen.
+			
+			
 		}//end main:
 		return objaReturn;
 	}
