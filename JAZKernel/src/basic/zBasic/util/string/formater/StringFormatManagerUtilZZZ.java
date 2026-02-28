@@ -316,34 +316,35 @@ public class StringFormatManagerUtilZZZ implements IConstantZZZ {
 		return objaReturn;
 	}
 	
-	public static IEnumSetMappedStringFormatZZZ[] mergeFormatArrays(IEnumSetMappedStringFormatZZZ[] ienumaFormatStringNeu, IEnumSetMappedStringFormatZZZ[] ienumaFormatLogStringVorhanden) throws ExceptionZZZ{
+	public static IEnumSetMappedStringFormatZZZ[] mergeFormatArrays(IEnumSetMappedStringFormatZZZ[] ienumaFormatStringVorhanden, IEnumSetMappedStringFormatZZZ[] ienumaFormatStringNeu) throws ExceptionZZZ{
 		IEnumSetMappedStringFormatZZZ[]objaReturn=null;
 		main:{
 			if(ienumaFormatStringNeu==null) {
-				objaReturn = ienumaFormatLogStringVorhanden;
+				objaReturn = ienumaFormatStringVorhanden;
 				break main;
 			}
 			
-			if(ienumaFormatLogStringVorhanden==null) {
+			if(ienumaFormatStringVorhanden==null) {
 				objaReturn = ienumaFormatStringNeu;
 				break main;
 			}
 			
 			
 			//1. Aufteilen auf eine HashMap: current und neues Formatierungsarray
-			Map<IEnumSetMappedStringFormatZZZ, IEnumSetMappedStringFormatZZZ[]> mFormatCurrent = StringFormatManagerUtilZZZ.splitBySeparatorToStringHashMap(ienumaFormatLogStringVorhanden);
+			Map<IEnumSetMappedStringFormatZZZ, IEnumSetMappedStringFormatZZZ[]> mFormatCurrent = StringFormatManagerUtilZZZ.splitBySeparatorToStringHashMap(ienumaFormatStringVorhanden);
 			
 			Map<IEnumSetMappedStringFormatZZZ, IEnumSetMappedStringFormatZZZ[]> mFormatNew = StringFormatManagerUtilZZZ.splitBySeparatorToStringHashMap(ienumaFormatStringNeu);
 						
 			//2. Mischen der beiden HashMaps, so dass pro Separator ein Array ohne Redundante Einträge übrigbleibt 
-			//   und neue Separatoren mit ihren Arrays nach hinten wandern. (also LinkedHashMap)... mergeSorted()...
-			TODOGOON20260227;
-			Map<IEnumSetMappedStringFormatZZZ,IEnumSetMappedStringFormatZZZ[]> mFormatReturn = HashMapUtilZZZ.mergeMapsAndJoinArrayValues(mFormatCurrent, mFormatNew);
+			//   und neue Separatoren mit ihren Arrays nach hinten wandern. (also LinkedHashMap)... mergeSorted()...			
+			LinkedHashMap<IEnumSetMappedStringFormatZZZ,IEnumSetMappedStringFormatZZZ[]> mFormatReturn = (LinkedHashMap<IEnumSetMappedStringFormatZZZ, IEnumSetMappedStringFormatZZZ[]>) HashMapUtilZZZ.mergeMapsAndJoinArrayValues(mFormatCurrent, mFormatNew);
 			
 			//3. Nun die HashMap durchiterieren und das Rückgabearray zusammensetzen. 
 			//   Von jedem Element den Key hinzufügen, danach die Value-Arrays joinen.
+			TODOGOON20260228;//hier wird noch irgendwie falsch zusammengesetzt
 			
-			
+			String sDebug = HashMapUtilZZZ.computeDebugString(mFormatReturn);
+			System.out.println(sDebug);
 		}//end main:
 		return objaReturn;
 	}

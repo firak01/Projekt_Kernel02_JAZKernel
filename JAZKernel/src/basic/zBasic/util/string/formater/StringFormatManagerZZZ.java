@@ -300,7 +300,7 @@ public class StringFormatManagerZZZ extends AbstractStringFormatManagerZZZ imple
 			
 			//TODOGOON20260227 das noch mit einem Flag "absichern".
 			ienumaFormatLogString = this.getStringFormatArrayCurrent();
-			ienumaFormatLogString = StringFormatManagerUtilZZZ.mergeFormatArrays(ienumaFormatLogStringIn, ienumaFormatLogString);
+			ienumaFormatLogString = StringFormatManagerUtilZZZ.mergeFormatArrays(ienumaFormatLogString, ienumaFormatLogStringIn);
 			
 			if(!this.getFlag(IStringFormatManagerEnabledZZZ.FLAGZ.USE_INDIVIDUAL_FORMAT)) {
 				//System.out.println(ReflectCodeZZZ.getPositionCurrent() +": Verwende individuelle Formatvorlage, ggfs. als Vermischung mit zuvor verwendeter.");

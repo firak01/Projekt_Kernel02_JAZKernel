@@ -19,7 +19,7 @@ import basic.zBasic.AbstractObjectWithExceptionZZZ;
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;
 import basic.zBasic.ReflectCodeZZZ;
-import basic.zBasic.util.abstractArray.ArrayUniqueZZZ;
+import basic.zBasic.util.abstractArray.ArrayUniqueUtilZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
 import basic.zBasic.util.abstractList.ArrayListZZZ;
@@ -1346,7 +1346,7 @@ output:
 		main:{
 				if(saString1==null) break main;
 			
-				objReturn = ArrayUniqueZZZ.toUniqueArrayString(saString1);
+				objReturn = ArrayUniqueUtilZZZ.toUniqueArrayString(saString1);
 		}//end main:
 		return objReturn;
 	}	

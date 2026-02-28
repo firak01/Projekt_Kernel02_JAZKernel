@@ -1,6 +1,7 @@
 package basic.zBasic.util.abstractList;
 
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -36,19 +37,18 @@ public class MapUtilZZZ {
 	
 	
 	public static <K,V> Map<K,V[]> mergeMapsAndJoinArrayValues(Map<K,V[]> m1, Map<K,V[]> m2) throws ExceptionZZZ{
-		Map<K,V[]> mReturn = null;
+		LinkedHashMap<K,V[]> mReturn = null;
 		main:{
 			if(m1==null) {
-				mReturn = m2;
+				mReturn = (LinkedHashMap<K, V[]>) m2;
 				break main;
 			}
 			if(m2==null || m2.isEmpty()) {
-				mReturn = m1;
+				mReturn = (LinkedHashMap<K, V[]>) m1;
 				break main;
 			}
+			mReturn = (LinkedHashMap<K, V[]>) new LinkedHashMap<K,V>();
 			
-			
-			//TODOGOON20260228;
 			
 			//1. Baue eine Arraylist Aller Schlüssel auf, ohne Duplikate
 			ArrayListZZZ<K> listaK = new ArrayListZZZ<K>();
@@ -72,14 +72,24 @@ public class MapUtilZZZ {
 				
 				//Wert erste Hashmap
 				V[] objaValue1 = m1.get(objKey);
-				
-				//pruefe, ob die andere map den gleichen key hat.
-				V[] objaValue2 = m2.get(objKey);
-				if(objaValue2!=null) {
+				if(objaValue1!=null) {
 					
-					V[]objaValueReturn = ArrayUtilZZZ.joinUnique(objaValue1, objaValue2);
-					mReturn.put(objKey, objaValueReturn);
-				}								
+					//pruefe, ob die andere map den gleichen key hat.
+					V[] objaValue2 = m2.get(objKey);
+					if(objaValue2!=null) {
+						
+						V[]objaValueReturn = ArrayUtilZZZ.joinUnique(objaValue1, objaValue2);
+						mReturn.put(objKey, objaValueReturn);
+					}else {
+						mReturn.put(objKey, objaValue1);
+					}
+				}else {
+					//pruefe, ob die andere map den gleichen key hat.
+					V[] objaValue2 = m2.get(objKey);
+					if(objaValue2!=null) {
+						mReturn.put(objKey, objaValue2);
+					}	//da objaValue1 null ist, eruebrigt sich der Rest				
+				}
 			}
 		}//end main:
 		return mReturn;

@@ -28,7 +28,7 @@ import basic.zBasic.util.datatype.string.StringArrayZZZ;
  * 
  */
 public class ArrayUtilZZZ<T>{
-	private ArrayUtilZZZ() {}//static methods only
+	protected ArrayUtilZZZ() {}//static methods only
 	
 	
 	// ======================================================
@@ -416,10 +416,9 @@ public class ArrayUtilZZZ<T>{
 				objaReturn = objArray1;
 				break main;
 			}
-			
-			//Aus Apache commons
-			TODOGOON2026028; //Nachsehen ob das Objekt schon im Array ist.
-			objaReturn = (T[]) ArrayUtils.add(objArray, obj);			
+						
+			objaReturn = ArrayUtilZZZ.join(objArray1, objArray2);
+			objaReturn = ArrayUniqueUtilZZZ.toUniqueArray(objaReturn);
 		}//end main:
 		return objaReturn;
 	}
