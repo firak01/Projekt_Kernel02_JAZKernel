@@ -399,6 +399,33 @@ public class ArrayUtilZZZ<T>{
 		return objaReturn;
 	}
 	
+	
+	public static <T> T[] joinUnique(T[] objArray1,T[] objArray2) {
+		T[] objaReturn=null;
+		main:{
+			boolean bEmptyArray1 = ArrayUtilZZZ.isNull(objArray1);
+			boolean bEmptyArray2 = ArrayUtilZZZ.isNull(objArray2);
+			if( bEmptyArray1 && bEmptyArray2) break main;
+			
+			if( bEmptyArray1 && !bEmptyArray2){
+				objaReturn = objArray2;
+				break main;
+			}
+			
+			if( !bEmptyArray1 && bEmptyArray2){
+				objaReturn = objArray1;
+				break main;
+			}
+			
+			//Aus Apache commons
+			TODOGOON2026028; //Nachsehen ob das Objekt schon im Array ist.
+			objaReturn = (T[]) ArrayUtils.add(objArray, obj);			
+		}//end main:
+		return objaReturn;
+	}
+	
+	
+	
 	 /**20251206 - Von ChatGPT inspiriert
      * Hängt zwei Arrays aneinander, wobei bei objArray2 erst ab indexObjArray2 kopiert wird.
      *
