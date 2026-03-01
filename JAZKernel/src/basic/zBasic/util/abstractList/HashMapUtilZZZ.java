@@ -170,35 +170,35 @@ public class HashMapUtilZZZ extends MapUtilZZZ {
 	//#############################################################################	
 	//================== PUBLIC API: HashMap ==================
 	public static String computeDebugString(HashMap hmImplode) throws ExceptionZZZ {
-		return computeDebugStringInternal(hmImplode, null, null);
+		return computeDebugStringInternal__(hmImplode, null, null);
 	}
 
 	public static String computeDebugString(HashMap hmImplode, String sEntryDelimiterIn) throws ExceptionZZZ {
-		return computeDebugStringInternal(hmImplode, sEntryDelimiterIn, null);
+		return computeDebugStringInternal__(hmImplode, sEntryDelimiterIn, null);
 	}
 
 	public static String computeDebugString(HashMap hmImplode, String sEntryDelimiterIn, String sKeyDelimiterIn) throws ExceptionZZZ {
-		return computeDebugStringInternal(hmImplode, sEntryDelimiterIn, sKeyDelimiterIn);
+		return computeDebugStringInternal__(hmImplode, sEntryDelimiterIn, sKeyDelimiterIn);
 	}
 	
 	
 	//================== PUBLIC API: LinkedHashMap ==================
 	//Merke: Linked HashMap soll die Reihenfolge erhalten
 	public static String computeDebugString(LinkedHashMap hmImplode) throws ExceptionZZZ {
-		return computeDebugStringInternal(hmImplode, null, null);
+		return computeDebugStringInternal__(hmImplode, null, null);
 	}
 
 	public static String computeDebugString(LinkedHashMap hmImplode, String sEntryDelimiterIn) throws ExceptionZZZ {
-		return computeDebugStringInternal(hmImplode, sEntryDelimiterIn, null);
+		return computeDebugStringInternal__(hmImplode, sEntryDelimiterIn, null);
 	}
 
 	public static String computeDebugString(LinkedHashMap hmImplode, String sEntryDelimiterIn, String sKeyDelimiterIn) throws ExceptionZZZ {
-		return computeDebugStringInternal(hmImplode, sEntryDelimiterIn, sKeyDelimiterIn);
+		return computeDebugStringInternal__(hmImplode, sEntryDelimiterIn, sKeyDelimiterIn);
 	}
 	
 	//================== PRIVATE GENERIC IMPLEMENTATION ==================
 	@SuppressWarnings("rawtypes")
-	private static String computeDebugStringInternal(Map hmImplode, String sEntryDelimiterIn, String sKeyDelimiterIn) throws ExceptionZZZ {	  
+	private static String computeDebugStringInternal__(Map hmImplode, String sEntryDelimiterIn, String sKeyDelimiterIn) throws ExceptionZZZ {	  
 	    String sReturn = null;
 	    main: {
 	        if (hmImplode == null || hmImplode.size() == 0) break main;
@@ -230,41 +230,129 @@ public class HashMapUtilZZZ extends MapUtilZZZ {
 	    return sReturn;
 	}
 	
+	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	
+	//================== PUBLIC API: LinkedHashMap ==================
+	//Merke: Linked HashMap soll die Reihenfolge erhalten
+	public static <K,V> String computeDebugString4Arrays(LinkedHashMap<K,V[]> hmImplode) throws ExceptionZZZ {
+		return computeDebugStringInternal4Arrays__(hmImplode, null, null);
+	}
+
+	public static <K,V> String computeDebugString4Arrays(LinkedHashMap<K,V[]> hmImplode, String sEntryDelimiterIn) throws ExceptionZZZ {
+		return computeDebugStringInternal4Arrays__(hmImplode, sEntryDelimiterIn, null);
+	}
+
+	public static <K,V> String computeDebugString4Arrays(LinkedHashMap<K,V[]> hmImplode, String sEntryDelimiterIn, String sKeyDelimiterIn) throws ExceptionZZZ {
+		return computeDebugStringInternal4Arrays__(hmImplode, sEntryDelimiterIn, sKeyDelimiterIn);
+	}
+
+	//================== PRIVATE GENERIC IMPLEMENTATION ==================
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	private static <K,V> String computeDebugStringInternal4Arrays__(Map<K,V[]> hmImplode, String sEntryDelimiterIn, String sKeyDelimiterIn) throws ExceptionZZZ {	  
+	    String sReturn = null;
+	    main: {
+	        if (hmImplode == null || hmImplode.size() == 0) break main;
+
+	        String sKeyDelimiter = (sKeyDelimiterIn == null) 
+	                ? IHashMapZZZ.sDEBUG_KEY_DELIMITER_DEFAULT 
+	                : sKeyDelimiterIn;
+
+	        String sEntryDelimiter = (sEntryDelimiterIn == null) 
+	                ? IHashMapZZZ.sDEBUG_ENTRY_DELIMITER_DEFAULT 
+	                : sEntryDelimiterIn;
+	        
+	        Set setEntry = hmImplode.entrySet();   // raw usage beibehalten wg. Signaturen
+	        Iterator it = setEntry.iterator();
+
+	        while (it.hasNext()) {
+	            Map.Entry entry = (Map.Entry) it.next();   // raw cast
+	            Object objKey = entry.getKey();
+	            Object objValue = entry.getValue();
+
+	            //String sKeyPart = String.valueOf(objKey) + sKeyDelimiter;
+	            //String sIndent = createWhitespace__(sKeyPart.length()) + sKeyDelimiter;
+	            String sKeyPart = String.valueOf(objKey) + sEntryDelimiter + sKeyDelimiter; //Baumhierarchie erstellen, kürzere Zeilen, dafür mehr....
+	            String sIndent = sKeyDelimiter; 
+
+	            // ================= ARRAY HANDLING =================
+	            if (objValue != null && objValue.getClass().isArray()) {
+
+	                int length = java.lang.reflect.Array.getLength(objValue);
+
+	                for (int i = 0; i < length; i++) {
+	                    Object element = java.lang.reflect.Array.get(objValue, i);
+	                    String sLine;
+
+	                    if (i == 0) {
+	                        sLine = sKeyPart + String.valueOf(element);
+	                    } else {
+	                        sLine = sIndent + String.valueOf(element);
+	                    }
+
+	                    if (StringZZZ.isEmpty(sReturn)) {
+	                        sReturn = sLine;
+	                    } else {
+	                        sReturn = sReturn + sEntryDelimiter + sLine;
+	                    }
+	                }
+
+	            } else {
+	                // ================= NORMAL VALUE =================
+	                String sPair = sKeyPart + String.valueOf(objValue);
+
+	                if (StringZZZ.isEmpty(sReturn)) {
+	                    sReturn = sPair;
+	                } else {
+	                    sReturn = sReturn + sEntryDelimiter + sPair;
+	                }
+	            }
+	        }
+	    }
+	    return sReturn;
+	}
+	
+	private static String createWhitespace__(int length) {
+	    StringBuilder sb = new StringBuilder(length);
+	    for (int i = 0; i < length; i++) {
+	        sb.append(' ');
+	    }
+	    return sb.toString();
+	}
 	
 	//#############################################################################	
     //### IMPLODE
 	//#############################################################################
 	//================== PUBLIC API: HashMap ==================
 	public static String computeImplodeString(HashMap hmImplode) throws ExceptionZZZ {
-		return computeImplodeStringInternal(hmImplode, null, null);
+		return computeImplodeStringInternal__(hmImplode, null, null);
 	}
 
 	public static String computeImplodeString(HashMap hmImplode, String sEntryDelimiterIn) throws ExceptionZZZ {
-		return computeImplodeStringInternal(hmImplode, sEntryDelimiterIn, null);
+		return computeImplodeStringInternal__(hmImplode, sEntryDelimiterIn, null);
 	}
 
 	public static String computeImplodeString(HashMap hmImplode, String sEntryDelimiterIn, String sKeyDelimiterIn) throws ExceptionZZZ {
-		return computeImplodeStringInternal(hmImplode, sEntryDelimiterIn, sKeyDelimiterIn);
+		return computeImplodeStringInternal__(hmImplode, sEntryDelimiterIn, sKeyDelimiterIn);
 	}
 	
 	
 	//================== PUBLIC API: LinkedHashMap ==================
 	//Merke: Linked HashMap soll die Reihenfolge erhalten
 	public static String computeImplodeString(LinkedHashMap hmImplode) throws ExceptionZZZ {
-		return computeImplodeStringInternal(hmImplode, null, null);
+		return computeImplodeStringInternal__(hmImplode, null, null);
 	}
 
 	public static String computeImplodeString(LinkedHashMap hmImplode, String sEntryDelimiterIn) throws ExceptionZZZ {
-		return computeImplodeStringInternal(hmImplode, sEntryDelimiterIn, null);
+		return computeImplodeStringInternal__(hmImplode, sEntryDelimiterIn, null);
 	}
 
 	public static String computeImplodeString(LinkedHashMap hmImplode, String sEntryDelimiterIn, String sKeyDelimiterIn) throws ExceptionZZZ {
-		return computeImplodeStringInternal(hmImplode, sEntryDelimiterIn, sKeyDelimiterIn);
+		return computeImplodeStringInternal__(hmImplode, sEntryDelimiterIn, sKeyDelimiterIn);
 	}
 	
 	//================== PRIVATE GENERIC IMPLEMENTATION ==================
 	@SuppressWarnings("rawtypes")
-	private static String computeImplodeStringInternal(Map hmImplode, String sEntryDelimiterIn, String sKeyDelimiterIn) throws ExceptionZZZ {	    
+	private static String computeImplodeStringInternal__(Map hmImplode, String sEntryDelimiterIn, String sKeyDelimiterIn) throws ExceptionZZZ {	    
 	    String sReturn = null;
 	    main: {
 	        if (hmImplode == null || hmImplode.size() == 0) break main;
@@ -403,7 +491,7 @@ public class HashMapUtilZZZ extends MapUtilZZZ {
 		 * @param <K>
 		 * @param <V>
 		 */
-		public static <K, V> Object getEntryFirst(Map<K, V> map) throws ExceptionZZZ {
+		public static <K,V> Object getEntryFirst(Map<K,V> map) throws ExceptionZZZ {
 			Object objReturn = null;
 			main:{					
 				if(map==null)break main;

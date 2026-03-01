@@ -341,10 +341,12 @@ public class StringFormatManagerUtilZZZ implements IConstantZZZ {
 			
 			//3. Nun die HashMap durchiterieren und das Rückgabearray zusammensetzen. 
 			//   Von jedem Element den Key hinzufügen, danach die Value-Arrays joinen.
-			TODOGOON20260228;//hier wird noch irgendwie falsch zusammengesetzt
+			//TODOGOON20260228;//hier wird noch irgendwie falsch zusammengesetzt
 			
-			String sDebug = HashMapUtilZZZ.computeDebugString(mFormatReturn);
+			//String sDebug = HashMapUtilZZZ.computeDebugString(mFormatReturn);
+			String sDebug = HashMapUtilZZZ.computeDebugString4Arrays(mFormatReturn);
 			System.out.println(sDebug);
+			System.out.println("#########");
 		}//end main:
 		return objaReturn;
 	}
@@ -404,7 +406,9 @@ public class StringFormatManagerUtilZZZ implements IConstantZZZ {
 		
 			for(IEnumSetMappedStringFormatZZZ objFormat : objaFormat) {				
 				if(objFormat.getArgumentType()==IStringFormatZZZ.iARG_CONTROL) {
-					listaReturn.add(objFormat);
+					if(!listaReturn.contains(objFormat)) {
+						listaReturn.add(objFormat);
+					}
 				}
 			}
 			

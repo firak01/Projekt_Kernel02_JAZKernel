@@ -15,6 +15,10 @@ public class ArrayUniqueUtilZZZ<T>{
     public static <T> boolean isUnique(T[] array, T obj) {
     	int iCounterContains=0;
         for (int i = 0; i < array.length; i++) {
+        	if(array[i]==null) {
+        		return true;
+        	}
+        	
             if (array[i].equals(obj)) {
             	iCounterContains++;
             	if(iCounterContains>=2) {
@@ -37,15 +41,20 @@ public class ArrayUniqueUtilZZZ<T>{
         //T[] uniqueArray = new T[counter];
       
         T[] temp = Arrays.copyOf(array, array.length); // korrektes T[] erzeugt
-        int counter = 0;
-
+        //aber leer muss es sein
+        int icounter = 0;        
+        for(int i = 0; i < temp.length; i++) {
+        	temp[icounter++]=null;
+        }
+        
+        icounter = 0;
         for (int i = 0; i < array.length; i++) {
             if (isUnique(temp, array[i])) {
-                temp[counter++] = array[i];
+                temp[icounter++] = array[i];
             }
         }
 
-        return Arrays.copyOf(temp, counter); // Array auf richtige Größe kürzen
+        return Arrays.copyOf(temp, icounter); // Array auf richtige Größe kürzen
     }
     
     /** s ChatGPT vom 2026-02-28

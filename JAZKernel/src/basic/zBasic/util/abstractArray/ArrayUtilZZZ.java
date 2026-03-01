@@ -700,10 +700,13 @@ public class ArrayUtilZZZ<T>{
         
         for (T value : values) {
         	
-            if (keySet.contains(value)) {
-
-            	//also neuen Separator gefunden              
-            	result.put(currentKey, ArrayListUtilZZZ.toArray(currentList, clazz));
+            if (keySet.contains(value)) { //also neuen Separator gefunden            	
+            	
+            	//Wenn der Separator aber mehrmals vorkommt, muss man die neue ArrayList mit der vorherigen des Separators zusammenfassen.
+            	T[] aPrevious = result.get(currentKey);
+            	T[] aNew = ArrayListUtilZZZ.toArray(currentList, clazz);
+            	T[] a = ArrayUtilZZZ.joinUnique(aPrevious, aNew);
+            	result.put(currentKey, a);
 
                 currentKey = value;
                 currentList = new ArrayList<T>();

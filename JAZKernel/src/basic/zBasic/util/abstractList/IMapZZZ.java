@@ -6,8 +6,8 @@ import basic.zBasic.IOutputDebugNormedWithKeyZZZ;
 import basic.zBasic.IOutputDebugNormedZZZ;
 
 public interface IMapZZZ extends IOutputDebugNormedWithKeyZZZ, IConstantZZZ{
-	public static final String sDEBUG_KEY_DELIMITER_DEFAULT = IOutputDebugNormedZZZ.sDEBUG_ENTRY_DELIMITER_DEFAULT;
-	public static final String sDEBUG_ENTRY_DELIMITER_DEFAULT = IOutputDebugNormedWithKeyZZZ.sDEBUG_KEY_DELIMITER_DEFAULT;
+	public static final String sDEBUG_KEY_DELIMITER_DEFAULT = IOutputDebugNormedWithKeyZZZ.sDEBUG_KEY_DELIMITER_DEFAULT;
+	public static final String sDEBUG_ENTRY_DELIMITER_DEFAULT = IOutputDebugNormedZZZ.sDEBUG_ENTRY_DELIMITER_DEFAULT;
 	
 	public static final String sIMPLODE_KEY_DELIMITER_DEFAULT = "=";
 	public static final String sIMPLODE_ENTRY_DELIMITER_DEFAULT = ", ";
