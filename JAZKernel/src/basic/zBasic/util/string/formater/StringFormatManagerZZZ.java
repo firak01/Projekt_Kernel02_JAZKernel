@@ -296,21 +296,27 @@ public class StringFormatManagerZZZ extends AbstractStringFormatManagerZZZ imple
 			//d.h.0.1. aufteilen auf ggfs. mehrere Zeilen (bisherige version, neue Version)
 			//    0.2. fehlende Spalten etc. ergänzen, Reihenfolge angleichen
 			IEnumSetMappedStringFormatZZZ[] ienumaFormatLogString;
+			IEnumSetMappedStringFormatZZZ[] ienumaFormatLogStringCurrent;
 			
-			
-			//TODOGOON20260227 das noch mit einem Flag "absichern".
-			IEnumSetMappedStringFormatZZZ[] ienumaFormatLogStringCurrent = this.getStringFormatArrayCurrent();
-			ienumaFormatLogString = StringFormatManagerUtilZZZ.mergeFormatArrays(ienumaFormatLogStringCurrent, ienumaFormatLogStringIn);
-			
-			if(!this.getFlag(IStringFormatManagerEnabledZZZ.FLAGZ.USE_INDIVIDUAL_FORMAT)) {
-				//System.out.println(ReflectCodeZZZ.getPositionCurrent() +": Verwende individuelle Formatvorlage, ggfs. als Vermischung mit zuvor verwendeter.");
-				ienumaFormatLogString = this.getStringFormatArrayCurrent();
-				ienumaFormatLogString = StringFormatManagerUtilZZZ.adaptFormatArray(ienumaFormatLogString, ienumaFormatLogStringIn);
-				this.setStringFormatArrayCurrent(ienumaFormatLogString);
+			boolean bUseIndividualFormat = this.getFlag(IStringFormatManagerEnabledZZZ.FLAGZ.USE_INDIVIDUAL_FORMAT);	
+			boolean bUseColumnAdoptFormat = this.getFlag(IStringFormatManagerEnabledZZZ.FLAGZ.USE_COLUMN_ADOPTED_FORMAT);
+			boolean bUseColumnMergedFormat = this.getFlag(IStringFormatManagerEnabledZZZ.FLAGZ.USE_COLUMN_MERGED_FORMAT);
+		
+			if(!bUseIndividualFormat) {
+				ienumaFormatLogStringCurrent = this.getStringFormatArrayCurrent();
+				if(!bUseColumnMergedFormat) {
+					//System.out.println(ReflectCodeZZZ.getPositionCurrent() +": Verwende biherige Formatvorlage, ggfs. als Zusammenfassung der Spalten mit zuvor verwendeter.");
+					ienumaFormatLogString = StringFormatManagerUtilZZZ.adaptFormatArray(ienumaFormatLogStringCurrent, ienumaFormatLogStringIn);
+				}else {
+					//Der Normalfall
+					//System.out.println(ReflectCodeZZZ.getPositionCurrent() +": Verwende bisherige Formatvorlage, ggfs. als Zusammenfassung der Spalten mit zuvor verwendeter.");
+					ienumaFormatLogString = StringFormatManagerUtilZZZ.mergeFormatArrays(ienumaFormatLogStringCurrent, ienumaFormatLogStringIn);					
+				}
 			}else {
 				//System.out.println(ReflectCodeZZZ.getPositionCurrent() +": Verwende die individuelle Formatvorlage und keine Vermischung mit zuvor verwendeter.");
 				ienumaFormatLogString = ienumaFormatLogStringIn;
 			}//end if getFlag			
+			this.setStringFormatArrayCurrent(ienumaFormatLogString);
 			//#######################
 				
 			

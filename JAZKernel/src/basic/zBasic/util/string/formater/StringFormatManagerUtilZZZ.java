@@ -14,6 +14,7 @@ import static basic.zBasic.util.string.formater.IStringFormatZZZ.iFACTOR_CONTROL
 import static basic.zBasic.util.string.formater.IStringFormatZZZ.iFACTOR_CONTROLPOSITIONSEPARATOR_STRING;
 import static basic.zBasic.util.string.formater.IStringFormatZZZ.iFACTOR_CONTROLPOSITIONSEPARATOR_XML;
 import static basic.zBasic.util.string.formater.IStringFormatZZZ.iFACTOR_LINENEXT_STRING;
+import static basic.zBasic.util.string.formater.IStringFormatZZZ.iFACTOR_NULL_STRING;
 import static basic.zBasic.util.string.formater.IStringFormatZZZ.sSEPARATOR_01_DEFAULT;
 import static basic.zBasic.util.string.formater.IStringFormatZZZ.sSEPARATOR_02_DEFAULT;
 import static basic.zBasic.util.string.formater.IStringFormatZZZ.sSEPARATOR_03_DEFAULT;
@@ -121,6 +122,9 @@ public class StringFormatManagerUtilZZZ implements IConstantZZZ {
 					        case iFACTOR_CONTROLPOSITIONSEPARATOR_XML:
 					        	hmReturn.put(iFaktor, sSEPARATOR_POSITION_DEFAULT); //das eigentlich noch in XML umwandeln
 					            break;
+					        case iFACTOR_NULL_STRING:
+					        	//Das ist die Spalte vor dem ersten Separator, also der nicht vorhandene erste Separator
+					        	break;
 					        case iFACTOR_LINENEXT_STRING:
 					        	if(!bLineFilter) {
 					        		//Der Format Manager teilt anhand dieses Kennzeichens die Formatanweisungen auf die verschiedenenen Zeile auf
@@ -128,7 +132,7 @@ public class StringFormatManagerUtilZZZ implements IConstantZZZ {
 					        	}
 					        	break;
 					        default:
-					            System.out.println("LogStringFormaterUtilZZZ.getHashMapLogStringSeparatorAll_(): Faktor iFaktor="+iFaktor + " wird nicht behandelt");
+					            System.out.println("StringFormaterUtilZZZ.getHashMapLogStringSeparatorAll_(): Faktor iFaktor="+iFaktor + " wird nicht behandelt");
 					            break;
 					        }					
 					}				

@@ -55,7 +55,7 @@ public interface IStringFormatZZZ extends ITagTypeMethodZZZ, ITagTypeLineNumberZ
 	//Argumente der compute Methode (sofern vorhanden und != null)
 	//TODO IDEE: Wenn man eine Zahl angibt, soll die Zusammenstellung des Formats definiert sein.
 	//           Darum sind das alles Primzahlen...
-	public static int iFACTOR_NULL_STRING_=0;
+	public static int iFACTOR_NULL_STRING=0;
 	
 	public static int iFACTOR_STRINGTYPE01_STRING_BY_STRING=1;
 	public static int iFACTOR_STRINGTYPE02_STRING_BY_STRING=2;     
@@ -139,7 +139,7 @@ public interface IStringFormatZZZ extends ITagTypeMethodZZZ, ITagTypeLineNumberZ
 	//Aufbau des Enum:
 	//ALIAS("Uniquename bzw. Tag",Faktor, "Format... Merke %s für den String wert muss für String.format() sein",Kennzeichen des Argumenttyps,"PostfixSeparatorString", "Beschreibung, wird nicht genutzt....")	
 	public enum LOGSTRINGFORMAT implements IEnumSetMappedStringFormatZZZ{//Folgendes geht nicht, da alle Enums schon von einer Java BasisKlasse erben... extends EnumSetMappedBaseZZZ{		
-	CONTROL_NULL_STRING_("null",IStringFormatZZZ.iFACTOR_NULL_STRING_, "", "null", IStringFormatZZZ.iARG_CONTROL, "","Dummy Null Wert. Z.B. fuer die linke Begrenzung, statt eines Separtors"),	
+	CONTROL_NULL_STRING_("null",IStringFormatZZZ.iFACTOR_NULL_STRING, "", "null", IStringFormatZZZ.iARG_CONTROL, "","Dummy Null Wert. Z.B. fuer die linke Begrenzung, statt eines Separtors"),	
 		
 	STRINGTYPE01_STRING_BY_STRING("stringtype01",IStringFormatZZZ.iFACTOR_STRINGTYPE01_STRING_BY_STRING, IStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[A01]", "%s",IStringFormatZZZ.iARG_STRING,  "[/A01]" + IStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Gib den naechsten Log String - sofern vorhanden - in diesem Format aus."),
 	STRINGTYPE02_STRING_BY_STRING("stringtype02",IStringFormatZZZ.iFACTOR_STRINGTYPE02_STRING_BY_STRING, IStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[A02]", "%s",IStringFormatZZZ.iARG_STRING, "[/A02]" + IStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Gib den naechsten Log String - sofern vorhanden - in diesem Format aus."),

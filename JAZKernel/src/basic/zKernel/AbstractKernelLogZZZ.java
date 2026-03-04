@@ -100,7 +100,7 @@ public abstract class AbstractKernelLogZZZ extends AbstractObjectWithFlagZZZ imp
 	
 	private void AbstractKernelLogNew_(IKernelConfigZZZ objConfig, String sDirectoryPathIn, String sLogFileIn, IFileExpansionZZZ objFileExpansion, String[] saFlagControl) throws ExceptionZZZ{
 		
-		TODOGOON20260224;//1. Checken ob "init" in Array, dann break
+		//TODOGOON202600304;//1. Checken ob "init" in Array, dann break
 		                 //2. objStringFormatManger als instanz holen
 		                 //3. den objStringFormatManager am LogObjekt für die Flagset Operation registrieren
 		                 //4. nun erst die Flags setzen

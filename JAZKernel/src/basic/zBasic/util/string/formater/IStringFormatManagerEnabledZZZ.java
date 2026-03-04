@@ -14,7 +14,7 @@ public interface IStringFormatManagerEnabledZZZ extends IFlagZEnabledZZZ{
 	//### FLAGZ
 	//#############################################################
 	public enum FLAGZ{
-		DUMMY,USE_STATIC_FORMAT,USE_INDIVIDUAL_FORMAT
+		DUMMY,USE_STATIC_FORMAT,USE_INDIVIDUAL_FORMAT,USE_COLUMN_ADOPTED_FORMAT,USE_COLUMN_MERGED_FORMAT
 	}
 		
 	boolean getFlag(FLAGZ objEnumFlag) throws ExceptionZZZ;

@@ -228,8 +228,12 @@ public class LogZZZTest extends TestCase{
 			sLog1 = "XXXTESTLAENGERXXX";
 			iLine = ReflectCodeZZZ.getMethodCurrentLine()+1;//+1, weil halt die naechste Zeile im Code.
 			
-			objLogTest.setFlag(IStringFormatManagerEnabledZZZ.FLAGZ.USE_INDIVIDUAL_FORMAT, false);
-			objLogTest.setFlag(IStringFormatManagerEnabledZZZ.FLAGZ.USE_STATIC_FORMAT, false);
+			objLogTest.setFlag(IStringFormatManagerEnabledZZZ.FLAGZ.USE_STATIC_FORMAT, false); //also neue Zeilen bei mehr Kommentaren
+			
+			objLogTest.setFlag(IStringFormatManagerEnabledZZZ.FLAGZ.USE_INDIVIDUAL_FORMAT, true);
+			objLogTest.setFlag(IStringFormatManagerEnabledZZZ.FLAGZ.USE_COLUMN_MERGED_FORMAT, false);
+			objLogTest.setFlag(IStringFormatManagerEnabledZZZ.FLAGZ.USE_COLUMN_ADOPTED_FORMAT, false);
+			
 			IStringFormatManagerZZZ objFormatManager = StringFormatManagerZZZ.getInstance();
 			objFormatManager.adoptFlagZrelevantFrom(objLogTest);
 			sValue = objLogTest.computeLine(this, sLog1);
