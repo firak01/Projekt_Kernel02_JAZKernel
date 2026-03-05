@@ -304,11 +304,11 @@ public class StringFormatManagerZZZ extends AbstractStringFormatManagerZZZ imple
 		
 			if(!bUseIndividualFormat) {
 				ienumaFormatLogStringCurrent = this.getStringFormatArrayCurrent();
-				if(!bUseColumnMergedFormat) {
+				if(bUseColumnAdoptFormat) {
 					//System.out.println(ReflectCodeZZZ.getPositionCurrent() +": Verwende biherige Formatvorlage, ggfs. als Zusammenfassung der Spalten mit zuvor verwendeter.");
 					ienumaFormatLogString = StringFormatManagerUtilZZZ.adaptFormatArray(ienumaFormatLogStringCurrent, ienumaFormatLogStringIn);
 				}else {
-					//Der Normalfall
+					//Der Normalfall, bUseColumnMergedFormat
 					//System.out.println(ReflectCodeZZZ.getPositionCurrent() +": Verwende bisherige Formatvorlage, ggfs. als Zusammenfassung der Spalten mit zuvor verwendeter.");
 					ienumaFormatLogString = StringFormatManagerUtilZZZ.mergeFormatArrays(ienumaFormatLogStringCurrent, ienumaFormatLogStringIn);					
 				}

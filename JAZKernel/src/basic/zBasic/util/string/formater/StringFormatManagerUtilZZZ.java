@@ -27,12 +27,14 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.IConstantZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
+import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusLocalZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
 import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.abstractList.HashMapUtilZZZ;
@@ -333,6 +335,9 @@ public class StringFormatManagerUtilZZZ implements IConstantZZZ {
 				break main;
 			}
 			
+			TODOGOON20260305;//Speichere die Listeder Separaoren. Das ist die Lösung für das "Tauschen der Spalten".
+			                 //Wenn man die Spaltenreichenfolge immer aus dem letzen Format ausliest, bekommt man nie das Optimum.
+			                 //Das auslesen der Spaltenreihenfolge aus dem Format kann also nur beim ersten Anwenden des Foramts passieren.
 			
 			//1. Aufteilen auf eine HashMap: current und neues Formatierungsarray
 			Map<IEnumSetMappedStringFormatZZZ, IEnumSetMappedStringFormatZZZ[]> mFormatCurrent = StringFormatManagerUtilZZZ.splitBySeparatorToStringHashMap(ienumaFormatStringVorhanden);
@@ -342,17 +347,59 @@ public class StringFormatManagerUtilZZZ implements IConstantZZZ {
 			//2. Mischen der beiden HashMaps, so dass pro Separator ein Array ohne Redundante Einträge übrigbleibt 
 			//   und neue Separatoren mit ihren Arrays nach hinten wandern. (also LinkedHashMap)... mergeSorted()...			
 			LinkedHashMap<IEnumSetMappedStringFormatZZZ,IEnumSetMappedStringFormatZZZ[]> mFormatReturn = (LinkedHashMap<IEnumSetMappedStringFormatZZZ, IEnumSetMappedStringFormatZZZ[]>) HashMapUtilZZZ.mergeMapsAndJoinArrayValues(mFormatCurrent, mFormatNew);
+			//Falls man die HashMap als Debug-String augeben moechte
+			//String sDebug = HashMapUtilZZZ.computeDebugString4Arrays(mFormatReturn);
+			//System.out.println(sDebug);
+			//System.out.println("#########");
+			
 			
 			//3. Nun die HashMap durchiterieren und das Rückgabearray zusammensetzen. 
 			//   Von jedem Element den Key hinzufügen, danach die Value-Arrays joinen.
-			//TODOGOON20260228;//hier wird noch irgendwie falsch zusammengesetzt
-			
-			//String sDebug = HashMapUtilZZZ.computeDebugString(mFormatReturn);
-			String sDebug = HashMapUtilZZZ.computeDebugString4Arrays(mFormatReturn);
-			System.out.println(sDebug);
-			System.out.println("#########");
+			objaReturn = StringFormatManagerUtilZZZ.mergeHashMapFormatPositions(mFormatReturn);
 		}//end main:
 		return objaReturn;
+	}
+	
+	public static IEnumSetMappedStringFormatZZZ[] mergeHashMapFormatPositions(LinkedHashMap<IEnumSetMappedStringFormatZZZ,IEnumSetMappedStringFormatZZZ[]> mFormatIn) throws ExceptionZZZ{
+		IEnumSetMappedStringFormatZZZ[]objaReturn=null;
+		main:{
+			if(mFormatIn==null) break main;
+			
+			ArrayListZZZ<IEnumSetMappedStringFormatZZZ> listaReturn = new ArrayListZZZ<IEnumSetMappedStringFormatZZZ>();
+			
+			Set<Entry<IEnumSetMappedStringFormatZZZ, IEnumSetMappedStringFormatZZZ[]>> setEntry = mFormatIn.entrySet();   // raw usage beibehalten wg. Signaturen
+	        Iterator<Entry<IEnumSetMappedStringFormatZZZ, IEnumSetMappedStringFormatZZZ[]>> it = setEntry.iterator();
+
+	        while (it.hasNext()) {
+	        	
+	        	//================= KEY Handling ===========================
+	        	 
+	        	//1. Versuch mit raw cast
+	        	//mit dem raw cast bekommt man die ArrayList<IEnumSetMappedStatusLocalZZZ> aber nicht gefüllt
+	            //Map.Entry entry = (Map.Entry) it.next();   // raw cast
+	        	
+	        	//2. Versuch mit richtigem Typ
+	        	Entry<IEnumSetMappedStringFormatZZZ, IEnumSetMappedStringFormatZZZ[]> entry = it.next();   // raw cast
+	        	IEnumSetMappedStringFormatZZZ objKey = entry.getKey();
+	        	IEnumSetMappedStringFormatZZZ[] objValue = entry.getValue();
+	            listaReturn.add(objKey);
+	            
+	            // ================= VALUE -ARRAY HANDLING =================
+	            if (objValue != null && objValue.getClass().isArray()) {
+
+	                int length = java.lang.reflect.Array.getLength(objValue);
+
+	                for (int i = 0; i < length; i++) {
+	                    Object element = java.lang.reflect.Array.get(objValue, i);
+	                    listaReturn.add((IEnumSetMappedStringFormatZZZ)element);
+	                }
+
+	            }
+	        }
+
+	        objaReturn = EnumSetMappedLogStringFormatUtilZZZ.toEnumMappedArray(listaReturn);
+		}//end main:
+		return objaReturn;		
 	}
 	
 	
