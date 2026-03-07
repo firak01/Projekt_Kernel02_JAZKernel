@@ -330,6 +330,118 @@ public class ArrayListUtilZZZ<T>  implements IConstantZZZ{
 		return listaReturn;
 	}
 	
+	//###########################################################
+	
+	public static <T> ArrayList<T> mergeKeepFirst(ArrayList<T>lista1, ArrayList<T>lista2) throws ExceptionZZZ {
+		ArrayList listaReturn = null;
+		main:{
+			if(lista1==null && lista2 ==null) break main;
+					
+			//Wenn 'uniqued' werden soll, dann erst in eine temporaere Liste joinen
+			ArrayList listaTemp = new ArrayList();
+			if(lista1==null){
+				for(int icount=0; icount < lista2.size(); icount++){
+					listaTemp.add(lista2.get(icount));
+				}
+				listaReturn = ArrayListUtilZZZ.uniqueKeepFirst(listaTemp);
+				break main;
+			}//lista1==null
+			
+			
+			if(lista2==null){
+				for(int icount=0; icount < lista1.size(); icount ++){
+					listaTemp.add(lista1.get(icount));
+				}
+				listaReturn = ArrayListUtilZZZ.uniqueKeepFirst(listaTemp);
+				break main;
+			}		
+			
+			//Nun als Schritt 2, die Variante mit dem echten Reinmischen.			
+			ArrayList<T> list = ArrayListUtilZZZ.mergeKeepFirst_Step2(lista1, lista2);
+			listaReturn = list;
+			
+		}//END main:
+		return listaReturn;
+	}
+	
+	
+	/** ChatGPT 2026-03-07
+	 * @param lista1
+	 * @param lista2
+	 * @return
+	 * @author Fritz Lindhauer, 07.03.2026, 08:58:33
+	 */
+	private static <T> ArrayList<T> mergeKeepFirst_Step2(ArrayList<T> lista1, ArrayList<T> lista2) {
+
+	    ArrayList<T> result = new ArrayList<T>();
+
+	    int index2 = 0;
+
+	    for (int i = 0; i < lista1.size(); i++) {
+
+	        T e1 = lista1.get(i);
+
+	        int matchIndex = -1;
+
+	        for (int j = index2; j < lista2.size(); j++) {
+	            if (e1.equals(lista2.get(j))) {
+	                matchIndex = j;
+	                break;
+	            }
+	        }
+
+	        if (matchIndex >= 0) {
+
+	            // Elemente aus lista2 bis zum Match
+	            for (int j = index2; j < matchIndex; j++) {
+	                T e2 = lista2.get(j);
+	                if (!result.contains(e2)) {
+	                    result.add(e2);
+	                }
+	            }
+
+	            if (!result.contains(e1)) {
+	                result.add(e1);
+	            }
+
+	            index2 = matchIndex + 1;
+
+	            // prüfen ob nächstes Element aus lista1 ebenfalls in lista2 vorkommt
+	            int nextMatchIndex = -1;
+
+	            if (i + 1 < lista1.size()) {
+	                T next = lista1.get(i + 1);
+
+	                for (int j = index2; j < lista2.size(); j++) {
+	                    if (next.equals(lista2.get(j))) {
+	                        nextMatchIndex = j;
+	                        break;
+	                    }
+	                }
+	            }
+
+	            if (nextMatchIndex == -1) {
+	                while (index2 < lista2.size()) {
+	                    T e2 = lista2.get(index2++);
+	                    if (!result.contains(e2)) {
+	                        result.add(e2);
+	                    }
+	                }
+	            }
+
+	        } else {
+	            if (!result.contains(e1)) {
+	                result.add(e1);
+	            }
+	        }
+	    }
+
+	    return result;
+	}
+	
+	
+	
+	//###########################################################
 	public static void remove(ArrayList<?> lista, String sToRemove, boolean bIgnoreCase) throws ExceptionZZZ {
 		main:{
 		if(lista==null) break main;
@@ -572,20 +684,31 @@ public class ArrayListUtilZZZ<T>  implements IConstantZZZ{
 		return aReturn;
 	}
 	
-	public static ArrayListZZZ<String> toArrayList(String[] sa) throws ExceptionZZZ{
+	//####################################
+	public static ArrayListZZZ<String> toArrayListString(String[] sa) throws ExceptionZZZ{
 		ArrayListZZZ<String> listaReturn = null;
 		main:{
 			ArrayList<String> listasLine = StringArrayZZZ.toArrayList(sa);
-			listaReturn = ArrayListUtilZZZ.toArrayList(listasLine);
+			listaReturn = ArrayListUtilZZZ.toArrayListString(listasLine);
 		}//end main:
 		return listaReturn;
 	}
 	
-	public static ArrayListZZZ<String> toArrayList(ArrayList<String> listas) throws ExceptionZZZ{
+	public static ArrayListZZZ<String> toArrayListString(ArrayList<String> listas) throws ExceptionZZZ{
 		ArrayListZZZ<String> listaReturn = new ArrayListZZZ<String>();
 		main:{
 			for(String s : listas) {
 				listaReturn.add(s);
+			}
+		}
+		return listaReturn;
+	}
+	
+	public static <T> ArrayListZZZ<T> toArrayList(ArrayList<T> listas) throws ExceptionZZZ{
+		ArrayListZZZ<T> listaReturn = new ArrayListZZZ<T>();
+		main:{
+			for(T value : listas) {
+				listaReturn.add(value);
 			}
 		}
 		return listaReturn;

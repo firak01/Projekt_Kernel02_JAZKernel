@@ -78,7 +78,7 @@ public class StringFormaterUtilZZZ implements IConstantZZZ{
 		main:{
 			if(saLine==null) break main;
 			
-			ArrayListZZZ<String> listasLineZ = ArrayListUtilZZZ.toArrayList(saLine);
+			ArrayListZZZ<String> listasLineZ = ArrayListUtilZZZ.toArrayListString(saLine);
 			ArrayListZZZ<String> listasReturn = justifyLineArrayList_(objStringJustifier, listasLineZ);
 			sReturn = ArrayListUtilZZZ.implode(listasReturn, StringZZZ.crlf());
 		}//end main:
@@ -231,7 +231,7 @@ public class StringFormaterUtilZZZ implements IConstantZZZ{
 				break main;
 			}
 			
-			ArrayListZZZ<String> listasLogZ = ArrayListUtilZZZ.toArrayList(saLogIn);
+			ArrayListZZZ<String> listasLogZ = ArrayListUtilZZZ.toArrayListString(saLogIn);
 			ArrayListZZZ<String> listasReturn = normStringForJustifyArrayList_(objStringJustifier, listasLogZ);
 								
 			saReturn = listasReturn.toStringArray();

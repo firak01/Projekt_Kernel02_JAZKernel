@@ -36,8 +36,10 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedStatusLocalZZZ;
 import basic.zBasic.util.abstractEnum.IEnumSetMappedZZZ;
+import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
 import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.abstractList.HashMapUtilZZZ;
+import basic.zBasic.util.abstractList.MapUtilZZZ;
 import basic.zBasic.util.datatype.enums.EnumMappedLogStringFormatAvailableHelperZZZ;
 import basic.zBasic.util.datatype.enums.EnumSetMappedLogStringFormatUtilZZZ;
 import basic.zBasic.util.datatype.enums.EnumSetUtilZZZ;
@@ -321,30 +323,50 @@ public class StringFormatManagerUtilZZZ implements IConstantZZZ {
 		}//end main:
 		return objaReturn;
 	}
+
+	
+	//##############################################################
+	
 	
 	public static IEnumSetMappedStringFormatZZZ[] mergeFormatArrays(IEnumSetMappedStringFormatZZZ[] ienumaFormatStringVorhanden, IEnumSetMappedStringFormatZZZ[] ienumaFormatStringNeu) throws ExceptionZZZ{
+		return StringFormatManagerUtilZZZ.mergeFormatArrays_(null, ienumaFormatStringVorhanden, ienumaFormatStringNeu);	
+	}
+	
+	
+	public static IEnumSetMappedStringFormatZZZ[] mergeFormatArrays(ArrayListZZZ listaSeparator, IEnumSetMappedStringFormatZZZ[] ienumaFormatStringVorhanden, IEnumSetMappedStringFormatZZZ[] ienumaFormatStringNeu) throws ExceptionZZZ{
+		return StringFormatManagerUtilZZZ.mergeFormatArrays_(listaSeparator, ienumaFormatStringVorhanden, ienumaFormatStringNeu);	
+	}
+	
+	private static IEnumSetMappedStringFormatZZZ[] mergeFormatArrays_(ArrayListZZZ listaSeparatorIn, IEnumSetMappedStringFormatZZZ[] ienumaFormatStringVorhanden, IEnumSetMappedStringFormatZZZ[] ienumaFormatStringNeu) throws ExceptionZZZ{
 		IEnumSetMappedStringFormatZZZ[]objaReturn=null;
-		main:{
-			if(ienumaFormatStringNeu==null) {
-				objaReturn = ienumaFormatStringVorhanden;
-				break main;
+		main:{						
+			if(listaSeparatorIn==null || listaSeparatorIn.size()==0) {
+				if(ienumaFormatStringNeu==null) {
+					objaReturn = ienumaFormatStringVorhanden;
+					break main;
+				}
+				
+				if(ienumaFormatStringVorhanden==null) {
+					objaReturn = ienumaFormatStringNeu;
+					break main;
+				}
 			}
-			
-			if(ienumaFormatStringVorhanden==null) {
-				objaReturn = ienumaFormatStringNeu;
-				break main;
-			}
-			
-			TODOGOON20260305;//Speichere die Listeder Separaoren. Das ist die Lösung für das "Tauschen der Spalten".
-			                 //Wenn man die Spaltenreichenfolge immer aus dem letzen Format ausliest, bekommt man nie das Optimum.
-			                 //Das auslesen der Spaltenreihenfolge aus dem Format kann also nur beim ersten Anwenden des Foramts passieren.
 			
 			//1. Aufteilen auf eine HashMap: current und neues Formatierungsarray
-			Map<IEnumSetMappedStringFormatZZZ, IEnumSetMappedStringFormatZZZ[]> mFormatCurrent = StringFormatManagerUtilZZZ.splitBySeparatorToStringHashMap(ienumaFormatStringVorhanden);
-			
+			Map<IEnumSetMappedStringFormatZZZ, IEnumSetMappedStringFormatZZZ[]> mFormatCurrent = StringFormatManagerUtilZZZ.splitBySeparatorToStringHashMap(ienumaFormatStringVorhanden);			
+
 			Map<IEnumSetMappedStringFormatZZZ, IEnumSetMappedStringFormatZZZ[]> mFormatNew = StringFormatManagerUtilZZZ.splitBySeparatorToStringHashMap(ienumaFormatStringNeu);
-						
-			//2. Mischen der beiden HashMaps, so dass pro Separator ein Array ohne Redundante Einträge übrigbleibt 
+			
+			
+			//2. Hole eine Liste der verwendeten Separatoren
+			//Merke: Das Zusammenfassend der Separatoren ist nicht nur einfaches Anhaengen der neuen Werte,
+			//       sondern auch das Reinmischen neuer Werte an die passende Stelle. 
+			ArrayListZZZ listaSeparator = MapUtilZZZ.mergeKeys(mFormatCurrent, mFormatNew);						
+			if(listaSeparatorIn!=null && listaSeparatorIn.size()==0) {														
+				listaSeparator = ArrayListUtilZZZ.mergeKeepFirst(listaSeparatorIn, listaSeparator);
+			}
+				
+			//3. Mischen der beiden HashMaps, so dass pro Separator ein Array ohne Redundante Einträge übrigbleibt 
 			//   und neue Separatoren mit ihren Arrays nach hinten wandern. (also LinkedHashMap)... mergeSorted()...			
 			LinkedHashMap<IEnumSetMappedStringFormatZZZ,IEnumSetMappedStringFormatZZZ[]> mFormatReturn = (LinkedHashMap<IEnumSetMappedStringFormatZZZ, IEnumSetMappedStringFormatZZZ[]>) HashMapUtilZZZ.mergeMapsAndJoinArrayValues(mFormatCurrent, mFormatNew);
 			//Falls man die HashMap als Debug-String augeben moechte
@@ -353,7 +375,7 @@ public class StringFormatManagerUtilZZZ implements IConstantZZZ {
 			//System.out.println("#########");
 			
 			
-			//3. Nun die HashMap durchiterieren und das Rückgabearray zusammensetzen. 
+			//4. Nun die HashMap durchiterieren und das Rückgabearray zusammensetzen. 
 			//   Von jedem Element den Key hinzufügen, danach die Value-Arrays joinen.
 			objaReturn = StringFormatManagerUtilZZZ.mergeHashMapFormatPositions(mFormatReturn);
 		}//end main:
@@ -468,8 +490,8 @@ public class StringFormatManagerUtilZZZ implements IConstantZZZ {
 	}
     
 
-    // #############################################################
-	
+	// #############################################################
+		
 	public static Map<IEnumSetMappedStringFormatZZZ, IEnumSetMappedStringFormatZZZ[]> splitBySeparatorToStringHashMap(IEnumSetMappedStringFormatZZZ[] objaFormatValue) throws ExceptionZZZ {
 		Map<IEnumSetMappedStringFormatZZZ, IEnumSetMappedStringFormatZZZ[]> hmReturn = null;
 		main:{

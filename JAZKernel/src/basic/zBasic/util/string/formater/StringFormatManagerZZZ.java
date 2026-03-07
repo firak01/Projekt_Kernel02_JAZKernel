@@ -9,6 +9,7 @@ import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
 import basic.zBasic.util.abstractList.ArrayListZZZ;
+import basic.zBasic.util.abstractList.MapUtilZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.datatype.xml.XmlUtilTagByTypeZZZ;
@@ -310,7 +311,10 @@ public class StringFormatManagerZZZ extends AbstractStringFormatManagerZZZ imple
 				}else {
 					//Der Normalfall, bUseColumnMergedFormat
 					//System.out.println(ReflectCodeZZZ.getPositionCurrent() +": Verwende bisherige Formatvorlage, ggfs. als Zusammenfassung der Spalten mit zuvor verwendeter.");
-					ienumaFormatLogString = StringFormatManagerUtilZZZ.mergeFormatArrays(ienumaFormatLogStringCurrent, ienumaFormatLogStringIn);					
+					
+					//Hole die ArrayList der Separatoren, zwischend denen die Formataufweisungen aufgeteilt werden.
+					ArrayListZZZ<IEnumSetMappedStringFormatZZZ> listaSeparator = this.getSeparatorArrayList();
+					ienumaFormatLogString = StringFormatManagerUtilZZZ.mergeFormatArrays(listaSeparator, ienumaFormatLogStringCurrent, ienumaFormatLogStringIn);					
 				}
 			}else {
 				//System.out.println(ReflectCodeZZZ.getPositionCurrent() +": Verwende die individuelle Formatvorlage und keine Vermischung mit zuvor verwendeter.");

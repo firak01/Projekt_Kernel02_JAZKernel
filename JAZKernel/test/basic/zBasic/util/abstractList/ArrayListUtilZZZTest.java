@@ -51,8 +51,49 @@ public class ArrayListUtilZZZTest extends TestCase{
 
 	 	   System.out.println("test");
 		} catch (ExceptionZZZ ez) {
+			ez.printStackTrace();
 			fail("Method throws an exception." + ez.getMessageLast());
  		}    
+    }
+    
+    
+    public void testMergeKeepFirst() {
+    	 try {
+  	 	   ArrayListZZZ<String> lista1 = new ArrayListZZZ<String>();
+  	 	   lista1.add("eins");
+  	 	   lista1.add("zwei");
+  	 	   lista1.add("drei");
+  	 	   
+  	 	   
+  	 	   ArrayListZZZ<String> lista2 = new ArrayListZZZ<String>();
+  	 	   lista2.add("1");
+	 	   lista2.add("zwei");
+	 	   lista2.add("2");
+	 	   lista2.add("noch 2");
+	 	   
+	 	  ArrayListZZZ<String> listaExpected = new ArrayListZZZ<String>();
+	 	  listaExpected.add("eins");
+	 	  listaExpected.add("1");
+	 	  listaExpected.add("zwei"); //gemeinsame matching position
+	 	  listaExpected.add("2");
+	 	  listaExpected.add("noch 2");
+	 	  listaExpected.add("drei");
+	 	   
+  	 	  ArrayList<String> listaValueTemp = ArrayListUtilZZZ.mergeKeepFirst(lista1, lista2);
+  	 	  assertNotNull(listaValueTemp);
+  	 	  assertEquals(listaExpected.size(), listaValueTemp.size());
+  	 	  
+  	 	  ArrayListZZZ<String> listaValue01 = ArrayListUtilZZZ.toArrayListString(listaValueTemp);
+  	 	  assertEquals(listaExpected, listaValue01);
+  	 	 
+  	 	  ArrayListZZZ<String> listaValue02 = ArrayListUtilZZZ.toArrayList(listaValueTemp);
+	 	  assertEquals(listaExpected, listaValue02);
+	 	 
+  	 	  
+  		} catch (ExceptionZZZ ez) {
+  			ez.printStackTrace();
+  			fail("Method throws an exception." + ez.getMessageLast());
+   		}   
     }
     
    public void testToArray() {
