@@ -7446,6 +7446,7 @@ MeinTestParameter=blablaErgebnis
 				
 				LogZZZ objLog = null;
 				if(objLogIn==null){				
+					TODOGOON202603;//Trotz aller Bemuehungen wird die # Kommentarposition nicht vor der ^ Kommentarposition einsortiert. Daher haben wir einen unverhaeltnismaessig langen String aufgrund einer riesigen Luecke, und die Spaltengrenzen werden auch nach rechts verschoben.
 					sLog = "Erstelle neues Log Object";
 					this.logProtocolWithPosition(sLog);
 					

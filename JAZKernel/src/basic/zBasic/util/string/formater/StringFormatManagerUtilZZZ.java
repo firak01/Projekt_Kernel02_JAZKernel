@@ -361,14 +361,15 @@ public class StringFormatManagerUtilZZZ implements IConstantZZZ {
 			//2. Hole eine Liste der verwendeten Separatoren
 			//Merke: Das Zusammenfassend der Separatoren ist nicht nur einfaches Anhaengen der neuen Werte,
 			//       sondern auch das Reinmischen neuer Werte an die passende Stelle. 
-			ArrayListZZZ listaSeparator = MapUtilZZZ.mergeKeys(mFormatCurrent, mFormatNew);						
-			if(listaSeparatorIn!=null && listaSeparatorIn.size()==0) {														
-				listaSeparator = ArrayListUtilZZZ.mergeKeepFirst(listaSeparatorIn, listaSeparator);
+			ArrayListZZZ<IEnumSetMappedStringFormatZZZ> listaSeparator = MapUtilZZZ.mergeKeys(mFormatCurrent, mFormatNew);						
+			if(listaSeparatorIn!=null && listaSeparatorIn.size()>=1) {														
+				ArrayList<IEnumSetMappedStringFormatZZZ>listaSeparatorNew = ArrayListUtilZZZ.mergeKeepFirst(listaSeparatorIn, listaSeparator);
+				listaSeparator = ArrayListUtilZZZ.toArrayList(listaSeparatorNew);
 			}
 				
 			//3. Mischen der beiden HashMaps, so dass pro Separator ein Array ohne Redundante Einträge übrigbleibt 
 			//   und neue Separatoren mit ihren Arrays nach hinten wandern. (also LinkedHashMap)... mergeSorted()...			
-			LinkedHashMap<IEnumSetMappedStringFormatZZZ,IEnumSetMappedStringFormatZZZ[]> mFormatReturn = (LinkedHashMap<IEnumSetMappedStringFormatZZZ, IEnumSetMappedStringFormatZZZ[]>) HashMapUtilZZZ.mergeMapsAndJoinArrayValues(mFormatCurrent, mFormatNew);
+			LinkedHashMap<IEnumSetMappedStringFormatZZZ,IEnumSetMappedStringFormatZZZ[]> mFormatReturn = (LinkedHashMap<IEnumSetMappedStringFormatZZZ, IEnumSetMappedStringFormatZZZ[]>) HashMapUtilZZZ.mergeMapsAndJoinArrayValues(listaSeparator, mFormatCurrent, mFormatNew);
 			//Falls man die HashMap als Debug-String augeben moechte
 			//String sDebug = HashMapUtilZZZ.computeDebugString4Arrays(mFormatReturn);
 			//System.out.println(sDebug);

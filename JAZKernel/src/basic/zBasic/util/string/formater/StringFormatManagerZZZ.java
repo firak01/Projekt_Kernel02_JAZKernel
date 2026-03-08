@@ -312,9 +312,15 @@ public class StringFormatManagerZZZ extends AbstractStringFormatManagerZZZ imple
 					//Der Normalfall, bUseColumnMergedFormat
 					//System.out.println(ReflectCodeZZZ.getPositionCurrent() +": Verwende bisherige Formatvorlage, ggfs. als Zusammenfassung der Spalten mit zuvor verwendeter.");
 					
-					//Hole die ArrayList der Separatoren, zwischend denen die Formataufweisungen aufgeteilt werden.
-					ArrayListZZZ<IEnumSetMappedStringFormatZZZ> listaSeparator = this.getSeparatorArrayList();
-					ienumaFormatLogString = StringFormatManagerUtilZZZ.mergeFormatArrays(listaSeparator, ienumaFormatLogStringCurrent, ienumaFormatLogStringIn);					
+					//Hole die bisherige ArrayList der Separatoren, zwischend denen die Formataufweisungen aufgeteilt werden.
+					ArrayListZZZ<IEnumSetMappedStringFormatZZZ> listaSeparator = this.getSeparatorArrayList();					
+						
+					//Merge die Liste der Formatanweisungen und auch die Separatoren
+					ienumaFormatLogString = StringFormatManagerUtilZZZ.mergeFormatArrays(listaSeparator, ienumaFormatLogStringCurrent, ienumaFormatLogStringIn);
+					
+					//Hole die neue Liste der Separatoren, inkl. neu hinzugekommenden, reingemergten Separatoren (sprich Spalten)
+					ArrayListZZZ<IEnumSetMappedStringFormatZZZ> listaSeparatorNew = StringFormatManagerUtilZZZ.filterSeparatorsAsArrayList(ienumaFormatLogStringIn);
+					this.setSeparatorArrayList(listaSeparatorNew);
 				}
 			}else {
 				//System.out.println(ReflectCodeZZZ.getPositionCurrent() +": Verwende die individuelle Formatvorlage und keine Vermischung mit zuvor verwendeter.");

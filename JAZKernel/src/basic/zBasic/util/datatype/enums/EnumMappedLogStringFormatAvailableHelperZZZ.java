@@ -368,7 +368,9 @@ public class EnumMappedLogStringFormatAvailableHelperZZZ implements IConstantZZZ
 				//ArrayList<E> listaeByClassSuperTemp = EnumAvailableHelperZZZ.searchEnumMappedList(objclsSuper,sEnumName, bScanInterfaceImmediate, bScanSuperclassImmediate);
 				ArrayList<IEnumSetMappedStringFormatZZZ> listaeByClassSuperTemp = searchEnumMappedList(objclsSuper, sEnumName, bScanInterfaceImmediate);
 				//listaeByClassSuper = (ArrayList<IEnumSetMappedZZZ>) ArrayListUtilZZZ.join(listaeByClassSuper, listaeByClassSuperTemp);
-				listaeByClassSuper = (ArrayList<IEnumSetMappedStringFormatZZZ>) ArrayListUtilZZZ.join(listaeByClassSuper, (ArrayList<E>) listaeByClassSuperTemp);
+				
+				//listaeByClassSuper = (ArrayList<IEnumSetMappedStringFormatZZZ>) ArrayListUtilZZZ.join(listaeByClassSuper, (ArrayList<E>) listaeByClassSuperTemp);
+				listaeByClassSuper = (ArrayList<IEnumSetMappedStringFormatZZZ>) ArrayListUtilZZZ.join(listaeByClassSuper, listaeByClassSuperTemp);
 			}
 		}
 		

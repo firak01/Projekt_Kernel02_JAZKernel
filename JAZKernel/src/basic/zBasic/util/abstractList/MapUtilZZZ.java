@@ -105,17 +105,20 @@ public class MapUtilZZZ implements IConstantZZZ{
 	
 	//#################################################
 	public static <K,V> ArrayListZZZ<K> mergeKeys(Map<K,V[]> m1) throws ExceptionZZZ {
-		return MapUtilZZZ.mergeKeys(m1, null);
+		return MapUtilZZZ.mergeKeys_(m1, null);
 	}
 	
 	public static <K,V> ArrayListZZZ<K> mergeKeys(Map<K,V[]> m1, Map<K,V[]> m2) throws ExceptionZZZ {
-		return MapUtilZZZ.mergeKeys(m1, m2);
+		return MapUtilZZZ.mergeKeys_(m1, m2);
 	}
 	
 	
 	private static <K,V> ArrayListZZZ<K> mergeKeys_(Map<K,V[]> m1, Map<K,V[]> m2) throws ExceptionZZZ {
 		ArrayListZZZ<K> listaReturn = null;
 		main:{
+			if(m1==null && m2 ==null) break main;			
+			listaReturn = new ArrayListZZZ<K>();
+			
 			//0. Falls nur 1x HashMap, dann ist das fuer jeden Fall deren KeySet
 			if(m1==null) {
 				Set<K> set2 = m2.keySet();
@@ -136,7 +139,8 @@ public class MapUtilZZZ implements IConstantZZZ{
 				break main;
 			}
 						
-			//1. Baue eine Arraylist aller Schlüssel auf, ohne Duplikate
+			
+			//1. Baue eine Arraylist aller Schlüssel auf, ohne Duplikate								
 			Set<K> set1 = m1.keySet();
 			Iterator<K> it1 = set1.iterator();
 			while(it1.hasNext()) {

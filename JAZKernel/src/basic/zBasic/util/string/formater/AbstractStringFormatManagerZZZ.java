@@ -50,7 +50,12 @@ public abstract class AbstractStringFormatManagerZZZ extends AbstractObjectWithF
 	private static final boolean INITIALIZED = true;// Trick, um Mehrfachinstanzen zu verhindern (optional)
 	
 	
-	// --- Globale Objekte ---
+	// --- Globale Objekte ---	
+	//Die Liste der Spaltenseparatoren, das aktuelle Format kann sich ja ggfs. aendern (je nachdem welche Log-Funktion verwendet wird),
+	//die Reihenfolge der Spalten (markiert durch die Separatoren) sollte nicht veraendert werden. Sonst bekommt man in den buendig gemachten Zeilen grosse Luecken.
+	//Neue Separatoren werden in diese Liste reingemischt (ArrayListUtilZZZ.merge...)
+	protected volatile ArrayListZZZ<IEnumSetMappedStringFormatZZZ> listaSeparator=null;
+	
 	//Das zuletzt verwendete Format, ggfs. durch weitere Anwendung mit anderen Formaten erweitert
 	protected volatile IEnumSetMappedStringFormatZZZ[] ienumaFormatStringCurrent=null; 
 	
@@ -72,6 +77,20 @@ public abstract class AbstractStringFormatManagerZZZ extends AbstractObjectWithF
 	
 	//##########################################################################
 	//### aus IStringFormatUserZZZ
+	@Override
+	public ArrayListZZZ<IEnumSetMappedStringFormatZZZ>getSeparatorArrayList() throws ExceptionZZZ{
+		if(this.listaSeparator==null) {
+			this.listaSeparator = new ArrayListZZZ<IEnumSetMappedStringFormatZZZ>();			
+		}
+		return this.listaSeparator;
+	}
+	
+	@Override
+	public void setSeparatorArrayList(ArrayListZZZ<IEnumSetMappedStringFormatZZZ> listaSeparator) throws ExceptionZZZ{
+		this.listaSeparator = listaSeparator;
+	}
+	
+	//++++++++++++++++++++++
 	@Override
 	public IEnumSetMappedStringFormatZZZ[] getStringFormatArrayDefault() throws ExceptionZZZ{
 		return LogZZZ.getFormatForComputeLineDefault();			

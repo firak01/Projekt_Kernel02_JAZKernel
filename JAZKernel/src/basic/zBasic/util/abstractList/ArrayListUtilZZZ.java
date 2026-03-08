@@ -23,12 +23,12 @@ import basic.zBasic.util.datatype.string.StringArrayZZZ;
  * 
  * @author Fritz Lindhauer, 10.01.2026, 08:22:59
  */
-public class ArrayListUtilZZZ<T>  implements IConstantZZZ{
+public class ArrayListUtilZZZ<T>  extends ListUtilZZZ {
 	private ArrayListUtilZZZ() { 
 		//Zum Verstecken des Konsruktors
 	} //static methods only
 	
-	public static boolean isEmpty(ArrayList<?> objAL) throws ExceptionZZZ{
+	public static <T> boolean isEmpty(ArrayList<T> objAL) throws ExceptionZZZ{
 		boolean bReturn = false;
 		main:{
 			if(objAL==null) {
@@ -43,7 +43,7 @@ public class ArrayListUtilZZZ<T>  implements IConstantZZZ{
 		return bReturn;
 	}
 	
-	public static boolean isNull(ArrayList<?> objAL) throws ExceptionZZZ {
+	public static <T> boolean isNull(ArrayList<T> objAL) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
 			if(objAL==null) {
@@ -54,8 +54,8 @@ public class ArrayListUtilZZZ<T>  implements IConstantZZZ{
 		return bReturn;
 	}
 	
-	public static Object getFirst(ArrayList<?> objAL) throws ExceptionZZZ {
-		Object objReturn = null;
+	public static <T> T getFirst(ArrayList<T> objAL) throws ExceptionZZZ {
+		T objReturn = null;
 		main:{
 			if(objAL==null)break main;
 			if(objAL.isEmpty()) break main;
@@ -65,8 +65,8 @@ public class ArrayListUtilZZZ<T>  implements IConstantZZZ{
 		return objReturn;
 	}
 	
-	public static Object getLast(ArrayList<?> objAL) throws ExceptionZZZ {
-		Object objReturn = null;
+	public static <T> T getLast(ArrayList<T> objAL) throws ExceptionZZZ {
+		T objReturn = null;
 		main:{
 			if(objAL==null)break main;
 			if(objAL.isEmpty()) break main;
@@ -77,7 +77,7 @@ public class ArrayListUtilZZZ<T>  implements IConstantZZZ{
 		return objReturn;
 	}
 	
-	public static boolean isSameSize(ArrayList objAL1, ArrayList objAL2) throws ExceptionZZZ{
+	public static <T> boolean isSameSize(ArrayList<T> objAL1, ArrayList<T> objAL2) throws ExceptionZZZ{
 			boolean bReturn = false;
 			main:{
 				if(objAL1== null){
@@ -97,7 +97,7 @@ public class ArrayListUtilZZZ<T>  implements IConstantZZZ{
 			return bReturn;
 		}
 	
-	public static String implode(ArrayList<?>lista, String sDelimiterIn) throws ExceptionZZZ{
+	public static <T> String implode(ArrayList<T>lista, String sDelimiterIn) throws ExceptionZZZ{
 		String sReturn = null;
 		main:{
 			if(lista==null)break main;
@@ -122,7 +122,7 @@ public class ArrayListUtilZZZ<T>  implements IConstantZZZ{
 		return sReturn;
 	}
 	
-	public static String implodeReversed(ArrayList<?>lista, String sDelimiterIn) throws ExceptionZZZ {
+	public static <T> String implodeReversed(ArrayList<T>lista, String sDelimiterIn) throws ExceptionZZZ {
 		String sReturn = null;
 		main:{
 			if(lista==null)break main;
@@ -224,13 +224,13 @@ public class ArrayListUtilZZZ<T>  implements IConstantZZZ{
 	 * Aber: Man kann sowieso keine Klasse an diese statische Methode übergeben (Merke: Class<T> geht nicht )
 	 * Darum in einer Schleife alle durchgehen.
 	 */
-	public static boolean isInstanceOf(ArrayList lista, Class objClass) throws ExceptionZZZ {
+	public static <T> boolean isInstanceOf(ArrayList<T> lista, Class objClass) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{			
 			if(objClass==null)break main;
 			if(ArrayListUtilZZZ.isEmpty(lista))break main;
 		
-			for(Object obj : lista) {
+			for(T obj : lista) {
 				Class<? extends Object> classTemp = obj.getClass();//Das funktioniert aber nicht mit Interfaces
 				
 				//also: Die idee ist, das man die Klasse selbst eher findet und auch eher angibt. Darum nicht erst alle instanceOfList - Objekte holen.
@@ -249,19 +249,19 @@ public class ArrayListUtilZZZ<T>  implements IConstantZZZ{
 	
 	
 		
-	public static ArrayList<?> join(ArrayList<?> lista1, ArrayList<?> lista2) throws ExceptionZZZ {
+	public static <T> ArrayList<T> join(ArrayList<T> lista1, ArrayList<T> lista2) throws ExceptionZZZ {
 		return ArrayListUtilZZZ.join(lista1, lista2, false);
 	}
 	
-	public static ArrayList<?> join(ArrayList<?> lista1, ArrayList<?> lista2, boolean bFlagUnique) throws ExceptionZZZ{
-		ArrayList listaReturn = null;
+	public static <T> ArrayList<T> join(ArrayList<T> lista1, ArrayList<T> lista2, boolean bFlagUnique) throws ExceptionZZZ{
+		ArrayList<T> listaReturn = null;
 		main:{
 			if(lista1==null && lista2 ==null) break main;
 			
 			
 			if(bFlagUnique==false){
 				//Wenn nicht ''uniqued' werden soll, dann kann man sofort in der Return-liste joinen
-				listaReturn = new ArrayList();
+				listaReturn = new ArrayList<T>();
 				if(lista1!=null){
 					for(int icount=0; icount < lista1.size(); icount++){
 						listaReturn.add(lista1.get(icount));
@@ -284,13 +284,13 @@ public class ArrayListUtilZZZ<T>  implements IConstantZZZ{
 		return listaReturn;
 	}
 	
-	public static ArrayList<?> joinKeepFirst(ArrayList<?> lista1, ArrayList<?> lista2) throws ExceptionZZZ {
-		ArrayList<?> listaReturn = null;
+	public static <T> ArrayList<T> joinKeepFirst(ArrayList<T> lista1, ArrayList<T> lista2) throws ExceptionZZZ {
+		ArrayList<T> listaReturn = null;
 		main:{
 			if(lista1==null && lista2 ==null) break main;
 			
 			//Wenn 'uniqued' werden soll, dann erst in eine temporaere Liste joinen
-			ArrayList listaTemp = new ArrayList();
+			ArrayList<T> listaTemp = new ArrayList<T>();
 			if(lista1!=null){
 				for(int icount=0; icount < lista1.size(); icount++){
 					listaTemp.add(lista1.get(icount));
@@ -307,13 +307,13 @@ public class ArrayListUtilZZZ<T>  implements IConstantZZZ{
 		return listaReturn;
 	}
 	
-	public static ArrayList<?> joinKeepLast(ArrayList<?> lista1, ArrayList<?> lista2) throws ExceptionZZZ {
-		ArrayList listaReturn = null;
+	public static <T> ArrayList<T> joinKeepLast(ArrayList<T> lista1, ArrayList<T> lista2) throws ExceptionZZZ {
+		ArrayList<T> listaReturn = null;
 		main:{
 			if(lista1==null && lista2 ==null) break main;
 					
 			//Wenn 'uniqued' werden soll, dann erst in eine temporaere Liste joinen
-			ArrayList listaTemp = new ArrayList();
+			ArrayList<T> listaTemp = new ArrayList<T>();
 			if(lista1!=null){
 				for(int icount=0; icount < lista1.size(); icount++){
 					listaTemp.add(lista1.get(icount));
@@ -333,12 +333,12 @@ public class ArrayListUtilZZZ<T>  implements IConstantZZZ{
 	//###########################################################
 	
 	public static <T> ArrayList<T> mergeKeepFirst(ArrayList<T>lista1, ArrayList<T>lista2) throws ExceptionZZZ {
-		ArrayList listaReturn = null;
+		ArrayList<T> listaReturn = null;
 		main:{
 			if(lista1==null && lista2 ==null) break main;
 					
 			//Wenn 'uniqued' werden soll, dann erst in eine temporaere Liste joinen
-			ArrayList listaTemp = new ArrayList();
+			ArrayList<T> listaTemp = new ArrayList<T>();
 			if(lista1==null){
 				for(int icount=0; icount < lista2.size(); icount++){
 					listaTemp.add(lista2.get(icount));
@@ -357,7 +357,7 @@ public class ArrayListUtilZZZ<T>  implements IConstantZZZ{
 			}		
 			
 			//Nun als Schritt 2, die Variante mit dem echten Reinmischen.			
-			ArrayList<T> list = ArrayListUtilZZZ.mergeKeepFirst_Step2(lista1, lista2);
+			ArrayList<T> list = ArrayListUtilZZZ.mergeKeepFirst_Step2_(lista1, lista2);
 			listaReturn = list;
 			
 		}//END main:
@@ -371,84 +371,90 @@ public class ArrayListUtilZZZ<T>  implements IConstantZZZ{
 	 * @return
 	 * @author Fritz Lindhauer, 07.03.2026, 08:58:33
 	 */
-	private static <T> ArrayList<T> mergeKeepFirst_Step2(ArrayList<T> lista1, ArrayList<T> lista2) {
-
-	    ArrayList<T> result = new ArrayList<T>();
-
-	    int index2 = 0;
-
-	    for (int i = 0; i < lista1.size(); i++) {
-
-	        T e1 = lista1.get(i);
-
-	        int matchIndex = -1;
-
-	        for (int j = index2; j < lista2.size(); j++) {
-	            if (e1.equals(lista2.get(j))) {
-	                matchIndex = j;
-	                break;
-	            }
-	        }
-
-	        if (matchIndex >= 0) {
-
-	            // Elemente aus lista2 bis zum Match
-	            for (int j = index2; j < matchIndex; j++) {
-	                T e2 = lista2.get(j);
-	                if (!result.contains(e2)) {
-	                    result.add(e2);
-	                }
-	            }
-
-	            if (!result.contains(e1)) {
-	                result.add(e1);
-	            }
-
-	            index2 = matchIndex + 1;
-
-	            // prüfen ob nächstes Element aus lista1 ebenfalls in lista2 vorkommt
-	            int nextMatchIndex = -1;
-
-	            if (i + 1 < lista1.size()) {
-	                T next = lista1.get(i + 1);
-
-	                for (int j = index2; j < lista2.size(); j++) {
-	                    if (next.equals(lista2.get(j))) {
-	                        nextMatchIndex = j;
-	                        break;
-	                    }
-	                }
-	            }
-
-	            if (nextMatchIndex == -1) {
-	                while (index2 < lista2.size()) {
-	                    T e2 = lista2.get(index2++);
-	                    if (!result.contains(e2)) {
-	                        result.add(e2);
-	                    }
-	                }
-	            }
-
-	        } else {
-	            if (!result.contains(e1)) {
-	                result.add(e1);
-	            }
-	        }
-	    }
-
-	    return result;
+	private static <T> ArrayList<T> mergeKeepFirst_Step2_(ArrayList<T> lista1, ArrayList<T> lista2) {
+	    ArrayList<T> listaReturn = null;	    
+	    main:{
+		    if(lista1==null || lista1.size()==0) {
+		    	listaReturn = lista2;
+		    	break main;
+		    }
+		    
+		    listaReturn = new ArrayList<T>();
+	
+		    int index2 = 0;
+	
+		    for (int i = 0; i < lista1.size(); i++) {
+	
+		        T e1 = lista1.get(i);
+	
+		        int matchIndex = -1;
+	
+		        for (int j = index2; j < lista2.size(); j++) {
+		            if (e1.equals(lista2.get(j))) {
+		                matchIndex = j;
+		                break;
+		            }
+		        }
+	
+		        if (matchIndex >= 0) {
+	
+		            // Elemente aus lista2 bis zum Match
+		            for (int j = index2; j < matchIndex; j++) {
+		                T e2 = lista2.get(j);
+		                if (!listaReturn.contains(e2)) {
+		                    listaReturn.add(e2);
+		                }
+		            }
+	
+		            if (!listaReturn.contains(e1)) {
+		                listaReturn.add(e1);
+		            }
+	
+		            index2 = matchIndex + 1;
+	
+		            // prüfen ob nächstes Element aus lista1 ebenfalls in lista2 vorkommt
+		            int nextMatchIndex = -1;
+	
+		            if (i + 1 < lista1.size()) {
+		                T next = lista1.get(i + 1);
+	
+		                for (int j = index2; j < lista2.size(); j++) {
+		                    if (next.equals(lista2.get(j))) {
+		                        nextMatchIndex = j;
+		                        break;
+		                    }
+		                }
+		            }
+	
+		            if (nextMatchIndex == -1) {
+		                while (index2 < lista2.size()) {
+		                    T e2 = lista2.get(index2++);
+		                    if (!listaReturn.contains(e2)) {
+		                        listaReturn.add(e2);
+		                    }
+		                }
+		            }
+	
+		        } else {
+		            if (!listaReturn.contains(e1)) {
+		                listaReturn.add(e1);
+		            }
+		        }
+		    }
+	    }//end main;
+	    return listaReturn;
 	}
 	
 	
 	
 	//###########################################################
-	public static void remove(ArrayList<?> lista, String sToRemove, boolean bIgnoreCase) throws ExceptionZZZ {
+	public static <T> void remove(ArrayList<T> lista, String sToRemove, boolean bIgnoreCase) throws ExceptionZZZ {
 		main:{
 		if(lista==null) break main;
 		if(sToRemove==null) break main;
 		
 		if(bIgnoreCase){	
-			for(Object obj : lista){
+			for(T obj : lista){
 				if(sToRemove.equalsIgnoreCase(obj.toString())){			
 					lista.remove(obj);
 					break main; //wenn man danach weiter durch die Liste gehen will, dann gibt es Fehler.
@@ -461,13 +467,13 @@ public class ArrayListUtilZZZ<T>  implements IConstantZZZ{
 	  }//end main:
 	}
 	
-	public static void remove(ArrayList<?> lista, Integer intToRemove) throws ExceptionZZZ {
+	public static <T> void remove(ArrayList<T> lista, Integer intToRemove) throws ExceptionZZZ {
 		main:{
 		if(lista==null) break main;
 		if(intToRemove==null) break main;
 		
 			
-		for(Object obj : lista){
+		for(T obj : lista){
 			if(obj.equals(intToRemove)){			
 				lista.remove(obj);	
 				break main;
@@ -476,10 +482,8 @@ public class ArrayListUtilZZZ<T>  implements IConstantZZZ{
 	  }//end main:
 	}
 	
-	
-	
-	
-	public static void removeLast(ArrayList<?> lista, int iNumberOfElements2Remove) throws ExceptionZZZ {
+
+	public static <T> void removeLast(ArrayList<T> lista, int iNumberOfElements2Remove) throws ExceptionZZZ {
 		main:{
 			if(lista==null) break main;
 			if(lista.size()>iNumberOfElements2Remove){
@@ -493,50 +497,7 @@ public class ArrayListUtilZZZ<T>  implements IConstantZZZ{
 		}//end main:
 	}
 	
-	/**
-	 * @param lista
-	 * @return
-	 * 
-	 * https://stackoverflow.com/questions/10766492/what-is-the-simplest-way-to-reverse-an-arraylist
-	 */
-//	public static <T> List<T> reverse(final List<T> list) {
-//    final int size = list.size();
-//    final int last = size - 1;
-//
-//    // create a new list, with exactly enough initial capacity to hold the (reversed) list
-//    final List<T> result = new ArrayList<>(size);
-//
-//    // iterate through the list in reverse order and append to the result
-//    for (int i = last; i >= 0; --i) {
-//        final T element = list.get(i);
-//        result.add(element);
-//    }
-//
-//    // result now holds a reversed copy of the original list
-//    return result;
-//}
-	public static <T> List<T> reverse(List<T> lista) throws ExceptionZZZ {
-	    List<T> listaReturn = null; 
-		main:{
-			if(lista==null) break main;
-			if(lista.size()==0) break main;
-			
-			
-			
-			// create a new list, with exactly enough initial capacity to hold the (reversed) list
-			final int size = lista.size();
-			final int last = size - 1;
-			
-		    listaReturn = new ArrayList<>(size);
-		    
-		    // iterate through the list in reverse order and append to the result
-		    for (int i = last; i >= 0; --i) {
-		        final T element = lista.get(i);
-		        listaReturn.add(element);
-		    }
-		}//end main	
-	    return listaReturn;
-	}	
+		
 	
 	/** von ChatGPT erstellt
 	 * @param originalList
@@ -918,14 +879,14 @@ public class ArrayListUtilZZZ<T>  implements IConstantZZZ{
 	
 	//###############################
 	@SuppressWarnings({ "rawtypes", "unchecked"})
-	public static ArrayList<?> trim(ArrayList<?> lista) throws ExceptionZZZ {
-		ArrayList listaReturn = null;
+	public static <T> ArrayList<T> trim(ArrayList<T> lista) throws ExceptionZZZ {
+		ArrayList<T> listaReturn = null;
 		main:{
 			if(lista==null)break main;					
 			
-			listaReturn=new ArrayList();
+			listaReturn=new ArrayList<T>();
 			for(int icount=0; icount < lista.size(); icount++ ){
-				Object obj = lista.get(icount);
+				T obj = lista.get(icount);
 				if(obj!=null) listaReturn.add(obj);
 			}	
 		}//End main:
@@ -933,22 +894,20 @@ public class ArrayListUtilZZZ<T>  implements IConstantZZZ{
 	}
 	
 	//###############################
-	@SuppressWarnings({ "rawtypes", "unchecked"})
-	public static ArrayList<?> unique(ArrayList<?> lista) throws ExceptionZZZ {
-		ArrayList listaReturn = null;
+	public static <T> ArrayList<T> unique(ArrayList<T> lista) throws ExceptionZZZ {
+		ArrayList<T> listaReturn = null;
 		main:{
 			listaReturn = ArrayListUtilZZZ.uniqueKeepFirst(lista);
 		}//End main:
 		return listaReturn;
 	}
 	
-	@SuppressWarnings({ "rawtypes", "unchecked"})
-	public static ArrayList<?> uniqueKeepFirst(ArrayList<?> lista) throws ExceptionZZZ {
-		ArrayList listaReturn = null;
+	public static <T> ArrayList<T> uniqueKeepFirst(ArrayList<T> lista) throws ExceptionZZZ {
+		ArrayList<T> listaReturn = null;
 		main:{
 			if(lista==null)break main;					
 		
-			listaReturn=new ArrayList();
+			listaReturn=new ArrayList<T>();
 			for(int icount=0; icount < lista.size(); icount++ ){
 				if(! listaReturn.contains(lista.get(icount))) listaReturn.add(lista.get(icount));
 			}	
@@ -956,23 +915,22 @@ public class ArrayListUtilZZZ<T>  implements IConstantZZZ{
 		return listaReturn;
 	}
 	
-	@SuppressWarnings({ "rawtypes", "unchecked"})
-	public static ArrayList<?> uniqueKeepLast(ArrayList<?> lista) throws ExceptionZZZ {
-		ArrayList listaReturn = null;
+	public static <T> ArrayList<T> uniqueKeepLast(ArrayList<T> lista) throws ExceptionZZZ {
+		ArrayList<T> listaReturn = null;
 		main:{
 			if(lista==null)break main;					
 		
 			//Strategie: KeepLast
 			//Erst einmal die Listenreihenfolge umdrehen
-			ArrayList<?> listaReversed = (ArrayList<?>) ArrayListUtilZZZ.reverse(lista);
+			ArrayList<T> listaReversed = (ArrayList<T>) ArrayListUtilZZZ.reverse(lista);
 			
-			ArrayList listaReturnReversed=new ArrayList();
+			ArrayList<T> listaReturnReversed=new ArrayList<T>();
 			for(int icount=0; icount < listaReversed.size(); icount++ ){
 				if(! listaReturnReversed.contains(listaReversed.get(icount))) listaReturnReversed.add(listaReversed.get(icount));
 			}	
 			
 			//Nach der Verarbeitung die Listenreihenfolge wieder zurückdrehen
-			listaReturn = (ArrayList) ArrayListUtilZZZ.reverse(listaReturnReversed);
+			listaReturn = ArrayListUtilZZZ.reverse(listaReturnReversed);
 			
 		}//End main:
 		return listaReturn;
