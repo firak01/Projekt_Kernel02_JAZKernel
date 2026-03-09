@@ -26,8 +26,6 @@ public class StringFormaterZZZ extends AbstractStringFormaterZZZ{
 
 	@Override
 	public IEnumSetMappedStringFormatZZZ[] getFormatPositionsMappedCustom() {
-		//TODOGOON20240503: Eine Sortierung des Arrays ist wünschenswert.
-		//                  Zuerst die ohne Argument, dann die mit Objekt als Argument, dann erst die Stringbasierten Argumente.
 		IEnumSetMappedStringFormatZZZ[] iaenumReturn = {
 				IStringFormatZZZ.LOGSTRINGFORMAT.DATE_STRING,
 				IStringFormatZZZ.LOGSTRINGFORMAT.THREADID_STRING,

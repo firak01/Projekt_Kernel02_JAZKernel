@@ -68,7 +68,8 @@ public class MapUtilZZZ implements IConstantZZZ{
 				//1. Baue eine Arraylist aller Schlüssel auf, ohne Duplikate
 				listaK = MapUtilZZZ.mergeKeys(m1, m2);
 			}else {
-				listaK = listaKIn;
+				//Auch wenn die Liste selbst nicht aufgebaut, sondern nur uebernommen wird... Duplikate entfernen.
+				listaK = ArrayListUtilZZZ.unique(listaKIn);				
 			}
 			
 			

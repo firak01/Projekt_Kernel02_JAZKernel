@@ -334,7 +334,7 @@ public class StringFormatManagerZZZ extends AbstractStringFormatManagerZZZ imple
 			//#######################
 			//1. Ergänze ggfs. die Zeilen um weitere Zeilen fuer LogEintraege 			
 			if(!this.getFlag(IStringFormatManagerEnabledZZZ.FLAGZ.USE_STATIC_FORMAT)) {
-				ienumaFormatLogString = StringFormatManagerUtilZZZ.appendLines_StringType(ienumaFormatLogStringIn, sLogs);
+				ienumaFormatLogString = StringFormatManagerUtilZZZ.appendLines_StringType(ienumaFormatLogString, sLogs);
 			}else {
 				//System.out.println(ReflectCodeZZZ.getPositionCurrent() +": Verwende die Formatvorlage statisch und ergänze keine zusätzliche Kommentarzeilen.");
 				ienumaFormatLogString = ienumaFormatLogStringIn;

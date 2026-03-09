@@ -48,7 +48,6 @@ public class ArrayListZZZ<T> extends AbstractArrayListZZZ<T> implements IArrayLi
 	}
 	public ArrayListZZZ(T[]obja) {	
 		ArrayListExtendedNew_(obja);
-	
 	}
 	
 	private boolean ArrayListExtendedNew_(T[] obja){		

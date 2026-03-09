@@ -498,7 +498,7 @@ public class ArrayListUtilZZZ<T>  extends ListUtilZZZ {
 	}
 	
 		
-	
+	//########################################################################
 	/** von ChatGPT erstellt
 	 * @param originalList
 	 * @return
@@ -516,8 +516,24 @@ public class ArrayListUtilZZZ<T>  extends ListUtilZZZ {
         return listaReturn;
     }
 	
+	/** von ChatGPT erstellt
+	 * @param originalList
+	 * @return
+	 * @author Fritz Lindhauer, 09.11.2025, 08:21:28
+	 */
+	public static <T> ArrayListZZZ<T> reverse(ArrayListZZZ<T> listaOriginal) throws ExceptionZZZ {
+		ArrayListZZZ<T> listaReturn = null;
+		main:{
+			if(listaOriginal==null) break main;
+			
+        	// Sicherheitskopie erstellen, um die ursprüngliche Liste nicht zu verändern
+        	listaReturn = listaOriginal;
+        	Collections.reverse(listaOriginal);
+		}//end main
+        return listaReturn;
+    }
 	
-	public static <T> ArrayListZZZ<T> reverse(ArrayListZZZ<T> lista) throws ExceptionZZZ {
+	public static <T> ArrayListZZZ<T> reverseV01(ArrayListZZZ<T> lista) throws ExceptionZZZ {
 	    ArrayListZZZ<T> listaReturn = null; 
 		main:{
 			if(lista==null) break main;
@@ -552,6 +568,9 @@ public class ArrayListUtilZZZ<T>  extends ListUtilZZZ {
         return listaReturn;
     }
 	
+	
+	
+	//#############################################################################
 	/**
 	 * @param lista
 	 * @return
@@ -935,4 +954,48 @@ public class ArrayListUtilZZZ<T>  extends ListUtilZZZ {
 		}//End main:
 		return listaReturn;
 	}
+	
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++
+	public static <T> ArrayListZZZ<T> unique(ArrayListZZZ<T> lista) throws ExceptionZZZ {
+		ArrayListZZZ<T> listaReturn = null;
+		main:{
+			listaReturn = ArrayListUtilZZZ.uniqueKeepFirst(lista);
+		}//End main:
+		return listaReturn;
+	}
+	
+	public static <T> ArrayListZZZ<T> uniqueKeepFirst(ArrayListZZZ<T> lista) throws ExceptionZZZ {
+		ArrayListZZZ<T> listaReturn = null;
+		main:{
+			if(lista==null)break main;					
+		
+			listaReturn=new ArrayListZZZ<T>();
+			for(int icount=0; icount < lista.size(); icount++ ){
+				if(! listaReturn.contains(lista.get(icount))) listaReturn.add(lista.get(icount));
+			}	
+		}//End main:
+		return listaReturn;
+	}
+	
+	public static <T> ArrayListZZZ<T> uniqueKeepLast(ArrayListZZZ<T> lista) throws ExceptionZZZ {
+		ArrayListZZZ<T> listaReturn = null;
+		main:{
+			if(lista==null)break main;					
+		
+			//Strategie: KeepLast
+			//Erst einmal die Listenreihenfolge umdrehen
+			ArrayListZZZ<T> listaReversed = (ArrayListZZZ<T>) ArrayListUtilZZZ.reverse(lista);
+			
+			ArrayListZZZ<T> listaReturnReversed=new ArrayListZZZ<T>();
+			for(int icount=0; icount < listaReversed.size(); icount++ ){
+				if(! listaReturnReversed.contains(listaReversed.get(icount))) listaReturnReversed.add(listaReversed.get(icount));
+			}	
+			
+			//Nach der Verarbeitung die Listenreihenfolge wieder zurückdrehen
+			listaReturn = ArrayListUtilZZZ.reverse(listaReturnReversed);
+			
+		}//End main:
+		return listaReturn;
+	}
+	
 }//END class

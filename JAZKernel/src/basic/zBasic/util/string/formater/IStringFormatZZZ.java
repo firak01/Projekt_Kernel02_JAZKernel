@@ -122,6 +122,8 @@ public interface IStringFormatZZZ extends ITagTypeMethodZZZ, ITagTypeLineNumberZ
 	public static int iFACTOR_CONTROLPOSITIONSEPARATOR_STRING=239;
 	public static int iFACTOR_CONTROLPOSITIONSEPARATOR_XML=241;
 	
+	public static int iFACTOR_CONTROLBORDERLEFT_SEPARATOR=251; //Die nicht in der Konfiguration anzugebenden Linke Spaltenbegrenzung.
+	
 	//Weitere Primzahlen sind:
 	//11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59,61 ,67 71, 73, 79, 83, 89, 97 "Algorithmus ist 'Das Sieb des Eratosthenes'"
 	//101,103,107,109,113,127,131,137,139,149,151,157,163,167,173,179,181,191,193,197,199,
@@ -139,7 +141,7 @@ public interface IStringFormatZZZ extends ITagTypeMethodZZZ, ITagTypeLineNumberZ
 	//Aufbau des Enum:
 	//ALIAS("Uniquename bzw. Tag",Faktor, "Format... Merke %s für den String wert muss für String.format() sein",Kennzeichen des Argumenttyps,"PostfixSeparatorString", "Beschreibung, wird nicht genutzt....")	
 	public enum LOGSTRINGFORMAT implements IEnumSetMappedStringFormatZZZ{//Folgendes geht nicht, da alle Enums schon von einer Java BasisKlasse erben... extends EnumSetMappedBaseZZZ{		
-	CONTROL_NULL_STRING_("null",IStringFormatZZZ.iFACTOR_NULL_STRING, "", "null", IStringFormatZZZ.iARG_CONTROL, "","Dummy Null Wert. Z.B. fuer die linke Begrenzung, statt eines Separtors"),	
+	CONTROL_NULL_STRING_("null",IStringFormatZZZ.iFACTOR_NULL_STRING, "", "null", IStringFormatZZZ.iARG_CONTROL, "","Dummy Null Wert. Noch nicht benutzt!!!"),	
 		
 	STRINGTYPE01_STRING_BY_STRING("stringtype01",IStringFormatZZZ.iFACTOR_STRINGTYPE01_STRING_BY_STRING, IStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[A01]", "%s",IStringFormatZZZ.iARG_STRING,  "[/A01]" + IStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Gib den naechsten Log String - sofern vorhanden - in diesem Format aus."),
 	STRINGTYPE02_STRING_BY_STRING("stringtype02",IStringFormatZZZ.iFACTOR_STRINGTYPE02_STRING_BY_STRING, IStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[A02]", "%s",IStringFormatZZZ.iARG_STRING, "[/A02]" + IStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Gib den naechsten Log String - sofern vorhanden - in diesem Format aus."),
@@ -203,7 +205,9 @@ public interface IStringFormatZZZ extends ITagTypeMethodZZZ, ITagTypeLineNumberZ
 	CONTROL_SEPARATOR04_STRING("separator04",IStringFormatZZZ.iFACTOR_CONTROL04SEPARATOR_STRING, IStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[A00/]", "%s",IStringFormatZZZ.iARG_CONTROL, "" + IStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Schreibe den Separator 04. Damit wird das Ziel verbunden ggfs. etwas an dieser Stelle buendig im Log zu bekommen."),
 	CONTROL_SEPARATOR04_XML("separator04xml",IStringFormatZZZ.iFACTOR_CONTROL04SEPARATOR_XML, IStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[A00X/]", "%s",IStringFormatZZZ.iARG_CONTROL, "" + IStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Schreibe den Separator 04 in diesem XML-Format. Damit wird das Ziel verbunden ggfs. etwas an dieser Stelle buendig im Log zu bekommen."),		
 	CONTROL_SEPARATORPOSITION_STRING("separatorposition",IStringFormatZZZ.iFACTOR_CONTROLPOSITIONSEPARATOR_STRING, IStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[A00/]", "%s",IStringFormatZZZ.iARG_CONTROL, "" + IStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Schreibe den Separator Fileposition (Merke: Damit das in der Console clickbar ist Leerzeichen drum). Damit wird das Ziel verbunden ggfs. etwas an dieser Stelle buendig im Log zu bekommen."),
-	CONTROL_SEPARATORPOSITION_XML("separatorpositionxml",IStringFormatZZZ.iFACTOR_CONTROLPOSITIONSEPARATOR_XML, IStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[A00X/]", "%s",IStringFormatZZZ.iARG_CONTROL, "" + IStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Schreibe den Separator FilePosition (Merke: Damit das in der Console clickbar ist Leerzeichen drum) in diesem XML-Format. Damit wird das Ziel verbunden ggfs. etwas an dieser Stelle buendig im Log zu bekommen."),						
+	CONTROL_SEPARATORPOSITION_XML("separatorpositionxml",IStringFormatZZZ.iFACTOR_CONTROLPOSITIONSEPARATOR_XML, IStringFormatZZZ.sSEPARATOR_PREFIX_DEFAULT + "[A00X/]", "%s",IStringFormatZZZ.iARG_CONTROL, "" + IStringFormatZZZ.sSEPARATOR_POSTFIX_DEFAULT, "Schreibe den Separator FilePosition (Merke: Damit das in der Console clickbar ist Leerzeichen drum) in diesem XML-Format. Damit wird das Ziel verbunden ggfs. etwas an dieser Stelle buendig im Log zu bekommen."),
+	
+	CONTROL_SEPARATORBORDERLEFT_STRING_("null",IStringFormatZZZ.iFACTOR_CONTROLBORDERLEFT_SEPARATOR, "", "null", IStringFormatZZZ.iARG_CONTROL, "","Dummy Null Wert. Z.B. fuer die linke Begrenzung, statt eines Separtors"),
 	;		
 		
 	//#############################################

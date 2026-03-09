@@ -49,7 +49,7 @@ public class ArrayUniqueUtilZZZ<T>{
         
         icounter = 0;
         for (int i = 0; i < array.length; i++) {
-            if (isUnique(temp, array[i])) {
+        	if(!ArrayUtilZZZ.contains(temp, array[i])) {
                 temp[icounter++] = array[i];
             }
         }

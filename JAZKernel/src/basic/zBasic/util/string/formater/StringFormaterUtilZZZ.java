@@ -180,8 +180,7 @@ public class StringFormaterUtilZZZ implements IConstantZZZ{
 					iIndex++;
 					if(iIndex==saLineTrimmed.length-1) { //Das Log an der letzten Zeile anhaengen
 						//Beim Anhaengen nur den Kommentartrenner hinzufuegen, wenn er noch nicht im Log ist.
-						//Merke: Der Kommentartrenner kann ja schon vorher durch andere Log Berechnungen reingekommen sein.
-						//if(sLog.contains(sSeparatorMessageDefault)) { //TODOGOON: Wenn ueberall nur noch der FormatKommentar verwendet wird, sonst...:  
+						//Merke: Der Kommentartrenner kann ja schon vorher durch andere Log Berechnungen reingekommen sein.						  
 						if(sLog.contains(sSeparatorMessageDefault) || sLog.contains(IStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT)){
 							if(sLineTrimmed.endsWith(sSeparatorMessageDefault)){
 								sLineTrimmed = StringZZZ.stripRight(sLineTrimmed, sSeparatorMessageDefault);
@@ -619,7 +618,15 @@ public class StringFormaterUtilZZZ implements IConstantZZZ{
 		            
 	                sReturn = sMessageSeparatorTag;
 	                break;
-
+	            case IStringFormatZZZ.iFACTOR_CONTROLBORDERLEFT_SEPARATOR:
+		        	//Das ist die Spalte vor dem ersten Separator, also der nicht vorhandene erste Separator
+		        	break;
+	            case IStringFormatZZZ.iFACTOR_NULL_STRING:
+					//NULL STRING WERT, moeglich aber hier nicht verwendet			
+					break;
+	            case IStringFormatZZZ.iFACTOR_LINENEXT_STRING:
+					//SOLLTE ZUVOR ALS TRENNER FUER DAS FORMAT-ARRAY VERWENDET WORDEN SEIN UND HIER GARNICHT MEHR AUFTRETEN			
+					break;
 	            default:
 	                System.out.println("LogStringFormaterUtilZZZ.computeLinePartInLog(..,..): Dieses Format ist nicht in den gültigen Formaten für einen objektbasierten LogString vorhanden. iFaktor=" + ienumFormatLogString.getFactor());
 	                break;
@@ -769,6 +776,15 @@ public class StringFormaterUtilZZZ implements IConstantZZZ{
 		            
 	                sReturn = sMessageSeparatorTag;
 	                break;
+	            case IStringFormatZZZ.iFACTOR_CONTROLBORDERLEFT_SEPARATOR:
+		        	//Das ist die Spalte vor dem ersten Separator, also der nicht vorhandene erste Separator
+		        	break;
+	            case IStringFormatZZZ.iFACTOR_NULL_STRING:
+					//NULL STRING WERT, moeglich aber hier nicht verwendet			
+					break;
+	            case IStringFormatZZZ.iFACTOR_LINENEXT_STRING:
+					//SOLLTE ZUVOR ALS TRENNER FUER DAS FORMAT-ARRAY VERWENDET WORDEN SEIN UND HIER GARNICHT MEHR AUFTRETEN			
+					break;
 	            default:
 	                System.out.println("LogStringFormaterUtilZZZ.getLinePartInLog(..,..): Dieses Format ist nicht in den gültigen Formaten für einen objektbasierten LogString vorhanden. iFaktor=" + ienumFormatLogString.getFactor());
 	                break;

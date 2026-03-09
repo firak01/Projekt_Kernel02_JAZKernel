@@ -56,12 +56,6 @@ public interface IKernelConfigSectionEntryZZZ extends IIniTagWithExpressionUserZ
 	
 	public VectorZZZ<String> getHistorySubstituteCalledVector() throws ExceptionZZZ;
 	public void setHistorySubstituteCalled(String sTagName) throws ExceptionZZZ;
-	
-//	TODOGOON20251007; //Verschiebe nach IIniTagWithExpressionUserZZZ	
-//	public VectorDifferenceZZZ<String> getValueAsExpressionVector();
-//	public String getValueAsExpression();
-//	public void setValueAsExpression(String sValueAsExpression) throws ExceptionZZZ;
-//	public void setValueAsExpression(String sValueAsExpression, boolean bEnforce) throws ExceptionZZZ;
 			
 	public VectorDifferenceZZZ<HashMap<String,String>> getValueHashMapVector();
 	public HashMap<String,String> getValueHashMap();

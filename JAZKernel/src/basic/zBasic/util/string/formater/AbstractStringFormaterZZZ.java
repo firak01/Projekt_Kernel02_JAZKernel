@@ -1,6 +1,8 @@
 package basic.zBasic.util.string.formater;
 
 import static basic.zBasic.util.string.formater.IEnumSetMappedStringFormatZZZ.sENUMNAME;
+import static basic.zBasic.util.string.formater.IStringFormatZZZ.iFACTOR_LINENEXT_STRING;
+import static basic.zBasic.util.string.formater.IStringFormatZZZ.iFACTOR_CONTROLBORDERLEFT_SEPARATOR;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -61,16 +63,16 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 	//### KONSTRUKTOR
 	public AbstractStringFormaterZZZ() throws ExceptionZZZ{		
 		super();
-		AbstractLogStringFormaterNew_(null);
+		AbstractStringFormaterNew_(null);
 	}
 	
 	public AbstractStringFormaterZZZ(ArrayListUniqueZZZ<Integer>listaintStringIndexRead) throws ExceptionZZZ{		
 		super();
-		AbstractLogStringFormaterNew_(listaintStringIndexRead);
+		AbstractStringFormaterNew_(listaintStringIndexRead);
 	}
 	
 		
-	private boolean AbstractLogStringFormaterNew_(ArrayListUniqueZZZ<Integer>listaintStringIndexRead) throws ExceptionZZZ{
+	private boolean AbstractStringFormaterNew_(ArrayListUniqueZZZ<Integer>listaintStringIndexRead) throws ExceptionZZZ{
 		this.listaintStringIndexRead = listaintStringIndexRead;
 		return true;
 	}
@@ -672,9 +674,18 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 		        	sMessageSeparatorTag = objTagMessageSeparator.getElementString();
 		            
 	                sReturn = sMessageSeparatorTag;
-	                break;	               
+	                break;	    
+	            case IStringFormatZZZ.iFACTOR_CONTROLBORDERLEFT_SEPARATOR:
+		        	//Das ist die Spalte vor dem ersten Separator, also der nicht vorhandene erste Separator
+		        	break;
+	            case IStringFormatZZZ.iFACTOR_NULL_STRING:
+					//NULL STRING WERT, moeglich aber hier nicht verwendet			
+					break;
+	            case IStringFormatZZZ.iFACTOR_LINENEXT_STRING:
+					//SOLLTE ZUVOR ALS TRENNER FUER DAS FORMAT-ARRAY VERWENDET WORDEN SEIN UND HIER GARNICHT MEHR AUFTRETEN			
+					break;   
 	            default:
-	                System.out.println("AbstractLogStringFormaterZZZ.computeByControl_(..,..): Dieses Format ist nicht in den gültigen Formaten für einen objektbasierten LogString vorhanden. iFaktor=" + ienumFormatLogString.getFactor());
+	                System.out.println("AbstractStringFormaterZZZ.computeByControl_(..,..): Dieses Format ist nicht in den gültigen Formaten für einen objektbasierten LogString vorhanden. iFaktor=" + ienumFormatLogString.getFactor());
 	                break;
 	        }			    
 		}//end main:
@@ -878,9 +889,18 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 		        	sMessageSeparatorTag = objTagMessageSeparator.getElementString();
 		            
 	                sReturn = sMessageSeparatorTag;
-	                break;	               
+	                break;	
+	            case  IStringFormatZZZ.iFACTOR_CONTROLBORDERLEFT_SEPARATOR:
+		        	//Das ist die Spalte vor dem ersten Separator, also der nicht vorhandene erste Separator
+		        	break;
+	            case IStringFormatZZZ.iFACTOR_NULL_STRING:
+					//NULL STRING WERT, moeglich aber hier nicht verwendet			
+					break;
+	            case IStringFormatZZZ.iFACTOR_LINENEXT_STRING:
+					//SOLLTE ZUVOR ALS TRENNER FUER DAS FORMAT-ARRAY VERWENDET WORDEN SEIN UND HIER GARNICHT MEHR AUFTRETEN			
+					break;   
 	            default:
-	                System.out.println("AbstractLogStringFormaterZZZ.computeByControl_(..,..): Dieses Format ist nicht in den gültigen Formaten für einen objektbasierten LogString vorhanden. iFaktor=" + ienumFormatLogString.getFactor());
+	                System.out.println("AbstractStringFormaterZZZ.computeByControl_(..,..): Dieses Format ist nicht in den gültigen Formaten für einen objektbasierten LogString vorhanden. iFaktor=" + ienumFormatLogString.getFactor());
 	                break;
 	        }			    
 		}//end main:
@@ -1071,9 +1091,17 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 	                    sReturn = sThreadIdTag;                        
 	                }
 	                break;
-	                
+	            case IStringFormatZZZ.iFACTOR_CONTROLBORDERLEFT_SEPARATOR:
+		        	//Das ist die Spalte vor dem ersten Separator, also der nicht vorhandene erste Separator
+		        	break;
+	            case IStringFormatZZZ.iFACTOR_NULL_STRING:
+					//NULL STRING WERT, moeglich aber hier nicht verwendet			
+					break;
+	            case IStringFormatZZZ.iFACTOR_LINENEXT_STRING:
+					//SOLLTE ZUVOR ALS TRENNER FUER DAS FORMAT-ARRAY VERWENDET WORDEN SEIN UND HIER GARNICHT MEHR AUFTRETEN			
+					break;
 	            default:
-	                System.out.println("AbstractLogStringFormaterZZZ.computeByObject_(...): Dieses Format ist nicht in den gültigen Formaten für einen objektbasierten LogString vorhanden. iFaktor="
+	                System.out.println("AbstractStringFormaterZZZ.computeByObject_(...): Dieses Format ist nicht in den gültigen Formaten für einen objektbasierten LogString vorhanden. iFaktor="
 	                        + ienumFormatLogString.getFactor());
 	                break;
 	        }			    
@@ -1369,9 +1397,17 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 	                    sReturn = sThreadIdTag;                        
 	                }
 	                break;
-	                
+	            case IStringFormatZZZ.iFACTOR_CONTROLBORDERLEFT_SEPARATOR:
+		        	//Das ist die Spalte vor dem ersten Separator, also der nicht vorhandene erste Separator
+		        	break;
+	            case IStringFormatZZZ.iFACTOR_NULL_STRING:
+					//NULL STRING WERT, moeglich aber hier nicht verwendet			
+					break;
+	            case IStringFormatZZZ.iFACTOR_LINENEXT_STRING:
+					//SOLLTE ZUVOR ALS TRENNER FUER DAS FORMAT-ARRAY VERWENDET WORDEN SEIN UND HIER GARNICHT MEHR AUFTRETEN			
+					break;    
 	            default:
-	                System.out.println("AbstractLogStringFormaterZZZ.computeByObject_(Class ...,..): Dieses Format ist nicht in den gültigen Formaten für einen objektbasierten LogString vorhanden. iFaktor="
+	                System.out.println("AbstractStringFormaterZZZ.computeByObject_(Class ...,..): Dieses Format ist nicht in den gültigen Formaten für einen objektbasierten LogString vorhanden. iFaktor="
 	                        + ienumFormatLogString.getFactor());
 	                break;
 	        }			    
@@ -1675,11 +1711,17 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 //	                        new Integer(ILogStringFormatZZZ.iFACTOR_CONTROLMESSAGESEPARATOR_STRING));	                    
 //	             sReturn = String.format(sFormat, ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);	               
 	              break;
+			case IStringFormatZZZ.iFACTOR_CONTROLBORDERLEFT_SEPARATOR:
+				//IST GGF. DER LINKE RAND, AN STELLE EINES SEPARATORS
+				break;
+			case IStringFormatZZZ.iFACTOR_NULL_STRING:
+				//NULL STRING WERT, moeglich aber hier nicht verwendet			
+				break;
 			case IStringFormatZZZ.iFACTOR_LINENEXT_STRING:
 				//SOLLTE ZUVOR ALS TRENNER FUER DAS FORMAT-ARRAY VERWENDET WORDEN SEIN UND HIER GARNICHT MEHR AUFTRETEN			
 				break;
 			default:
-				System.out.println("AbstractLogStringFormaterZZZ.computeByString_(obj, String, IEnumSetMapped): Dieses Format ist nicht in den gueltigen Formaten für einen LogString vorhanden iFaktor="+ienumFormatLogString.getFactor());
+				System.out.println("AbstractStringFormaterZZZ.computeByString_(obj, String, IEnumSetMapped): Dieses Format ist nicht in den gueltigen Formaten für einen LogString vorhanden iFaktor="+ienumFormatLogString.getFactor());
 				break;					
 			}				
 						
@@ -1865,7 +1907,7 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 				}			
 				break;
 			default:
-				System.out.println("AbstractLogStringFormaterZZZ.computeByStringXml_(obj, String, IEnumSetMapped): Dieses Format ist nicht in den gueltigen Formaten für einen LogString vorhanden iFaktor="+ienumMappedFormat.getFactor());
+				System.out.println("AbstractStringFormaterZZZ.computeByStringXml_(obj, String, IEnumSetMapped): Dieses Format ist nicht in den gueltigen Formaten für einen LogString vorhanden iFaktor="+ienumMappedFormat.getFactor());
 				break;					
 			}								
 		}//end main:
@@ -2035,7 +2077,7 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 				}			
 				break;
 			default:
-				System.out.println("AbstractLogStringFormaterZZZ.computeByStringXml_(obj, String, IEnumSetMapped): Dieses Format ist nicht in den gueltigen Formaten für einen LogString vorhanden iFaktor="+ienumMappedFormat.getFactor());
+				System.out.println("AbstractStringFormaterZZZ.computeByStringXml_(obj, String, IEnumSetMapped): Dieses Format ist nicht in den gueltigen Formaten für einen LogString vorhanden iFaktor="+ienumMappedFormat.getFactor());
 				break;					
 			}								
 		}//end main:
@@ -2307,11 +2349,17 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 //	                        new Integer(ILogStringFormatZZZ.iFACTOR_CONTROLMESSAGESEPARATOR_STRING));	                    
 //	             sReturn = String.format(sFormat, ILogStringFormatZZZ.sSEPARATOR_MESSAGE_DEFAULT);	               
 	              break;
+			case IStringFormatZZZ.iFACTOR_CONTROLBORDERLEFT_SEPARATOR:
+				//IST GGF. DER LINKE RAND, AN STELLE EINES SEPARATORS
+				break;
+			case IStringFormatZZZ.iFACTOR_NULL_STRING:
+				//NULL STRING WERT, moeglich aber hier nicht verwendet			
+				break;
 			case IStringFormatZZZ.iFACTOR_LINENEXT_STRING:
 				//SOLLTE ZUVOR ALS TRENNER FUER DAS FORMAT-ARRAY VERWENDET WORDEN SEIN UND HIER GARNICHT MEHR AUFTRETEN			
 				break;
 			default:
-				System.out.println("AbstractLogStringFormaterZZZ.computeByString_(obj, String, IEnumSetMapped): Dieses Format ist nicht in den gueltigen Formaten für einen LogString vorhanden iFaktor="+ienumFormatLogString.getFactor());
+				System.out.println("AbstractStringFormaterZZZ.computeByString_(obj, String, IEnumSetMapped): Dieses Format ist nicht in den gueltigen Formaten für einen LogString vorhanden iFaktor="+ienumFormatLogString.getFactor());
 				break;					
 			}				
 						
@@ -2579,9 +2627,17 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 		            	}
 	            	}
 	                break;
-
+	            case IStringFormatZZZ.iFACTOR_CONTROLBORDERLEFT_SEPARATOR:
+		        	//Das ist die Spalte vor dem ersten Separator, also der nicht vorhandene erste Separator
+		        	break;
+	            case IStringFormatZZZ.iFACTOR_NULL_STRING:
+					//NULL STRING WERT, moeglich aber hier nicht verwendet			
+					break;
+	            case IStringFormatZZZ.iFACTOR_LINENEXT_STRING:
+					//SOLLTE ZUVOR ALS TRENNER FUER DAS FORMAT-ARRAY VERWENDET WORDEN SEIN UND HIER GARNICHT MEHR AUFTRETEN			
+					break;
 	            default:
-	                System.out.println("AbstractLogStringStringZZZ.computeByStringHashMap_(..,..): Dieses Format ist nicht in den gültigen Formaten für einen objektbasierten LogString vorhanden. iFaktor="
+	                System.out.println("AbstractStringStringZZZ.computeByStringHashMap_(..,..): Dieses Format ist nicht in den gültigen Formaten für einen objektbasierten LogString vorhanden. iFaktor="
 	                        + ienumMappedFormat.getFactor());
 	                break;
 	        }		
@@ -2690,9 +2746,17 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 		            	}
 	            	}
 	                break;
-
+	            case IStringFormatZZZ.iFACTOR_CONTROLBORDERLEFT_SEPARATOR:
+		        	//Das ist die Spalte vor dem ersten Separator, also der nicht vorhandene erste Separator
+		        	break;
+	            case IStringFormatZZZ.iFACTOR_NULL_STRING:
+					//NULL STRING WERT, moeglich aber hier nicht verwendet			
+					break;
+	            case IStringFormatZZZ.iFACTOR_LINENEXT_STRING:
+					//SOLLTE ZUVOR ALS TRENNER FUER DAS FORMAT-ARRAY VERWENDET WORDEN SEIN UND HIER GARNICHT MEHR AUFTRETEN			
+					break;
 	            default:
-	                System.out.println("AbstractLogStringStringZZZ.computeByStringHashMap_(..,..): Dieses Format ist nicht in den gültigen Formaten für einen objektbasierten LogString vorhanden. iFaktor="
+	                System.out.println("AbstractStringStringZZZ.computeByStringHashMap_(..,..): Dieses Format ist nicht in den gültigen Formaten für einen objektbasierten LogString vorhanden. iFaktor="
 	                        + ienumMappedFormat.getFactor());
 	                break;
 	        }		

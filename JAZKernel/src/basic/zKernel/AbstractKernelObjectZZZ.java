@@ -2082,60 +2082,7 @@ public FileIniZZZ getFileConfigModuleIniInWorkspace(IKernelConfigZZZ objConfig, 
 			                 //prüfe darauf, ob der Alias als Systemkey darin vorhanden ist.
 			
 			//###############################################			
-			objFound = AbstractKernelObjectZZZ.searchModuleAliasFor(objFileConfigIni, sModule, sApplicationOrModule, sSystemNumber, hmDebug);
-			
-//			//0. Suche nach dem Modul in den Systemkeys						
-//			ArrayList<String> listasSystemKey = this.computeSystemSectionNames();
-//			for(String sSystemKey : listasSystemKey) {								
-//				
-//				String sKeyFilename = KernelKernelZZZ.computePropertyForModuleAlias(IKernelConfigConstantZZZ.MODULEPROPERTY.FILE.name(), sApplicationOrModule);							
-//				hmDebug.put("SystemKey: " + sSystemKey, sKeyFilename);
-//				
-//				//Zuerst den im SystemKey definierten Modulnamen finden.
-//				IKernelConfigSectionEntryZZZ objEntrySectionModule = KernelKernelZZZ.KernelGetParameter_DirectLookup_(objFileConfigIni, sSystemKey,sKeyFilename);
-//				if(objEntrySectionModule.hasAnyValue()) {
-//					String sFileName = objEntrySectionModule.getValue();
-//					System.out.println("MODULFILE: '"+ sFileName + "' gefunden im Systemkey '" + sSystemKey + "'");										
-//
-//					//Prüfe nun, ob das Modulfile auch existiert....
-//					//Merke: Das muss nicht gesetzt sein. Wenn nicht gesetzt wird halt das aktuelle Verzeichnis oder so genommen.....
-//					String sKeyDirectory = KernelKernelZZZ.computePropertyForModuleAlias(IKernelConfigConstantZZZ.MODULEPROPERTY.PATH.name(), sApplicationOrModule);
-//					IKernelConfigSectionEntryZZZ objEntrySectionPath = KernelKernelZZZ.KernelGetParameter_DirectLookup_(objFileConfigIni, sSystemKey,sKeyDirectory);
-//					String sFileDirectory = objEntrySectionPath.getValue();					
-//					System.out.println("MODULPATH: '"+ sFileDirectory + "' gefunden im Systemkey '" + sSystemKey + "'");
-//					
-//					String sFilePath = FileEasyZZZ.joinFilePathName(sFileDirectory, sFileName);
-//					System.out.println("GESAMTPFAD: '"+ sFilePath + "' errechnet");										
-//
-//					boolean bExists = FileEasyZZZ.exists(sFilePath);
-//					if(bExists) {							
-//						String sModuleFound = sApplicationOrModule;
-//						hmDebug.put("Moduldatei: " + sFilePath, sModuleFound);					
-//												
-//						//analog ...ForProgram hier eine Liste mit einem Aliaswert vorneweg erstellen.
-//						ArrayList<String> listasModuleKey = this.computeSystemSectionNamesForModule(sModuleFound);
-//						
-//						//Wenn nun der Modulname in diesem Systemkey gefunden wurde, dort nachsehen, ob ein Aliaswert dafür definiert worden ist.
-//						FileIniZZZ objFileModuleIni = this.getFileModuleIniByAlias(sModuleFound);						
-//						for(String sModuleKey : listasModuleKey) {
-//							hmDebug.put("ModuleKey: " + sModuleKey, sModuleFound);
-//						
-//							
-//							IKernelConfigSectionEntryZZZ objEntrySectionAlias = KernelKernelZZZ.KernelGetParameter_DirectLookup_(objFileModuleIni, sModuleKey,sModuleFound);					
-//							if(objEntrySectionAlias.hasAnyValue()) {
-//								String sModuleAliasFound = objEntrySectionAlias.getValue();
-//								System.out.println("MODULALIAS: '"+ sModuleAliasFound + "' gefunden im ModuleKey '" + sModuleKey + "'");
-//								
-//								objReturn = objEntrySectionAlias;
-//								break main;
-//							}
-//						}//end for
-//					}else {
-//						System.out.println("Datei existiert nicht '"+ sFilePath + "'");
-//					}
-//				}
-//			}
-			
+			objFound = AbstractKernelObjectZZZ.searchModuleAliasFor(objFileConfigIni, sModule, sApplicationOrModule, sSystemNumber, hmDebug);			
 			if(objFound==null) {
 				String stemp = "ENDE DIESER SUCHE NACH MODULALIAS OHNE ERFOLG (NULL) +++ Suchpfad: " + hmDebug.computeDebugString("\t|", ":");
 				System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": "+ stemp);
@@ -7446,7 +7393,7 @@ MeinTestParameter=blablaErgebnis
 				
 				LogZZZ objLog = null;
 				if(objLogIn==null){				
-					TODOGOON202603;//Trotz aller Bemuehungen wird die # Kommentarposition nicht vor der ^ Kommentarposition einsortiert. Daher haben wir einen unverhaeltnismaessig langen String aufgrund einer riesigen Luecke, und die Spaltengrenzen werden auch nach rechts verschoben.
+					//TODOGOON202603;//Trotz aller Bemuehungen wird die # Kommentarposition nicht vor der ^ Kommentarposition einsortiert. Daher haben wir einen unverhaeltnismaessig langen String aufgrund einer riesigen Luecke, und die Spaltengrenzen werden auch nach rechts verschoben.
 					sLog = "Erstelle neues Log Object";
 					this.logProtocolWithPosition(sLog);
 					

@@ -110,7 +110,7 @@ public abstract class AbstractStringFormatManagerZZZ extends AbstractObjectWithF
 	
 	@Override
 	public void setStringFormatArrayCurrent(IEnumSetMappedStringFormatZZZ[] ienumaFormatString) throws ExceptionZZZ{
-		this.ienumaFormatStringCurrent = ienumaFormatStringCurrent;
+		this.ienumaFormatStringCurrent = ienumaFormatString;
 	}
 
 	
