@@ -327,20 +327,17 @@ public class StringFormatManagerUtilZZZ implements IConstantZZZ {
 		return objaReturn;
 	}
 
-	
 	//##############################################################
-	
-	
-	public static IEnumSetMappedStringFormatZZZ[] mergeFormatArrays(IEnumSetMappedStringFormatZZZ[] ienumaFormatStringVorhanden, IEnumSetMappedStringFormatZZZ[] ienumaFormatStringNeu) throws ExceptionZZZ{
-		return StringFormatManagerUtilZZZ.mergeFormatArrays_(null, ienumaFormatStringVorhanden, ienumaFormatStringNeu);	
+	public static IEnumSetMappedStringFormatZZZ[] mergeFormatArraysUniqueKeyAcrosswise(IEnumSetMappedStringFormatZZZ[] ienumaFormatStringVorhanden, IEnumSetMappedStringFormatZZZ[] ienumaFormatStringNeu) throws ExceptionZZZ{
+		return StringFormatManagerUtilZZZ.mergeFormatArraysUniqueKeyAcrosswise_(null, ienumaFormatStringVorhanden, ienumaFormatStringNeu);	
 	}
 	
 	
-	public static IEnumSetMappedStringFormatZZZ[] mergeFormatArrays(ArrayListZZZ listaSeparator, IEnumSetMappedStringFormatZZZ[] ienumaFormatStringVorhanden, IEnumSetMappedStringFormatZZZ[] ienumaFormatStringNeu) throws ExceptionZZZ{
-		return StringFormatManagerUtilZZZ.mergeFormatArrays_(listaSeparator, ienumaFormatStringVorhanden, ienumaFormatStringNeu);	
+	public static IEnumSetMappedStringFormatZZZ[] mergeFormatArraysUniqueKeyAcrosswise(ArrayListZZZ listaSeparator, IEnumSetMappedStringFormatZZZ[] ienumaFormatStringVorhanden, IEnumSetMappedStringFormatZZZ[] ienumaFormatStringNeu) throws ExceptionZZZ{
+		return StringFormatManagerUtilZZZ.mergeFormatArraysUniqueKeyAcrosswise_(listaSeparator, ienumaFormatStringVorhanden, ienumaFormatStringNeu);	
 	}
 	
-	private static IEnumSetMappedStringFormatZZZ[] mergeFormatArrays_(ArrayListZZZ listaSeparatorIn, IEnumSetMappedStringFormatZZZ[] ienumaFormatStringVorhanden, IEnumSetMappedStringFormatZZZ[] ienumaFormatStringNeu) throws ExceptionZZZ{
+	private static IEnumSetMappedStringFormatZZZ[] mergeFormatArraysUniqueKeyAcrosswise_(ArrayListZZZ listaSeparatorIn, IEnumSetMappedStringFormatZZZ[] ienumaFormatStringVorhanden, IEnumSetMappedStringFormatZZZ[] ienumaFormatStringNeu) throws ExceptionZZZ{
 		IEnumSetMappedStringFormatZZZ[]objaReturn=null;
 		main:{						
 			if(listaSeparatorIn==null || listaSeparatorIn.size()==0) {
@@ -372,7 +369,7 @@ public class StringFormatManagerUtilZZZ implements IConstantZZZ {
 				
 			//3. Mischen der beiden HashMaps, so dass pro Separator ein Array ohne Redundante Einträge übrigbleibt 
 			//   und neue Separatoren mit ihren Arrays nach hinten wandern. (also LinkedHashMap)... mergeSorted()...			
-			LinkedHashMap<IEnumSetMappedStringFormatZZZ,IEnumSetMappedStringFormatZZZ[]> mFormatReturn = (LinkedHashMap<IEnumSetMappedStringFormatZZZ, IEnumSetMappedStringFormatZZZ[]>) HashMapUtilZZZ.mergeMapsAndJoinArrayValues(listaSeparator, mFormatCurrent, mFormatNew);
+			LinkedHashMap<IEnumSetMappedStringFormatZZZ,IEnumSetMappedStringFormatZZZ[]> mFormatReturn = (LinkedHashMap<IEnumSetMappedStringFormatZZZ, IEnumSetMappedStringFormatZZZ[]>) HashMapUtilZZZ.mergeMapsAndJoinArrayValuesUniqueKeyAcrosswise(listaSeparator, mFormatCurrent, mFormatNew);
 			//Falls man die HashMap als Debug-String augeben moechte
 			//String sDebug = HashMapUtilZZZ.computeDebugString4Arrays(mFormatReturn);
 			//System.out.println(sDebug);
@@ -386,6 +383,67 @@ public class StringFormatManagerUtilZZZ implements IConstantZZZ {
 		return objaReturn;
 	}
 	
+	
+	//##############################################################
+	
+	
+	public static IEnumSetMappedStringFormatZZZ[] mergeFormatArraysUniqueKeyEachwise(IEnumSetMappedStringFormatZZZ[] ienumaFormatStringVorhanden, IEnumSetMappedStringFormatZZZ[] ienumaFormatStringNeu) throws ExceptionZZZ{
+		return StringFormatManagerUtilZZZ.mergeFormatArraysUniqueKeyEachwise_(null, ienumaFormatStringVorhanden, ienumaFormatStringNeu);	
+	}
+	
+	
+	public static IEnumSetMappedStringFormatZZZ[] mergeFormatArraysUniqueKeyEachwise(ArrayListZZZ listaSeparator, IEnumSetMappedStringFormatZZZ[] ienumaFormatStringVorhanden, IEnumSetMappedStringFormatZZZ[] ienumaFormatStringNeu) throws ExceptionZZZ{
+		return StringFormatManagerUtilZZZ.mergeFormatArraysUniqueKeyEachwise_(listaSeparator, ienumaFormatStringVorhanden, ienumaFormatStringNeu);	
+	}
+	
+	private static IEnumSetMappedStringFormatZZZ[] mergeFormatArraysUniqueKeyEachwise_(ArrayListZZZ listaSeparatorIn, IEnumSetMappedStringFormatZZZ[] ienumaFormatStringVorhanden, IEnumSetMappedStringFormatZZZ[] ienumaFormatStringNeu) throws ExceptionZZZ{
+		IEnumSetMappedStringFormatZZZ[]objaReturn=null;
+		main:{						
+			if(listaSeparatorIn==null || listaSeparatorIn.size()==0) {
+				if(ienumaFormatStringNeu==null) {
+					objaReturn = ienumaFormatStringVorhanden;
+					break main;
+				}
+				
+				if(ienumaFormatStringVorhanden==null) {
+					objaReturn = ienumaFormatStringNeu;
+					break main;
+				}
+			}
+			
+			//1. Aufteilen auf eine HashMap: current und neues Formatierungsarray
+			Map<IEnumSetMappedStringFormatZZZ, IEnumSetMappedStringFormatZZZ[]> mFormatCurrent = StringFormatManagerUtilZZZ.splitBySeparatorToStringHashMap(ienumaFormatStringVorhanden);			
+
+			Map<IEnumSetMappedStringFormatZZZ, IEnumSetMappedStringFormatZZZ[]> mFormatNew = StringFormatManagerUtilZZZ.splitBySeparatorToStringHashMap(ienumaFormatStringNeu);
+			
+			
+			//2. Hole eine Liste der verwendeten Separatoren
+			//Merke: Das Zusammenfassend der Separatoren ist nicht nur einfaches Anhaengen der neuen Werte,
+			//       sondern auch das Reinmischen neuer Werte an die passende Stelle. 
+			ArrayListZZZ<IEnumSetMappedStringFormatZZZ> listaSeparator = MapUtilZZZ.mergeKeys(mFormatCurrent, mFormatNew);						
+			if(listaSeparatorIn!=null && listaSeparatorIn.size()>=1) {														
+				ArrayList<IEnumSetMappedStringFormatZZZ>listaSeparatorNew = ArrayListUtilZZZ.mergeKeepFirst(listaSeparatorIn, listaSeparator);
+				listaSeparator = ArrayListUtilZZZ.toArrayList(listaSeparatorNew);
+			}
+				
+			//3. Mischen der beiden HashMaps, so dass pro Separator ein Array ohne Redundante Einträge übrigbleibt 
+			//   und neue Separatoren mit ihren Arrays nach hinten wandern. (also LinkedHashMap)... mergeSorted()...			
+			LinkedHashMap<IEnumSetMappedStringFormatZZZ,IEnumSetMappedStringFormatZZZ[]> mFormatReturn = (LinkedHashMap<IEnumSetMappedStringFormatZZZ, IEnumSetMappedStringFormatZZZ[]>) HashMapUtilZZZ.mergeMapsAndJoinArrayValuesUniqueKeyEachwise(listaSeparator, mFormatCurrent, mFormatNew);
+			//Falls man die HashMap als Debug-String augeben moechte
+			//String sDebug = HashMapUtilZZZ.computeDebugString4Arrays(mFormatReturn);
+			//System.out.println(sDebug);
+			//System.out.println("#########");
+			
+			
+			//4. Nun die HashMap durchiterieren und das Rückgabearray zusammensetzen. 
+			//   Von jedem Element den Key hinzufügen, danach die Value-Arrays joinen.
+			objaReturn = StringFormatManagerUtilZZZ.mergeHashMapFormatPositions(mFormatReturn);
+		}//end main:
+		return objaReturn;
+	}
+	
+	
+	//###########################################################
 	public static IEnumSetMappedStringFormatZZZ[] mergeHashMapFormatPositions(LinkedHashMap<IEnumSetMappedStringFormatZZZ,IEnumSetMappedStringFormatZZZ[]> mFormatIn) throws ExceptionZZZ{
 		IEnumSetMappedStringFormatZZZ[]objaReturn=null;
 		main:{

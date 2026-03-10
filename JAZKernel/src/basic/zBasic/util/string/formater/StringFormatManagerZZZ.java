@@ -300,23 +300,34 @@ public class StringFormatManagerZZZ extends AbstractStringFormatManagerZZZ imple
 			IEnumSetMappedStringFormatZZZ[] ienumaFormatLogStringCurrent;
 			
 			boolean bUseIndividualFormat = this.getFlag(IStringFormatManagerEnabledZZZ.FLAGZ.USE_INDIVIDUAL_FORMAT);	
-			boolean bUseColumnAdoptFormat = this.getFlag(IStringFormatManagerEnabledZZZ.FLAGZ.USE_COLUMN_ADOPTED_FORMAT);
+			boolean bUseColumnAdoptedFormat = this.getFlag(IStringFormatManagerEnabledZZZ.FLAGZ.USE_COLUMN_ADOPTED_FORMAT);
 			boolean bUseColumnMergedFormat = this.getFlag(IStringFormatManagerEnabledZZZ.FLAGZ.USE_COLUMN_MERGED_FORMAT);
-		
+			boolean bUseColumnMergedDouble = this.getFlag(IStringFormatManagerEnabledZZZ.FLAGZ.USE_COLUMN_MERGED_DOUBLE);
+			
 			if(!bUseIndividualFormat) {
 				ienumaFormatLogStringCurrent = this.getStringFormatArrayCurrent();
-				if(bUseColumnAdoptFormat) {
+				if(bUseColumnAdoptedFormat && !bUseColumnMergedFormat) {
 					//System.out.println(ReflectCodeZZZ.getPositionCurrent() +": Verwende biherige Formatvorlage, ggfs. als Zusammenfassung der Spalten mit zuvor verwendeter.");
 					ienumaFormatLogString = StringFormatManagerUtilZZZ.adaptFormatArray(ienumaFormatLogStringCurrent, ienumaFormatLogStringIn);
 				}else {
 					//Der Normalfall, bUseColumnMergedFormat
 					//System.out.println(ReflectCodeZZZ.getPositionCurrent() +": Verwende bisherige Formatvorlage, ggfs. als Zusammenfassung der Spalten mit zuvor verwendeter.");
-					
+
 					//Hole die bisherige ArrayList der Separatoren, zwischend denen die Formataufweisungen aufgeteilt werden.
 					ArrayListZZZ<IEnumSetMappedStringFormatZZZ> listaSeparator = this.getSeparatorArrayList();					
-						
-					//Merge die Liste der Formatanweisungen und auch die Separatoren
-					ienumaFormatLogString = StringFormatManagerUtilZZZ.mergeFormatArrays(listaSeparator, ienumaFormatLogStringCurrent, ienumaFormatLogStringIn);
+
+					
+					if(!bUseColumnMergedDouble) {
+					
+						//Merge die Liste der Formatanweisungen und auch die Separatoren, Unique ueber alle Separatoren
+						ienumaFormatLogString = StringFormatManagerUtilZZZ.mergeFormatArraysUniqueKeyAcrosswise(listaSeparator, ienumaFormatLogStringCurrent, ienumaFormatLogStringIn);
+
+					}else {
+					
+						//Merge die Liste der Formatanweisungen und auch die Separatoren, aber nur Unique pro Separator
+						ienumaFormatLogString = StringFormatManagerUtilZZZ.mergeFormatArraysUniqueKeyEachwise(listaSeparator, ienumaFormatLogStringCurrent, ienumaFormatLogStringIn);
+					
+					}
 					
 					//Hole die neue Liste der Separatoren, inkl. neu hinzugekommenden, reingemergten Separatoren (sprich Spalten)
 					ArrayListZZZ<IEnumSetMappedStringFormatZZZ> listaSeparatorNew = StringFormatManagerUtilZZZ.filterSeparatorsAsArrayList(ienumaFormatLogStringIn);
