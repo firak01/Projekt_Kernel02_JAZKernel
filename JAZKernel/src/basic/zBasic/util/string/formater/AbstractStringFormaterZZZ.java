@@ -28,6 +28,7 @@ import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
 import basic.zBasic.util.abstractList.ArrayListZZZ;
 import basic.zBasic.util.abstractList.HashMapIndexedObjectZZZ;
 import basic.zBasic.util.abstractList.HashMapMultiIndexedZZZ;
+import basic.zBasic.util.datatype.dateTime.DateTimeZZZ;
 import basic.zBasic.util.datatype.enums.EnumMappedLogStringFormatAvailableHelperZZZ;
 import basic.zBasic.util.datatype.longs.LongZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
@@ -1012,7 +1013,7 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 	    
 			String sLog=null; String sFormat=null; String sLeft=null; String sMid = null; String sRight=null;
 			String sDate = null;
-			GregorianCalendar d=null; Integer iDateYear = null; Integer iDateMonth = null; Integer iDateDay = null; Integer iTimeHour = null; Integer iTimeMinute = null;
+			GregorianCalendar objCalendar=null; Integer intDateYear = null; Integer intDateMonth = null; Integer intDateDay = null; Integer intTimeHour = null; Integer intTimeMinute = null;
 
 			
 			String sPrefixSeparator = ienumFormatLogString.getPrefixSeparator();
@@ -1027,32 +1028,16 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 	            //case IStringFormatZZZ.iFACTOR_CLASSFILENAME_XML:
 	              
 	            case IStringFormatZZZ.iFACTOR_DATE_STRING:
-	                d = new GregorianCalendar();
-	                iDateYear = new Integer(d.get(Calendar.YEAR));
-	                iDateMonth = new Integer(d.get(Calendar.MONTH) + 1);
-	                iDateDay = new Integer(d.get(Calendar.DAY_OF_MONTH));
-	                iTimeHour = new Integer(d.get(Calendar.HOUR_OF_DAY));
-	                iTimeMinute = new Integer(d.get(Calendar.MINUTE));
-
-	                sDate = iDateYear.toString() + "-" + iDateMonth.toString() + "-" + iDateDay.toString()
-	                        + "_" + iTimeHour.toString() + "_" + iTimeMinute.toString();
-
-	                sFormat = this.getHashMapFormatPositionString().get(new Integer(IStringFormatZZZ.iFACTOR_DATE_STRING));
+	                //objCalendar = new GregorianCalendar();
+	                sDate = DateTimeZZZ.computeTimestampStringFormatedDefault();
+	            	sFormat = this.getHashMapFormatPositionString().get(new Integer(IStringFormatZZZ.iFACTOR_DATE_STRING));
 	                sReturn = String.format(sFormat, sDate);
                     sReturn = sPrefixSeparator + sReturn + sPostfixSeparator;
 	                break;
 
 	            case IStringFormatZZZ.iFACTOR_DATE_XML:
-	                d = new GregorianCalendar();
-	                iDateYear = new Integer(d.get(Calendar.YEAR));
-	                iDateMonth = new Integer(d.get(Calendar.MONTH) + 1);
-	                iDateDay = new Integer(d.get(Calendar.DAY_OF_MONTH));
-	                iTimeHour = new Integer(d.get(Calendar.HOUR_OF_DAY));
-	                iTimeMinute = new Integer(d.get(Calendar.MINUTE));
-
-	                sDate = iDateYear.toString() + "-" + iDateMonth.toString() + "-" + iDateDay.toString()
-	                        + "_" + iTimeHour.toString() + "_" + iTimeMinute.toString();
-
+	                //objCalendar = new GregorianCalendar();
+	                sDate = DateTimeZZZ.computeTimestampStringFormatedDefault();
 	                sFormat = this.getHashMapFormatPositionString().get(new Integer(IStringFormatZZZ.iFACTOR_DATE_STRING));
 	                sDate = String.format(sFormat, sDate);
                     sDate = sPrefixSeparator + sDate + sPostfixSeparator;
@@ -1205,7 +1190,7 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 	    
 			String sLog=null; String sFormat=null; String sLeft=null; String sMid = null; String sRight=null;
 			String sDate = null;
-			GregorianCalendar d=null; Integer iDateYear = null; Integer iDateMonth = null; Integer iDateDay = null; Integer iTimeHour = null; Integer iTimeMinute = null;
+			//GregorianCalendar d=null; Integer iDateYear = null; Integer iDateMonth = null; Integer iDateDay = null; Integer iTimeHour = null; Integer iTimeMinute = null;
 
 			
 			String sPrefixSeparator = ienumFormatLogString.getPrefixSeparator();
@@ -1333,32 +1318,16 @@ public abstract class AbstractStringFormaterZZZ extends AbstractObjectWithFlagZZ
 	                break;
 
 	            case IStringFormatZZZ.iFACTOR_DATE_STRING:
-	                d = new GregorianCalendar();
-	                iDateYear = new Integer(d.get(Calendar.YEAR));
-	                iDateMonth = new Integer(d.get(Calendar.MONTH) + 1);
-	                iDateDay = new Integer(d.get(Calendar.DAY_OF_MONTH));
-	                iTimeHour = new Integer(d.get(Calendar.HOUR_OF_DAY));
-	                iTimeMinute = new Integer(d.get(Calendar.MINUTE));
-
-	                sDate = iDateYear.toString() + "-" + iDateMonth.toString() + "-" + iDateDay.toString()
-	                        + "_" + iTimeHour.toString() + "_" + iTimeMinute.toString();
-
+	                //d = new GregorianCalendar();
+	                sDate = DateTimeZZZ.computeTimestampStringFormatedDefault();
 	                sFormat = this.getHashMapFormatPositionString().get(new Integer(IStringFormatZZZ.iFACTOR_DATE_STRING));
 	                sReturn = String.format(sFormat, sDate);
                     sReturn = sPrefixSeparator + sReturn + sPostfixSeparator;
 	                break;
 
 	            case IStringFormatZZZ.iFACTOR_DATE_XML:
-	                d = new GregorianCalendar();
-	                iDateYear = new Integer(d.get(Calendar.YEAR));
-	                iDateMonth = new Integer(d.get(Calendar.MONTH) + 1);
-	                iDateDay = new Integer(d.get(Calendar.DAY_OF_MONTH));
-	                iTimeHour = new Integer(d.get(Calendar.HOUR_OF_DAY));
-	                iTimeMinute = new Integer(d.get(Calendar.MINUTE));
-
-	                sDate = iDateYear.toString() + "-" + iDateMonth.toString() + "-" + iDateDay.toString()
-	                        + "_" + iTimeHour.toString() + "_" + iTimeMinute.toString();
-
+	                //d = new GregorianCalendar();
+	                sDate = DateTimeZZZ.computeTimestampStringFormatedDefault();
 	                sFormat = this.getHashMapFormatPositionString().get(new Integer(IStringFormatZZZ.iFACTOR_DATE_STRING));
 	                sDate = String.format(sFormat, sDate);
                     sDate = sPrefixSeparator + sDate + sPostfixSeparator;

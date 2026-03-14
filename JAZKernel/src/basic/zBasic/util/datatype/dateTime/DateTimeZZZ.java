@@ -1,7 +1,10 @@
 package basic.zBasic.util.datatype.dateTime;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.concurrent.atomic.AtomicLong;
 
 import basic.zBasic.ExceptionZZZ;
@@ -44,6 +47,7 @@ public class DateTimeZZZ  implements IConstantZZZ {
 		return lReturn;
 	}
 	
+	//+++++++++++++++++++++++++++++++++++
 	public static String computeTimestampString() throws ExceptionZZZ{
 		String sReturn = null;
 		main:{
@@ -55,6 +59,16 @@ public class DateTimeZZZ  implements IConstantZZZ {
 		}//end main
 		return sReturn;
 	}
+	
+	public static String computeTimestampString(long lTimestamp) throws ExceptionZZZ{
+		String sReturn = null;
+		main:{			
+			Long lngTimestamp = new Long(lTimestamp);
+			sReturn = lngTimestamp.toString();			
+		}//end main
+		return sReturn;
+	}
+	
 	public static String computeTimestampStringByDate(Date objDate) throws ExceptionZZZ{
 		String sReturn = null;
 		main:{
@@ -70,6 +84,93 @@ public class DateTimeZZZ  implements IConstantZZZ {
 		}
 		return sReturn;
 	}
+	
+	//+++++++++++++++++++++++++++++++++++++++++
+	public static String computeTimestampStringFormatedDefault() throws ExceptionZZZ{
+		String sReturn = null;
+		main:{
+			long lTimestamp = DateTimeZZZ.computeTimestamp();
+			sReturn = DateTimeZZZ.computeTimestampStringFormatedDefault(lTimestamp);
+		}//end main
+		return sReturn;
+	}
+	
+	public static String computeTimestampStringFormatedDefault(long lTimestamp) throws ExceptionZZZ{
+		String sReturn = null;
+		main:{						
+			Long lngTimestamp = new Long(lTimestamp);
+			sReturn = lngTimestamp.toString();
+			
+			GregorianCalendar objCalendar = new GregorianCalendar();
+			Integer intDateYear = new Integer(objCalendar.get(Calendar.YEAR));
+            Integer intDateMonth = new Integer(objCalendar.get(Calendar.MONTH) + 1);
+            Integer intDateDay = new Integer(objCalendar.get(Calendar.DAY_OF_MONTH));
+            Integer intTimeHour = new Integer(objCalendar.get(Calendar.HOUR_OF_DAY));
+            Integer intTimeMinute = new Integer(objCalendar.get(Calendar.MINUTE));
+
+            sReturn = intDateYear.toString() + "-" + intDateMonth.toString() + "-" + intDateDay.toString()
+                     + "_" + intTimeHour.toString() + "_" + intTimeMinute.toString();		
+		}//end main
+		return sReturn;
+	}
+	
+	
+	public static String computeTimestampStringFormatedDefaultByDate(Date objDate) throws ExceptionZZZ{
+		String sReturn = null;
+		main:{
+				if(objDate==null){
+					ExceptionZZZ ez = new ExceptionZZZ("No Date object available.", iERROR_PARAMETER_MISSING, DateTimeZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;
+				}
+				
+				long lTimestamp = DateTimeZZZ.computeTimestampByDate(objDate);
+				sReturn = DateTimeZZZ.computeTimestampStringFormatedDefault(lTimestamp)	;		
+		}
+		return sReturn;
+	}
+	
+	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	//+++++++++++++++++++++++++++++++++++++++++
+	public static String computeTimestampStringFormated(SimpleDateFormat dateFormaterIn) throws ExceptionZZZ{
+		String sReturn = null;
+		main:{						
+			long lTimestamp = DateTimeZZZ.computeTimestamp();	
+			sReturn = DateTimeZZZ.computeTimestampStringFormated(dateFormaterIn, lTimestamp);
+		}//end main
+		return sReturn;
+	}
+	
+	public static String computeTimestampStringFormated(SimpleDateFormat dateFormaterIn, long lTimestamp) throws ExceptionZZZ{
+		String sReturn = null;
+		main:{						
+			SimpleDateFormat dateFormater = null;
+			if(dateFormaterIn==null) {
+				dateFormater = new SimpleDateFormat("dd-MM-yyyy_H:m");
+			}else {
+				dateFormater = dateFormaterIn;
+			}		
+			
+			//Siehe https://www.baeldung.com/java-simple-date-format
+			sReturn = dateFormater.format(lTimestamp);
+		}//end main
+		return sReturn;
+	}
+	
+	
+	public static String computeTimestampStringFormatedByDate(SimpleDateFormat dateFormaterIn, Date objDate) throws ExceptionZZZ{
+		String sReturn = null;
+		main:{
+				if(objDate==null){
+					ExceptionZZZ ez = new ExceptionZZZ("No Date object available.", iERROR_PARAMETER_MISSING, DateTimeZZZ.class, ReflectCodeZZZ.getMethodCurrentName());
+					throw ez;
+				}
+				
+				long lTimestamp = DateTimeZZZ.computeTimestampByDate(objDate);
+				sReturn = DateTimeZZZ.computeTimestampStringFormated(dateFormaterIn, lTimestamp);		
+		}
+		return sReturn;
+	}
+
 	
 	//###################
 	//### UNIQUER TIMESTAMP, ausgehend von der aktuellen Systemzeit

@@ -12,6 +12,7 @@ import java.util.GregorianCalendar;
 
 import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.datatype.dateTime.DateTimeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.AbstractKernelUseObjectZZZ;
@@ -484,19 +485,13 @@ public class KernelFileTextCopyZZZ   extends AbstractKernelUseObjectZZZ{
 	 * @param objFileSource
 	 * @param sDirectorySource
 	 * @param sFileSourceExpanded
+	 * @throws ExceptionZZZ 
 	 */
-	public boolean FileSourceRename(FileZZZ objFileSource, String sDirectorySource, String sFileSourceExpanded) {
+	public boolean FileSourceRename(FileZZZ objFileSource, String sDirectorySource, String sFileSourceExpanded) throws ExceptionZZZ {
 			boolean bFunction = false;
 			//Umbenennen der Ausgangsdatei 
-			GregorianCalendar d = new GregorianCalendar();
-			Integer iDateYear = new Integer(d.get(Calendar.YEAR));
-			Integer iDateMonth = new Integer(d.get(Calendar.MONTH) + 1);
-			Integer iDateDay = new Integer(d.get(Calendar.DAY_OF_MONTH));
-			Integer iTimeHour = new Integer(d.get(Calendar.HOUR_OF_DAY));
-			Integer iTimeMinute = new Integer(d.get(Calendar.MINUTE)); 			
-			String sDate = iDateYear.toString() + "-" + iDateMonth.toString() + "-" + iDateDay.toString()
-			+ "_" + iTimeHour.toString() + "_" + iTimeMinute.toString(); 
-
+			//GregorianCalendar d = new GregorianCalendar();
+			String sDate = DateTimeZZZ.computeTimestampStringFormatedDefault();
 			File inputFileProcessed = new File(sDirectorySource + "\\von_Notes_kopiert_am_" + sDate + "_" + sFileSourceExpanded);
 			bFunction = objFileSource.renameTo(inputFileProcessed);
 			return bFunction;	 			

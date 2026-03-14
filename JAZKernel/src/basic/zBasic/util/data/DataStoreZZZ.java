@@ -612,7 +612,7 @@ public class DataStoreZZZ implements IConstantZZZ{
 				Long objLong = (Long) obj;
 				objReturn = objLong.toString();
 			}else if(sDatatype.equals(DataFieldZZZ.sDATE)){
-//				Der Datentyp muss dem gew�nschten angepasst werden.
+//				Der Datentyp muss dem gewuenschten angepasst werden.
 				Date objDate = (Date) obj;		
 				
 //				!!! aus irgendeinem Grund muss wohl ein Leerwert als 1.1.1900 zur�ckgegeben werden. Darauf pr�fen
