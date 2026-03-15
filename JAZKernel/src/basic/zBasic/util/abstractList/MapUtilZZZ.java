@@ -47,7 +47,7 @@ public class MapUtilZZZ implements IConstantZZZ{
 	}
 	
 	public static <K,V> Map<K,V[]> mergeMapsAndJoinArrayValuesUniqueKeyAcrosswise(ArrayListZZZ<K> listaK, Map<K,V[]> m1, Map<K,V[]> m2) throws ExceptionZZZ{
-		return MapUtilZZZ.mergeMapsAndJoinArrayValuesKeyEachwise_(listaK, m1, m2);
+		return MapUtilZZZ.mergeMapsAndJoinArrayValuesKeyAcrosswise_(listaK, m1, m2);
 	}
 	
 	private static <K,V> Map<K,V[]> mergeMapsAndJoinArrayValuesKeyAcrosswise_(ArrayListZZZ<K> listaKIn, Map<K,V[]> m1, Map<K,V[]> m2) throws ExceptionZZZ{

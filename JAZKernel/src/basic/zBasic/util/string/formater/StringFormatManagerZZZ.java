@@ -300,22 +300,18 @@ public class StringFormatManagerZZZ extends AbstractStringFormatManagerZZZ imple
 			IEnumSetMappedStringFormatZZZ[] ienumaFormatLogStringCurrent;
 			
 			boolean bUseIndividualFormat = this.getFlag(IStringFormatManagerEnabledZZZ.FLAGZ.USE_INDIVIDUAL_FORMAT);	
-			boolean bUseColumnAdoptedFormat = this.getFlag(IStringFormatManagerEnabledZZZ.FLAGZ.USE_COLUMN_ADOPTED_FORMAT);
-			boolean bUseColumnMergedFormat = this.getFlag(IStringFormatManagerEnabledZZZ.FLAGZ.USE_COLUMN_MERGED_FORMAT);
+			boolean bUseColumnRedundantFormat = this.getFlag(IStringFormatManagerEnabledZZZ.FLAGZ.USE_COLUMN_REDUNDANT_FORMAT);
+			boolean bUseColumnUnmergedFormat = this.getFlag(IStringFormatManagerEnabledZZZ.FLAGZ.USE_COLUMN_UNMERGED_FORMAT);
 			boolean bUseColumnMergedDouble = this.getFlag(IStringFormatManagerEnabledZZZ.FLAGZ.USE_COLUMN_MERGED_DOUBLE);
 			
 			if(!bUseIndividualFormat) {
 				ienumaFormatLogStringCurrent = this.getStringFormatArrayCurrent();
-				if(bUseColumnAdoptedFormat && !bUseColumnMergedFormat) {
-					//System.out.println(ReflectCodeZZZ.getPositionCurrent() +": Verwende biherige Formatvorlage, ggfs. als Zusammenfassung der Spalten mit zuvor verwendeter.");
-					ienumaFormatLogString = StringFormatManagerUtilZZZ.adaptFormatArray(ienumaFormatLogStringCurrent, ienumaFormatLogStringIn);
-				}else {
-					//Der Normalfall, bUseColumnMergedFormat
+				if(!bUseColumnRedundantFormat && !bUseColumnUnmergedFormat) {
+					//Der Normalfall, bUseColumnUnmergedMergedFormat
 					//System.out.println(ReflectCodeZZZ.getPositionCurrent() +": Verwende bisherige Formatvorlage, ggfs. als Zusammenfassung der Spalten mit zuvor verwendeter.");
 
 					//Hole die bisherige ArrayList der Separatoren, zwischend denen die Formataufweisungen aufgeteilt werden.
 					ArrayListZZZ<IEnumSetMappedStringFormatZZZ> listaSeparator = this.getSeparatorArrayList();					
-
 					
 					if(!bUseColumnMergedDouble) {
 					
@@ -332,6 +328,16 @@ public class StringFormatManagerZZZ extends AbstractStringFormatManagerZZZ imple
 					//Hole die neue Liste der Separatoren, inkl. neu hinzugekommenden, reingemergten Separatoren (sprich Spalten)
 					ArrayListZZZ<IEnumSetMappedStringFormatZZZ> listaSeparatorNew = StringFormatManagerUtilZZZ.filterSeparatorsAsArrayList(ienumaFormatLogStringIn);
 					this.setSeparatorArrayList(listaSeparatorNew);
+										
+				}else {
+					if(bUseColumnRedundantFormat) {
+						//also nichts mergen und keine Redundanz entfernen, dann nur einfach joinen???????						
+						ienumaFormatLogString = ArrayUtilZZZ.join(ienumaFormatLogStringCurrent, ienumaFormatLogStringIn);
+					}else {
+						//Zumindest doppelte Spalten entfernen
+						//System.out.println(ReflectCodeZZZ.getPositionCurrent() +": Verwende biherige Formatvorlage, ggfs. als Zusammenfassung der Spalten mit zuvor verwendeter.");
+						ienumaFormatLogString = StringFormatManagerUtilZZZ.adaptFormatArray(ienumaFormatLogStringCurrent, ienumaFormatLogStringIn);						
+					}
 				}
 			}else {
 				//System.out.println(ReflectCodeZZZ.getPositionCurrent() +": Verwende die individuelle Formatvorlage und keine Vermischung mit zuvor verwendeter.");
