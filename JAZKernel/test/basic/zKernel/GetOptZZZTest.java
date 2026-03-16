@@ -278,7 +278,7 @@ public class GetOptZZZTest extends TestCase{
 			stemp="-a hallo -b -cc blabla";  
 			sResult = objOptTest.proofArgument(stemp);
 			itemp = GetOptZZZ.computeCodeFromProofResult(sResult);
-			//nun sind Steuerzeichen mit mehr als 1 Zeichen Laenge erlaubt assertEquals(20, itemp);//Fehler: 'Falsche L�nge eines Steuerzeichens'
+			//nun sind Steuerzeichen mit mehr als 1 Zeichen Laenge erlaubt assertEquals(20, itemp);//Fehler: 'Falsche Laenge eines Steuerzeichens'
 			assertEquals(25,itemp); //Fehler "cc" ist nicht im Patter der Steuerzeichen vorhanden
 			
 			stemp="-a hallo -b -d blabla";  
@@ -354,11 +354,11 @@ public class GetOptZZZTest extends TestCase{
 		}	
 	}
 	
-	/** Pr�fe den Argument String:
-	 * - hinter dem Pattern String muss immer etwas stehen (also beim Pattern String a:b:c: f�hr der Argument String "-a wert1 -b -c" dazu dass -c als Wert und nicht als Streuerungzeichen erkannt wird).
+	/** Pruefe den Argument String:
+	 * - hinter dem Pattern String muss immer etwas stehen (also beim Pattern String a:b:c: fuehrt der Argument String "-a wert1 -b -c" dazu dass -c als Wert und nicht als Streuerungzeichen erkannt wird).
 	 * - nicht jede option braucht da zu sein
-	* - Optionen oder Stringsbestandteile, die nicht beachtet w�rden, bedeuten, dass der Argumentstring nicht valid ist:
-	*    (also beim Pattern String a:b:c: f�hr der Argument String "-a wert1 -b -c wert2" zu dem Oben ganannten Problem
+	* - Optionen oder Stringsbestandteile, die nicht beachtet wuerden, bedeuten, dass der Argumentstring nicht valid ist:
+	*    (also beim Pattern String a:b:c: fuehrt der Argument String "-a wert1 -b -c wert2" zu dem Oben ganannten Problem
 	*      dar�ber hinaus wird 'wert2' nicht mehr als Steuerungswert erkannt, weil -c als Wert und nicht als Streuerungzeichen erkannt wurde).
 	*    
 	* 

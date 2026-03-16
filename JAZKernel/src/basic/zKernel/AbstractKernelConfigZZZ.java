@@ -233,6 +233,7 @@ public abstract class AbstractKernelConfigZZZ<T> extends AbstractObjectWithFlagZ
 		return sReturn;
 	}
 	
+	@Override
 	public String readConfigDirectoryName() throws ExceptionZZZ{
 		String sReturn = null;
 		main:{
@@ -264,6 +265,7 @@ public abstract class AbstractKernelConfigZZZ<T> extends AbstractObjectWithFlagZ
 		}//end main:		
 		return sReturn;
 	}
+	
 	
 	public String readFlagzJson() throws ExceptionZZZ{
 		String sReturn = null;
@@ -433,168 +435,166 @@ public abstract class AbstractKernelConfigZZZ<T> extends AbstractObjectWithFlagZ
 	
 
 	//### Interface ###########
+	
+	@Override
 	public String getConfigFlagzJsonDefault() {
 		return IKernelConfigZZZ.sFLAGZ_DEFAULT;
 	}
 	
+	@Override
 	public String getPatternStringDefault() {
 		return IKernelConfigZZZ.sPATTERN_DEFAULT;
 	}
 	
 	//### Aus Interface ICryptUserZZZ
-		@Override
-		public ICryptZZZ getCryptAlgorithmType() throws ExceptionZZZ {
-			return this.objCrypt;
-		}
-		@Override
-		public void setCryptAlgorithmType(ICryptZZZ objCrypt) {
-			this.objCrypt=objCrypt;
-		}
-			
+	@Override
+	public ICryptZZZ getCryptAlgorithmType() throws ExceptionZZZ {
+		return this.objCrypt;
+	}
+	@Override
+	public void setCryptAlgorithmType(ICryptZZZ objCrypt) {
+		this.objCrypt=objCrypt;
+	}
 		
-		//### Aus Interface IKernelConfigProjectHelperZZZ
-		@Override
-		public String getProjectPath() throws ExceptionZZZ{
-			return this.computeProjectPath();
-		}
-		@Override
-		public String computeProjectPath() throws ExceptionZZZ {
-			return AbstractKernelConfigZZZ.computeProjectPath(this.getProjectDirectory(), this.getProjectName());
-		}
+	
+	//### Aus Interface IKernelConfigProjectHelperZZZ
+	@Override
+	public String getProjectPath() throws ExceptionZZZ{
+		return this.computeProjectPath();
+	}
+	@Override
+	public String computeProjectPath() throws ExceptionZZZ {
+		return AbstractKernelConfigZZZ.computeProjectPath(this.getProjectDirectory(), this.getProjectName());
+	}
+	
+	public static String computeProjectPath(String sProjektDirectory, String sProjectName) throws ExceptionZZZ {
+		String sReturn = FileEasyZZZ.joinFilePathNameForUrl(sProjektDirectory, sProjectName);
+		sReturn = JarEasyUtilZZZ.toFilePath(sReturn); //Slash in Backslash umwandeln, etc.
+		return sReturn;
+	}
+	
+	@Override 
+	public String computeProjectPathTotal() throws ExceptionZZZ {
+		String sReturn = null;
+		String sWorkspacePath = ReflectWorkspaceZZZ.computeWorkspaceRunningProjectPath(); //Hole den aktuellen Pfad des gesamten "aktuellen" Projekts
 		
-		public static String computeProjectPath(String sProjektDirectory, String sProjectName) throws ExceptionZZZ {
-			String sReturn = FileEasyZZZ.joinFilePathNameForUrl(sProjektDirectory, sProjectName);
-			sReturn = JarEasyUtilZZZ.toFilePath(sReturn); //Slash in Backslash umwandeln, etc.
-			return sReturn;
+		//Davon einen ggfs. vorhandenen Aufrufenden Projektpfad abziehen.
+		String sProjectCallingPath = this.getCallingProjectPath();
+		String sWorkspacePathPure = StringZZZ.leftback(sWorkspacePath, sProjectCallingPath);
+		sWorkspacePathPure = StringZZZ.stripFileSeparators(sWorkspacePathPure);
+		
+		String sProjectPath = AbstractKernelConfigZZZ.computeProjectPath(this.getProjectDirectory(), this.getProjectName());
+		
+		sReturn = FileEasyZZZ.joinFilePathNameForUrl(sWorkspacePathPure, sProjectPath);
+		sReturn = JarEasyUtilZZZ.toFilePath(sReturn); //Slash in Backslash umwandeln, etc.
+		return sReturn;
+	}
+	
+	@Override
+	public String getProjectPathTotal() throws ExceptionZZZ {
+		return this.computeProjectPathTotal();
+	}
+	
+	@Override
+	public String getCallingProjectPath() {
+		return this.sCallingProjectPathTotal;
+	}
+	
+	@Override
+	public void setCallingProjectPath(String sCallingProjectPathTotal) {
+		this.sCallingProjectPathTotal = sCallingProjectPathTotal;
+	}
+	
+	
+	@Override 
+	public String getLogFileName() throws ExceptionZZZ {
+		String sReturn = this.readLogFileName();
+		if(StringZZZ.isEmpty(sReturn)) {
+			sReturn = this.getLogFileNameDefault();
 		}
-		
-		@Override 
-		public String computeProjectPathTotal() throws ExceptionZZZ {
-			String sReturn = null;
-			String sWorkspacePath = ReflectWorkspaceZZZ.computeWorkspaceRunningProjectPath(); //Hole den aktuellen Pfad des gesamten "aktuellen" Projekts
-			
-			//Davon einen ggfs. vorhandenen Aufrufenden Projektpfad abziehen.
-			String sProjectCallingPath = this.getCallingProjectPath();
-			String sWorkspacePathPure = StringZZZ.leftback(sWorkspacePath, sProjectCallingPath);
-			sWorkspacePathPure = StringZZZ.stripFileSeparators(sWorkspacePathPure);
-			
-			String sProjectPath = AbstractKernelConfigZZZ.computeProjectPath(this.getProjectDirectory(), this.getProjectName());
-			
-			sReturn = FileEasyZZZ.joinFilePathNameForUrl(sWorkspacePathPure, sProjectPath);
-			sReturn = JarEasyUtilZZZ.toFilePath(sReturn); //Slash in Backslash umwandeln, etc.
-			return sReturn;
-		}
-		
-		@Override
-		public String getProjectPathTotal() throws ExceptionZZZ {
-			return this.computeProjectPathTotal();
-		}
-		
-		@Override
-		public String getCallingProjectPath() {
-			return this.sCallingProjectPathTotal;
-		}
-		
-		@Override
-		public void setCallingProjectPath(String sCallingProjectPathTotal) {
-			this.sCallingProjectPathTotal = sCallingProjectPathTotal;
-		}
-		
-		
-		@Override 
-		public String getLogFileName() throws ExceptionZZZ {
-			String sReturn = this.readLogFileName();
-			if(StringZZZ.isEmpty(sReturn)) {
-				sReturn = this.getLogFileNameDefault();
-			}
-			return sReturn;
-		}
-		
-		@Override 
-		public String getLogFileNameDefault() {
-			return this.sLOG_FILE_NAME_DEFAULT;
-		}
-		
-		@Override
-		public String readLogFileName() throws ExceptionZZZ{
-			String sReturn = null;
+		return sReturn;
+	}
+	
+	@Override 
+	public String getLogFileNameDefault() {
+		return this.sLOG_FILE_NAME_DEFAULT;
+	}
+	
+	@Override
+	public String readLogFileName() throws ExceptionZZZ{
+		String sReturn = null;
+		main:{
+			GetOptZZZ objOpt = this.getOptObject();
+			if(objOpt==null) break main;
+			if(objOpt.getFlag("isLoaded")==false) break main;
+			 
+			sReturn = objOpt.readValue("lf");
+		}//end main:		
+		return sReturn;
+	}
+	
+	@Override
+	public boolean isLogFileNameDefault(String sValue) throws ExceptionZZZ {
+		boolean bReturn = false;{
 			main:{
-				GetOptZZZ objOpt = this.getOptObject();
-				if(objOpt==null) break main;
-				if(objOpt.getFlag("isLoaded")==false) break main;
-				 
-				sReturn = objOpt.readValue("lf");
-			}//end main:		
-			return sReturn;
-		}
-		
-		@Override
-		public boolean isLogFileNameDefault(String sValue) throws ExceptionZZZ {
-			boolean bReturn = false;{
-				main:{
-					if(StringZZZ.isEmpty(sValue))break main;
-					if(sValue.equals(this.getLogFileNameDefault())) {
-						bReturn = true;
-					}
+				if(StringZZZ.isEmpty(sValue))break main;
+				if(sValue.equals(this.getLogFileNameDefault())) {
+					bReturn = true;
 				}
 			}
-			return bReturn;
 		}
+		return bReturn;
+	}
+	
+	@Override 
+	public String getLogDirectoryName() throws ExceptionZZZ {
+		String sReturn = this.readLogDirectoryName();			
+		if(sReturn==null){
+			sReturn = this.getConfigDirectoryNameDefault();				
+		}
+		sReturn = this.expressionSolveConfigDirectoryNameDefault(sReturn);
 		
-		@Override 
-		public String getLogDirectoryName() throws ExceptionZZZ {
-			String sReturn = this.readLogDirectoryName();			
-			if(sReturn==null){
-				sReturn = this.getConfigDirectoryNameDefault();				
-			}
-			sReturn = this.expressionSolveConfigDirectoryNameDefault(sReturn);
+		return sReturn;
+	}
+	
+	@Override 
+	public String getLogDirectoryNameDefault() {
+		return this.sLOG_FILE_DIRECTORY_DEFAULT;
+	}
+	
+	@Override
+	public String readLogDirectoryName() throws ExceptionZZZ{
+		String sReturn = null;
+		main:{
+			GetOptZZZ objOpt = this.getOptObject();
+			if(objOpt==null) break main;
+			if(objOpt.getFlag("isLoaded")==false) break main;
 			
-			return sReturn;
-		}
-		
-		@Override 
-		public String getLogDirectoryNameDefault() {
-			return this.sLOG_FILE_DIRECTORY_DEFAULT;
-		}
-		
-		@Override
-		public String readLogDirectoryName() throws ExceptionZZZ{
-			String sReturn = null;
+			sReturn = objOpt.readValue("ld");									
+		}//end main:						
+		return sReturn;
+	} 
+	
+	@Override
+	public boolean isLogDirectoryNameDefault(String sValue) throws ExceptionZZZ {
+		boolean bReturn = false;{
 			main:{
-				GetOptZZZ objOpt = this.getOptObject();
-				if(objOpt==null) break main;
-				if(objOpt.getFlag("isLoaded")==false) break main;
-				
-				sReturn = objOpt.readValue("ld");									
-			}//end main:						
-			return sReturn;
-		} 
-		
-		@Override
-		public boolean isLogDirectoryNameDefault(String sValue) throws ExceptionZZZ {
-			boolean bReturn = false;{
-				main:{
-					if(StringZZZ.isEmpty(sValue))break main;
-					if(sValue.equals(this.getLogDirectoryNameDefault())) {
-						bReturn = true;
-					}
+				if(StringZZZ.isEmpty(sValue))break main;
+				if(sValue.equals(this.getLogDirectoryNameDefault())) {
+					bReturn = true;
 				}
 			}
-			return bReturn;
 		}
-		
-		
-		  
-		
-		
-		
-		
-		//##########
-		// Getter / Setter
-		//##########
-		public GetOptZZZ getOptObject(){
-			return this.objOpt;
-		}		
+		return bReturn;
+	}
+	
+	
+	//##########
+	// Getter / Setter
+	//##########
+	public GetOptZZZ getOptObject(){
+		return this.objOpt;
+	}		
 	
 	
 	//##################################################

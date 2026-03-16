@@ -14,11 +14,7 @@ import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.start.GetOpt;
 
-/**Ein Wrapper um GetOpt. 
- * 
- * 			//20210331: Jetzt sind aber Optionsparameter mit mehr als 1 Zeichen gewünscht.
-			//          Das ist gescheitert, da zuviel zu ändern ist in GetOpt selbst.
- * 
+/**Ein Wrapper um GetOpt.  
  * @author lindhauer
  *
  */
@@ -35,7 +31,7 @@ public class GetOptZZZ extends AbstractObjectWithFlagZZZ{
 	* lindhauer; 18.07.2007 06:47:43
 	 * @param objKernel, kann ein mit new KernelZZZ() initiierter default - Kernel sein (vorausgesetzt die entsprechende Default ini-Datei existiert f�r den default kernel)
 	 * @param sPattern, die Steuerzeichen. Ein Buchstabe, ein Doppelpunkt bedeutet, dass ein Argument folgt. z.B. "k:s:abc". Die Argumente tauchen dann im Argument Array auf
-	 * @param saArg, Array der Argumente. Hier werden die Steuerzeichen mit Bindestrich eingeleitet. z.B. -k wert1 -s wert2. Es m�ssen nicht alle im Pattern definierten Steuerzeichen vorhanden sein.
+	 * @param saArg, Array der Argumente. Hier werden die Steuerzeichen mit Bindestrich eingeleitet. z.B. -k wert1 -s wert2. Es muessen nicht alle im Pattern definierten Steuerzeichen vorhanden sein.
 	 * @throws ExceptionZZZ
 	 */
 	public GetOptZZZ( String sPattern, String[] saArg) throws ExceptionZZZ{
@@ -49,7 +45,7 @@ public class GetOptZZZ extends AbstractObjectWithFlagZZZ{
 	/**Setzt die Kommandozeile in dem Format, wie es auch von GetOpt erwartet wird.
 	 *  z.B. -a: erster_wert -b -c: zweiter_wert
 	            Dabei ist -b ein Parameter ohne Wert (er ist einfach nur da), -a und -c haben einen Wert zugewiesen bekommen.
-	            Die Parameter d�rfen nur die L�nge von 1 haben.
+	            Die Parameter duerfen nur die Laenge von 1 haben.
 	             
 	* @param sPattern
 	* 
@@ -221,7 +217,7 @@ public class GetOptZZZ extends AbstractObjectWithFlagZZZ{
 	}
 	
 	/** Füllt die übergebenen Argumente in eine HashMap.
-	 *   Dazu wird erst ein GetOpt-Object verwendet und dann f�r Optionen des "Pattern" abgefragt.
+	 *   Dazu wird erst ein GetOpt-Object verwendet und dann fuer Optionen des "Pattern" abgefragt.
 	 *   
 	* @param saArg
 	* 
