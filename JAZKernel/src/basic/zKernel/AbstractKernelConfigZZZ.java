@@ -93,25 +93,11 @@ public abstract class AbstractKernelConfigZZZ<T> extends AbstractObjectWithFlagZ
 						
 			String[] saArg = null;
 			if(saArgIn==null || StringArrayZZZ.isEmpty(saArgIn)){
-				//Das Argument-Array darf auch leer sein.
+				//Das uebergebene Argument-Array darf auch leer sein.
 //				ExceptionZZZ ez = new ExceptionZZZ("Argument - Array", iERROR_PARAMETER_MISSING, this, ReflectCodeZZZ.getMethodCurrentName());
 //				throw ez;
 				
-				saArg = new String[14];
-				saArg[0] = "-k";
-				saArg[1] = this.getApplicationKeyDefault();
-				saArg[2] = "-s";
-				saArg[3] = this.getSystemNumberDefault();
-				saArg[4] = "-f";
-				saArg[5] = this.getConfigFileNameDefault();
-				saArg[6] = "-d";
-				saArg[7] = this.getConfigDirectoryNameDefault();
-				saArg[8] = "-lf";
-				saArg[9] = this.getLogFileNameDefault();
-				saArg[10] = "-ld";
-				saArg[11] = this.getLogDirectoryNameDefault();								
-				saArg[12] = "-z";
-				saArg[13] = this.getConfigFlagzJsonDefault();
+				saArg = this.getArgumentArrayDefault();				
 			}else {
 				saArg = saArgIn;
 			}
@@ -444,6 +430,27 @@ public abstract class AbstractKernelConfigZZZ<T> extends AbstractObjectWithFlagZ
 	@Override
 	public String getPatternStringDefault() {
 		return IKernelConfigZZZ.sPATTERN_DEFAULT;
+	}
+		
+	@Override
+	public String[] getArgumentArrayDefault() {
+		String[] saArg = new String[14];
+		saArg[0] = "-k";
+		saArg[1] = this.getApplicationKeyDefault();
+		saArg[2] = "-s";
+		saArg[3] = this.getSystemNumberDefault();
+		saArg[4] = "-f";
+		saArg[5] = this.getConfigFileNameDefault();
+		saArg[6] = "-d";
+		saArg[7] = this.getConfigDirectoryNameDefault();
+		saArg[8] = "-lf";
+		saArg[9] = this.getLogFileNameDefault();
+		saArg[10] = "-ld";
+		saArg[11] = this.getLogDirectoryNameDefault();								
+		saArg[12] = "-z";
+		saArg[13] = this.getConfigFlagzJsonDefault();
+		
+		return saArg;
 	}
 	
 	//### Aus Interface ICryptUserZZZ

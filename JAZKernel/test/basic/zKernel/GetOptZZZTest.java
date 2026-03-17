@@ -45,6 +45,13 @@ public class GetOptZZZTest extends TestCase{
 			assertEquals(3,listaPattern.size());
 			
 			//pattern nur mit Argumenten "ohne Wert"
+			//a) Fall nur 1x
+			sPattern = "e";
+			listaPattern = GetOptZZZ.getPatternList4ControlWithValue(sPattern);
+			assertNotNull(listaPattern);
+			assertEquals(0,listaPattern.size());
+			
+			//b) Fall Nx
 			sPattern = "e|d|f|";
 			listaPattern = GetOptZZZ.getPatternList4ControlWithValue(sPattern);
 			assertNotNull(listaPattern);
@@ -69,6 +76,13 @@ public class GetOptZZZTest extends TestCase{
 			ArrayList<String>listaPattern=null;
 			
 			//Liste Argumente "ohne Wert"
+			//a) Fall nur 1x
+			sPattern = "e";
+			listaPattern = GetOptZZZ.getPatternList4ControlSimple(sPattern);
+			assertNotNull(listaPattern);
+			assertEquals(1,listaPattern.size());
+			
+			//b) Fall Nx
 			sPattern = "a|b|c|;";
 			listaPattern = GetOptZZZ.getPatternList4ControlSimple(sPattern);
 			assertNotNull(listaPattern);
@@ -222,6 +236,12 @@ public class GetOptZZZTest extends TestCase{
 			String sResult=null;
 			int itemp= 0;
 			
+			objOptTest.setPattern("ssh|https|pat:z");//siehe IConfigDEV.sPATTERN_DEFAULT
+			stemp = "-ssh";
+			sResult = objOptTest.proofArgument(stemp);
+			itemp = GetOptZZZ.computeCodeFromProofResult(sResult);
+			assertEquals(-1, itemp);
+			
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			objOptTest.setPattern("a:c:b");//Im Pattern, ohne Argumente nach hinten.
 			stemp = "-a hallo -c Welt -b";
@@ -369,6 +389,8 @@ public class GetOptZZZTest extends TestCase{
 			String stemp=null;
 			boolean btemp=false;
 			
+			
+			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//+++
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -490,6 +512,8 @@ public class GetOptZZZTest extends TestCase{
 	public void testLoadOptionAll(){
 		try{
 			
+			
+			
 			//+++ Einfache Variante
 			objOptTest.setPattern("a");
 			String[] saTemp = {"-a"};
@@ -552,6 +576,27 @@ public class GetOptZZZTest extends TestCase{
 			
 		} catch (ExceptionZZZ e) {
 			fail("Method throws an exception." + e.getMessageLast());
+		}	
+	}
+	
+	public void testReadKey(){
+		String sValue=null; String sValueExpected=null;
+		try{
+			//##########################
+			//Hier einen Wert am Anfang OHNE Argumente holen
+			String sPattern = "ssh|https|pat:z:"; //s. IKernelConfigZZZ
+			String[] saArg = {"-ssh"};
+			GetOptZZZ objOptTest01 = new GetOptZZZ(sPattern);
+			objOptTest01.loadOptionAll(saArg);
+			
+			sValueExpected = "ssh";
+			sValue = objOptTest01.readValue("ssh");				
+		    assertNotNull(sValue);
+		    assertEquals(sValueExpected,sValue);		    		    		    		    
+
+		} catch (ExceptionZZZ ez) {
+			ez.printStackTrace();
+			fail("Method throws an exception." + ez.getMessageLast());
 		}	
 	}
 }

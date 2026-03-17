@@ -19,13 +19,30 @@ import basic.zBasic.util.start.GetOpt;
  *
  */
 public class GetOptZZZ extends AbstractObjectWithFlagZZZ{
-	private String sPattern; 
-	private HashMap hmOpt = new HashMap();//Die Hashmap der von aussen gesetzten Steuerungsoptionen. Merke: Dann gibt es noch die HashMap der FlagZ in ObjectZZZ
+	protected volatile String sPattern; 
+	protected HashMap hmOpt = new HashMap();//Die Hashmap der von aussen gesetzten Steuerungsoptionen. Merke: Dann gibt es noch die HashMap der FlagZ in ObjectZZZ
+	protected boolean bFlagIsLoaded = false;
+	
 	private Iterator itOpt = null;
-	private boolean bFlagIsLoaded = false;
+	
 		
 	public GetOptZZZ(){
 	}
+	
+	/** Konstruktor, mit Pattern-String.	       
+	 * @param saArg, Array der Argumente. Hier werden die Steuerzeichen mit Bindestrich eingeleitet. z.B. -k wert1 -s wert2. Es muessen nicht alle im Pattern definierten Steuerzeichen vorhanden sein.
+	 * @throws ExceptionZZZ
+	 */
+	public GetOptZZZ(String sPattern) throws ExceptionZZZ{
+		this.setPattern(sPattern);		
+	}
+	
+	/** *  Merke: Konstruktor nur mit Argument-String ist nicht sinnvoll,
+	 *         da ohne Pattern String diese nicht ausgewertet werden können.
+	 */         
+//	public GetOptZZZ(String[] saArg) throws ExceptionZZZ{		
+//		this.loadOptionAll(saArg);
+//	}
 	
 	/** Konstruktor, der sofort alles initiiert
 	* lindhauer; 18.07.2007 06:47:43
@@ -34,7 +51,7 @@ public class GetOptZZZ extends AbstractObjectWithFlagZZZ{
 	 * @param saArg, Array der Argumente. Hier werden die Steuerzeichen mit Bindestrich eingeleitet. z.B. -k wert1 -s wert2. Es muessen nicht alle im Pattern definierten Steuerzeichen vorhanden sein.
 	 * @throws ExceptionZZZ
 	 */
-	public GetOptZZZ( String sPattern, String[] saArg) throws ExceptionZZZ{
+	public GetOptZZZ(String sPattern, String[] saArg) throws ExceptionZZZ{
 		this.setPattern(sPattern);
 		this.loadOptionAll(saArg);
 	}
@@ -82,7 +99,7 @@ public class GetOptZZZ extends AbstractObjectWithFlagZZZ{
 	 */
 	public void clearOptions(){		
 		this.getOptionMap().clear(); //Die Hashmap zur�cksetzen
-		this.setOptionIterator(null);
+		this.setOptionIterator_(null);
 		this.bFlagIsLoaded = false;	
 	}	
 	
@@ -187,7 +204,7 @@ public class GetOptZZZ extends AbstractObjectWithFlagZZZ{
 	            			String stemp = null;
 	            			int ilength = 0;
 	            			do {	            				
-	            				stemp = sPattern.substring(itemp-1, itemp); //Position des Zeichens vor dem ":", dann davor, etc.	            					            					            			
+	            				stemp = sPattern.substring(itemp-1, itemp); //Position des Zeichens vor dem "|", dann davor, etc.	            					            					            			
 	            				if(!stemp.equals("|") && itemp>0) ilength++;
 	            				itemp = itemp-1; //ein Zeichen weiterschieben nach links
 	            			}while(stemp!=null && !stemp.equals("|") && itemp>0);
@@ -263,9 +280,14 @@ public class GetOptZZZ extends AbstractObjectWithFlagZZZ{
 			String a = objOption.getoptString(saArg);
 			//String sOption = StringZZZ.char2String(a).trim();			
 			String sOption = a.trim();//.substring(1,a.trim().length()-1);
+			sOption = StringZZZ.left(sOption + "|", "|");//ohne ein mögliches PIPE
 			while(!StringZZZ.isEmpty(sOption)){
 				String sParam = objOption.optarg();
 				
+				//20260317: Für Argumente ohne Optionsparameter gilt: Sie sind gleich dem Argumentwert
+				if(sParam==null) {
+					sParam = sOption;
+				}
 				this.getOptionMap().put(sOption, sParam);
 				
 				//Zum naechsten Argument
@@ -284,7 +306,7 @@ public class GetOptZZZ extends AbstractObjectWithFlagZZZ{
 		main:{
 			HashMap hm = this.getOptionMap();
 			Iterator it = hm.keySet().iterator();
-			this.setOptionIterator(it);
+			this.setOptionIterator_(it);
 			if(it.hasNext()){
 				sReturn =(String) it.next();
 			}
@@ -296,12 +318,12 @@ public class GetOptZZZ extends AbstractObjectWithFlagZZZ{
 		String sReturn = null;
 		main:{
 			Iterator it = null;
-			if(this.getOptionIterator()==null){
+			if(this.getOptionIterator_()==null){
 				HashMap hm = this.getOptionMap();
 				it = hm.keySet().iterator();
-				this.setOptionIterator(it);
+				this.setOptionIterator_(it);
 			}else{
-				it = this.getOptionIterator();
+				it = this.getOptionIterator_();
 			}
 			
 			if(it != null){
@@ -387,7 +409,7 @@ public class GetOptZZZ extends AbstractObjectWithFlagZZZ{
             
           
 			
-			//Nun die Argumentliste pr�fen:
+			//Nun die Argumentliste pruefen:
             //Es muss immer ein Steuerzeichen sein,
             //nur wenn es ein Steuerzeichen mit Parameter ist, dann darf der folgende Wert beliebig sein
             ArrayList<String> listaControlFound = new ArrayList<String>();
@@ -397,8 +419,11 @@ public class GetOptZZZ extends AbstractObjectWithFlagZZZ{
 				if(!StringZZZ.isEmpty(saParamAll[icount])){
 					String stemp = saParamAll[icount].substring(0, 1);
 					if(stemp.equals("-") & sControlPrevious.equals("")){
-						listaControlFound.add(StringZZZ.rightback(saParamAll[icount], 1));  //Ohne den Bindestrich !!!						
-						sControlPrevious = StringZZZ.rightback(saParamAll[icount], 1);	      //Das ist der Wert bis zum n�chsten LEERZEICHEN
+						String sParamTemp = StringZZZ.rightback(saParamAll[icount], 1); //Wert ohne den Bindestrich
+						sParamTemp = StringZZZ.left(sParamTemp + "|", "|");                 //Wert ohne einen moeglichen PIPE.
+						listaControlFound.add(sParamTemp);  //Ohne den Bindestrich !!!						
+						sControlPrevious = StringZZZ.rightback(saParamAll[icount], 1);	      //Das ist der Wert bis zum naechsten LEERZEICHEN
+						sControlPrevious = StringZZZ.left(sControlPrevious + "|", "|");                 //Wert ohne einen moeglichen PIPE.
 						
 						//Falls dieses gefundene Steuerzeichen mehr kein Zeichen oder mehr als 2 Zeichen lang ist, FEHLER
 						if(StringZZZ.isEmpty(sControlPrevious)){
@@ -466,7 +491,7 @@ public class GetOptZZZ extends AbstractObjectWithFlagZZZ{
 					}
 				}
 			}
-			//Fehler - LETZTES STEUERZEICHEN SOLLTE EINEN WERT HABEN, HAT�s ABER NCIHT
+			//Fehler - LETZTES STEUERZEICHEN SOLLTE EINEN WERT HABEN, HAT ES ABER NCIHT
 			if(bNeedArgument == true){
 				sReturn = "Error 60: Last control character has no argument: '" + saParamAll[saParamAll.length-1] + "'";
 				break main;
@@ -602,7 +627,7 @@ public class GetOptZZZ extends AbstractObjectWithFlagZZZ{
 					break main;
 				}
 			
-				//+++ 1a. Der Pattern String darf nicht mit einem Doppelpunkt beginnen.
+				//+++ 1a. Der Pattern String darf nicht mit einem Pipe beginnen.
 				sCharacter = sPattern.substring(0,1);
 				if(sCharacter.equals("|")){
 					sReturn = "Error 4: The character '|' is an argument separator. It is not allowed at the beginning. It is allowed only one time after a control character. Pattern '" + sPattern +"'";
@@ -622,7 +647,7 @@ public class GetOptZZZ extends AbstractObjectWithFlagZZZ{
 				}
 			
 				//+++ 2a. In dem Pattern String darf kein Wert doppelt vorkommen, mit Ausnahme des Doppelpunkts
-				saPattern = StringZZZ.explode(sPattern, "|");
+				saPattern = StringZZZ.explode(sPattern, "|"); //20260317: Fraglich... | sollte doppelt vorkommen duerfen
 				iLength = saPattern.length;
 
 				saPatternUnique = StringArrayZZZ.unique(saPattern);
@@ -710,10 +735,10 @@ public class GetOptZZZ extends AbstractObjectWithFlagZZZ{
 		return this.hmOpt;
 	}
 		
-	public void setOptionIterator(Iterator it){
+	private void setOptionIterator_(Iterator it){
 		this.itOpt = it;
 	}
-	public Iterator getOptionIterator(){
+	private Iterator getOptionIterator_(){
 		return this.itOpt;
 	}
 	

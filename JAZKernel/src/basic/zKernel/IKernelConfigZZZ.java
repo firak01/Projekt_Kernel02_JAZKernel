@@ -50,6 +50,9 @@ public interface IKernelConfigZZZ extends IFlagZEnabledZZZ,IKernelConfigProjectH
 	public String readPatternString() throws ExceptionZZZ;
 	public String getPatternStringDefault();
 	
+	public String[] getArgumentArrayDefault();
+	
+	
 	public boolean isOnServer() throws ExceptionZZZ;
 	public boolean isInJar() throws ExceptionZZZ;
 	public boolean isInIDE() throws ExceptionZZZ;
