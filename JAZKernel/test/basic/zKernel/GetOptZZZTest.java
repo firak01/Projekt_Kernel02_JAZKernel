@@ -551,7 +551,8 @@ public class GetOptZZZTest extends TestCase{
 			assertNull("NULL erwartet. Wert ist aber '" + stemp + "'", stemp); //Key nicht vorhanden
 			
 			stemp = objOptTest.readValue("b");
-			assertNull("NULL erwartet. Wert ist aber '" + stemp + "'", stemp);//Kein Wert fuer diesen Key gepflegt.
+			assertNotNull("NULL nicht erwartet.", stemp);//b ist Key und gleichzeitig Wert (Seit 20260316)
+			assertEquals("b",stemp);
 			
 			//+++++++++++++++++ Pattern mit Keys, die Argumente beinhalten
 			objOptTest.setPattern("w|x:y:z");
@@ -560,9 +561,13 @@ public class GetOptZZZTest extends TestCase{
 			assertTrue(btemp);
 			
 			stemp = objOptTest.readValue("w");  //+++ Werte auslesen
-			assertNull("NULL erwartet. Wert ist aber '" + stemp + "'", stemp); //Key nicht vorhanden
+			assertNotNull("NULL nicht erwartet.", stemp); //w ist Key und gleichzeitig Wert
+			assertEquals("w",stemp);
+			
 			stemp = objOptTest.readValue("z");  //+++ Werte auslesen
-			assertNull("NULL erwartet. Wert ist aber '" + stemp + "'", stemp); //Key nicht vorhanden
+			assertNotNull("NULL nicht erwartet.", stemp); //z ist Key und gleichzeitg Wert (seit 20260316)
+			assertEquals("z",stemp);
+			
 			
 			stemp = objOptTest.readValue("x");
 			assertNotNull(stemp); 

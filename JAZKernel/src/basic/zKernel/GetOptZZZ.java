@@ -62,7 +62,7 @@ public class GetOptZZZ extends AbstractObjectWithFlagZZZ{
 	/**Setzt die Kommandozeile in dem Format, wie es auch von GetOpt erwartet wird.
 	 *  z.B. -a: erster_wert -b -c: zweiter_wert
 	            Dabei ist -b ein Parameter ohne Wert (er ist einfach nur da), -a und -c haben einen Wert zugewiesen bekommen.
-	            Die Parameter duerfen nur die Laenge von 1 haben.
+	            Die Parametername duerfen jetzt (20260316) auch eine Laenge von >=2 haben.
 	             
 	* @param sPattern
 	* 
@@ -273,13 +273,12 @@ public class GetOptZZZ extends AbstractObjectWithFlagZZZ{
 			
 			
 			 
-			//20210331: Jetzt sind aber Optionsparameter mit mehr als 1 Zeichen gewünscht.
-			//          Das ist gescheitert, da zuviel in der GetOpt.getopt(saArg) Methode zu ändern ist.			
+			//20210331: Jetzt sind aber Optionsparameter mit mehr als 1 Zeichen gewuenscht.
+			//          Das ist gescheitert, da zuviel in der GetOpt.getopt(saArg) Methode zu aendern ist.	
+			//20260316: Jetzt sind Optionsparameter mit mehr als 2 Zeichen moeglich.
 			GetOpt objOption = new GetOpt(sPattern);
-			//char a = objOption.getopt(saArg);			
-			String a = objOption.getoptString(saArg);
-			//String sOption = StringZZZ.char2String(a).trim();			
-			String sOption = a.trim();//.substring(1,a.trim().length()-1);
+			String a = objOption.getoptString(saArg);		
+			String sOption = a.trim();
 			sOption = StringZZZ.left(sOption + "|", "|");//ohne ein mögliches PIPE
 			while(!StringZZZ.isEmpty(sOption)){
 				String sParam = objOption.optarg();
@@ -291,10 +290,8 @@ public class GetOptZZZ extends AbstractObjectWithFlagZZZ{
 				this.getOptionMap().put(sOption, sParam);
 				
 				//Zum naechsten Argument
-				//a = objOption.getopt(saArg);
 				a = objOption.getoptString(saArg);
-				//sOption = StringZZZ.char2String(a).trim();
-				sOption = a.trim();//.substring(1,a.trim().length()-1);
+				sOption = a.trim();
 			}
 		    bReturn = true;
 		}//end main
@@ -425,7 +422,7 @@ public class GetOptZZZ extends AbstractObjectWithFlagZZZ{
 						sControlPrevious = StringZZZ.rightback(saParamAll[icount], 1);	      //Das ist der Wert bis zum naechsten LEERZEICHEN
 						sControlPrevious = StringZZZ.left(sControlPrevious + "|", "|");                 //Wert ohne einen moeglichen PIPE.
 						
-						//Falls dieses gefundene Steuerzeichen mehr kein Zeichen oder mehr als 2 Zeichen lang ist, FEHLER
+						//Falls dieses gefundene zusaetzliche Steuerzeichen kein Zeichen hat, FEHLER
 						if(StringZZZ.isEmpty(sControlPrevious)){
 							sReturn = "Error 10: Argument string contains empty control parameter. No character after '-'";
 							break main;
