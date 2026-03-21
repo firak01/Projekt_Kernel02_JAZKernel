@@ -117,11 +117,13 @@ public class GetOpt {
 				// Still no match, and not used all args, so must be error.
 				return CharZZZ.toString('?');
 			}else if(thisArg.length()>=3) {
-				int iPositionBehind = StringZZZ.indexOfFirstBehind(pattern, thisArg.substring(1,thisArg.length()-1));
-				if (iPositionBehind+1 < pattern.length() && 
-						pattern.charAt(iPositionBehind+1)==':' &&
-						optind < argv.length)
+				String sThisArgWithoutMinus = thisArg.substring(1,thisArg.length());
+				int iPositionBehind = StringZZZ.indexOfFirstBehind(pattern, sThisArgWithoutMinus);
+				char cBehind = pattern.charAt(iPositionBehind); 
+				boolean bIsColon = cBehind==':'; 
+				if (iPositionBehind+1 < pattern.length() && bIsColon && optind < argv.length) {
 						optarg = argv[optind++]; 
+				}
 				
 				//return new String(thisArg);
 				return thisArg.substring(1,thisArg.length()); //Rueckgabewerte wie bei dem 1 Zeichen Argument ohne "-"

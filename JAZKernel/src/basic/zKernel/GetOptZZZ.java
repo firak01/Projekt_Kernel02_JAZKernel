@@ -15,6 +15,8 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.start.GetOpt;
 
 /**Ein Wrapper um GetOpt.  
+ * TODOGOON20260320: Was noch fehlt ist es optionale Parameter anzugeben.
+ *                   Z.B. mit eckigen Klammern also 
  * @author lindhauer
  *
  */
@@ -280,11 +282,15 @@ public class GetOptZZZ extends AbstractObjectWithFlagZZZ{
 			String a = objOption.getoptString(saArg);		
 			String sOption = a.trim();
 			sOption = StringZZZ.left(sOption + "|", "|");//ohne ein mögliches PIPE
+			
+			//Fuer die Analyse, ob die Steuerungszeichen Argumente haben oder nicht			
+			ArrayList<String> listaControlSimple = GetOptZZZ.getPatternList4ControlSimple(sPattern);
 			while(!StringZZZ.isEmpty(sOption)){
+				boolean bIsControlSimple = listaControlSimple.contains(sOption);
 				String sParam = objOption.optarg();
 				
 				//20260317: Für Argumente ohne Optionsparameter gilt: Sie sind gleich dem Argumentwert
-				if(sParam==null) {
+				if(sParam==null & bIsControlSimple) {
 					sParam = sOption;
 				}
 				this.getOptionMap().put(sOption, sParam);
@@ -431,6 +437,7 @@ public class GetOptZZZ extends AbstractObjectWithFlagZZZ{
 						//20210331: Jetzt sind aber Optionsparameter mit mehr als 1 Zeichen gewünscht.
 						//          Das ist gescheitert, da zuviel zu ändern ist in GetOpt selbst.
 						//          Sonst müsste folgende überprüfung herausgenommen werden.
+						//20260316: Funktioniert jetzt mit >= 2 Steuerzeichen
 //						if(sControlPrevious.length()>=2){
 //							sReturn = "Error 20: Argument string contains control parameter longer than 1 character: " + sControlPrevious;
 //							break main;
