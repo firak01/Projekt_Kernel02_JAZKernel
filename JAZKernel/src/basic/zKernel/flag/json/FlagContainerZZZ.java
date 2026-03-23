@@ -9,6 +9,7 @@ import basic.zBasic.util.datatype.string.StringZZZ;
  *  Wenn man diese nur intern verwendete Klasse anbietet,
  *  kann man über JSON ein entsprechendes Objekt einlesen, z.B. als Argument im main(args[]) Aufruf.
  * 
+ * sArg = "{\"FlagZZZ\":{\"hmFlag\":{\"XYZ\":true,\"abc\":true}}}";
  * @author Fritz Lindhauer, 26.03.2021, 08:27:29
  * 
  */
