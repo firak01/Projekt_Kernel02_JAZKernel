@@ -16,6 +16,7 @@ import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.StringTokenizer;
 import java.util.Vector;
 import java.util.regex.Matcher;
@@ -1098,6 +1099,57 @@ public class StringZZZ implements IConstantZZZ{
 		}//end main
 		return saReturn;
 	}
+	
+	
+	//####################################################
+	/** Will man das Trennzeichen innerhalb eines Strings ignorieren, funktionieren die einfachen explode - Methoden nicht:
+	 * 
+	 * ChatGPT vom 20260323
+Das, was du brauchst, ist kein einfaches split, sondern ein zustandsbasierter Parser, der erkennt, ob er sich gerade innerhalb von Hochkommas befindet oder nicht.
+StringUtils.splitByWholeSeparator(...) kann das nicht, weil es keine Escape-/Quote-Logik kennt.
+	 * 
+	 * @param input
+	 * @param delimiter
+	 * @return
+	 */
+	public static String[] explodeRespectingQuotes(String input, String delimiter) throws ExceptionZZZ {
+        if (input == null || input.isEmpty()) {
+            return new String[0];
+        }
+
+        List<String> result = new ArrayList<String>();
+        StringBuilder current = new StringBuilder();
+
+        boolean inQuotes = false;
+        int i = 0;
+
+        while (i < input.length()) {
+            char c = input.charAt(i);
+
+            // Hochkomma toggelt den Zustand
+            if (c == '\'') {
+                inQuotes = !inQuotes;
+                i++;
+                continue;
+            }
+
+            // Prüfen auf Delimiter (nur wenn NICHT in Quotes)
+            if (!inQuotes && input.startsWith(delimiter, i)) {
+                result.add(current.toString());
+                current.setLength(0);
+                i += delimiter.length();
+                continue;
+            }
+
+            current.append(c);
+            i++;
+        }
+
+        // letztes Element hinzufügen
+        result.add(current.toString());
+
+        return result.toArray(new String[result.size()]);
+    }
 	
 	//###################################################
 	

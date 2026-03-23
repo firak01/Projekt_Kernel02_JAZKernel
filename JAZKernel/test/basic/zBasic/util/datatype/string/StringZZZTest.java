@@ -1426,6 +1426,21 @@ public void testExplode(){
 	}
 }
 
+public void testExplodeRespectingQuotes(){
+	try {
+			String sTest = "eins 'zweiA zweiB' drei";
+			String[] saToken = StringZZZ.explodeRespectingQuotes(sTest, " ");
+			assertNotNull(saToken);
+			assertEquals(saToken.length, 3);
+			assertEquals(saToken[0], "eins");
+			assertEquals(saToken[1], "zweiA zweiB");
+			assertEquals(saToken[2], "drei");
+		}catch(ExceptionZZZ ez){
+		ez.printStackTrace();
+		fail("Method throws an exception." + ez.getMessageLast());
+	}
+}
+
 public void testFindSorted(){
 	try {
 	String sTest = "eins  zwei  drei  eins  zwei  vier  acht sechzehn";

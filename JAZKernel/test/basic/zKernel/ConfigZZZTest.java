@@ -32,7 +32,7 @@ public class ConfigZZZTest  extends TestCase{
 	/**F�r den Pattern String gilt: 1 Zeichen, ggf. gefolgt von einem Doppelpunkt
 	 * Pr�fe auf: 
 	 * - doppelte Zeichen (au�er dem Doppelpunkt)
-	 * - pr�fe auf zwei hintereinander folgende Doppelpunkte
+	 * - pruefe auf zwei hintereinander folgende Doppelpunkte
 	 * 
 	* lindhauer; 30.06.2007 08:21:33
 	 */

@@ -366,7 +366,11 @@ public class GetOptZZZ extends AbstractObjectWithFlagZZZ{
 						
 			//#### Die Pruefung des Argument strings
 //			1a Alle nach dem Leerzeichen zerlegen. Parameter pruefen.
-			String[] saParamAll = StringZZZ.explode(sArgument, " ");
+//			String[] saParamAll = StringZZZ.explode(sArgument, " ");
+
+			//20260323: Nun soll man aber mit einfachem Hochkomma das Leerzeichen ignorieren können
+			String[] saParamAll = StringZZZ.explodeRespectingQuotes(sArgument, " ");
+			
 			if(saParamAll==null|saParamAll.length==0) break main;
 			
 			sReturn = this.proofArgument_(sPattern, saParamAll);

@@ -375,12 +375,10 @@ public class GetOptZZZTest extends TestCase{
 	}
 	
 	/** Pruefe den Argument String:
-	 * - hinter dem Pattern String muss immer etwas stehen (also beim Pattern String a:b:c: fuehrt der Argument String "-a wert1 -b -c" dazu dass -c als Wert und nicht als Streuerungzeichen erkannt wird).
+	 * - hinter dem Pattern String Argument mit Doppelpunkt muss immer etwas stehen (also beim Pattern String a:b:c: fuehrt der Argument String "-a wert1 -b -c" zu einem Fehler weil hinter B kein Wert ist).
 	 * - nicht jede option braucht da zu sein
-	* - Optionen oder Stringsbestandteile, die nicht beachtet wuerden, bedeuten, dass der Argumentstring nicht valid ist:
-	*    (also beim Pattern String a:b:c: fuehrt der Argument String "-a wert1 -b -c wert2" zu dem Oben ganannten Problem
-	*      dar�ber hinaus wird 'wert2' nicht mehr als Steuerungswert erkannt, weil -c als Wert und nicht als Streuerungzeichen erkannt wurde).
-	*    
+	 *  
+	* - hinter dem Pattern String Argument mit Pipe darf nix stehen (also beim Pattern String a|b:c: fuehrt der Argument String "-a wert1 -b wert2 -c wert3" zu einem Fehler weil hinter -a nix erwartet wird). 
 	* 
 	* lindhauer; 30.06.2007 08:26:25
 	 */
@@ -456,8 +454,18 @@ public class GetOptZZZTest extends TestCase{
 			//+++++++++++++++++++++++++++++
 			//+++
 			//+++++++++++++++++++++++++++++
-			objOptTest.setPattern("a:b|c:");//ohne Argumente nach hinten
+			objOptTest.setPattern("a:b|c:");// -d ist kein Argument
 			stemp = "-a hallo -c Welt -b -d";
+			btemp = objOptTest.isArgumentValid(stemp);
+			assertFalse(btemp);
+			
+			objOptTest.setPattern("a:b|c:");// hinter b darf kein Wert stehen
+			stemp = "-a hallo -c Welt -b irgendwas";
+			btemp = objOptTest.isArgumentValid(stemp);
+			assertFalse(btemp);
+			
+			objOptTest.setPattern("a:b|c:");// hinter b darf kein Wert stehen
+			stemp = "-a hallo -b irgendwas -c Welt";
 			btemp = objOptTest.isArgumentValid(stemp);
 			assertFalse(btemp);
 			
@@ -532,6 +540,7 @@ public class GetOptZZZTest extends TestCase{
 			//+++
 			//++++++++++++++++++++++++++++++
 			//Arbeiten mit einfachem HOCHKOMMATA (TODOGOON20230323)
+			objOptTest.setPattern("a:b:c:");//ohne Argumente nach hinten
 			stemp="-a hallo -b welt -c 'zwei drei' "; //nun wird 'zwei drei' als Argument erkannt
 			btemp = objOptTest.isArgumentValid(stemp);
 			assertTrue(btemp);
@@ -612,6 +621,41 @@ public class GetOptZZZTest extends TestCase{
 			assertEquals("werty", stemp);
 			
 			
+			
+			
+		} catch (ExceptionZZZ e) {
+			fail("Method throws an exception." + e.getMessageLast());
+		}	
+	}
+	
+	public void testLoadOptionAll_escapedByQuotes(){
+		try{
+			String sValue=null; String sValueExpected=null;
+			
+			
+			//+++ Einfache Variante
+			objOptTest.setPattern("a:b:");
+			String[] saTemp = {"-a","eins zwei"};
+			boolean btemp = objOptTest.loadOptionAll(saTemp);
+			assertTrue(btemp);
+			
+			sValueExpected = "a";
+			sValue = objOptTest.readOptionNext();
+			assertEquals(sValueExpected, sValue);
+			
+			sValueExpected = null;
+			sValue = objOptTest.readOptionNext();
+			assertEquals(sValueExpected, sValue);
+			
+			//+++ Den Wert holen
+			sValueExpected = "eins zwei";
+			sValue= objOptTest.readValue("a");  //+++ Werte auslesen
+			assertEquals(sValueExpected, sValue);
+			
+			//Negativfall
+			sValueExpected = null;
+			sValue= objOptTest.readValue("b");  //+++ Werte auslesen
+			assertEquals(sValueExpected, sValue);
 			
 		} catch (ExceptionZZZ e) {
 			fail("Method throws an exception." + e.getMessageLast());
