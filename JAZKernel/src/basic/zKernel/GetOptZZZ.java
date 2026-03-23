@@ -406,9 +406,9 @@ public class GetOptZZZ extends AbstractObjectWithFlagZZZ{
 			if(saParamAll==null|saParamAll.length==0) break main;
 					
 //			Die Liste der Steuerzeichen
-			ArrayList<String> listaControlValue = GetOptZZZ.getPatternList4ControlWithValue(sPattern);
-			ArrayList<String> listaControlSimple = GetOptZZZ.getPatternList4ControlSimple(sPattern);
-            ArrayList<String> listaControl = GetOptZZZ.getPatternList4ControlAll(sPattern);     
+			ArrayList<String> listaControlWithValue = GetOptZZZ.getPatternList4ControlWithValue(sPattern);
+			ArrayList<String> listaControlWithoutValue = GetOptZZZ.getPatternList4ControlSimple(sPattern);
+            ArrayList<String> listaControlAll = GetOptZZZ.getPatternList4ControlAll(sPattern);     
             
           
 			
@@ -419,13 +419,14 @@ public class GetOptZZZ extends AbstractObjectWithFlagZZZ{
             String sControlPrevious = new String("");
             boolean bNeedArgument = false;
 			for(int icount=0; icount <= saParamAll.length-1;icount++){
-				if(!StringZZZ.isEmpty(saParamAll[icount])){
-					String stemp = saParamAll[icount].substring(0, 1);
+				String sParamCurrent = saParamAll[icount]; 
+				if(!StringZZZ.isEmpty(sParamCurrent)){
+					String stemp = sParamCurrent.substring(0, 1);
 					if(stemp.equals("-") & sControlPrevious.equals("")){
-						String sParamTemp = StringZZZ.rightback(saParamAll[icount], 1); //Wert ohne den Bindestrich
+						String sParamTemp = StringZZZ.rightback(sParamCurrent, 1); //Wert ohne den Bindestrich
 						sParamTemp = StringZZZ.left(sParamTemp + "|", "|");                 //Wert ohne einen moeglichen PIPE.
 						listaControlFound.add(sParamTemp);  //Ohne den Bindestrich !!!						
-						sControlPrevious = StringZZZ.rightback(saParamAll[icount], 1);	      //Das ist der Wert bis zum naechsten LEERZEICHEN
+						sControlPrevious = StringZZZ.rightback(sParamCurrent, 1);	      //Das ist der Wert bis zum naechsten LEERZEICHEN
 						sControlPrevious = StringZZZ.left(sControlPrevious + "|", "|");                 //Wert ohne einen moeglichen PIPE.
 						
 						//Falls dieses gefundene zusaetzliche Steuerzeichen kein Zeichen hat, FEHLER
@@ -443,31 +444,36 @@ public class GetOptZZZ extends AbstractObjectWithFlagZZZ{
 //							break main;
 //						}
 						
-						if(!listaControl.contains(sControlPrevious)){						
+						if(!listaControlAll.contains(sControlPrevious)){						
 							//Fehler ein Steuerelement, dass nicht im PatternString definiert ist
 							sReturn = "Error 25: Control character not defined in pattern: '" + sControlPrevious + "'";
 							break main;
 						}
 						
 						
-						if(listaControlValue.contains(sControlPrevious)){
+						if(listaControlWithValue.contains(sControlPrevious)){
 							bNeedArgument = true; //Das ist ein Steuerzeichen mit Doppelpunkt => Argument wird benoetigt
 //							Hier braucht man ggf. das vorherige Steuerzeiche noch
 						}else{
 							bNeedArgument = false; //Das ist Kein Steuerzeichen mit Doppelpunkt
 							sControlPrevious = "";
 						}
-					}else if(stemp.equals("-") & ! listaControlValue.contains(sControlPrevious)){
+					}else if(stemp.equals("-") & ! listaControlWithValue.contains(sControlPrevious)){
 						//Der vorherige Eintrag des Pattern endete nicht mit einem Doppelpunkt, dann ist das jetzt ein Steuerzeichen
-						sControlPrevious = StringZZZ.rightback(saParamAll[icount], 1);	 //saParamAll[icount].substring(1);
-						stemp = StringZZZ.rightback(saParamAll[icount], 1);
-						if(listaControlValue.contains(stemp)){
+						sControlPrevious = StringZZZ.rightback(sParamCurrent, 1);	 //saParamAll[icount].substring(1);
+						stemp = StringZZZ.rightback(sParamCurrent, 1);
+						if(listaControlWithValue.contains(stemp)){
 							bNeedArgument = true; //Das ist ein Steuerzeichen mit Doppelpunkt => Argument wird ben�tigt
 							//Hier braucht man ggf. das vorherige Steuerzeiche noch
 						}else{
 							bNeedArgument = false; //Das ist Kein Steuerzeichen mit Doppelpunkt
 							sControlPrevious = "";
 						}
+					}else if(stemp.equals("-") & bNeedArgument){
+						//Der vorherige Eintrag des Pattern endete mit einem Doppelpunkt, aber jetz kommt ein Steuerzeichen. 
+						//D.h. es fehlt etwas
+						sReturn = "Error 29: Previous control character needs an argument, but this is: '" + sParamCurrent + "'. Ergo: Missing argument for controlcharacter '"+sControlPrevious+"'." ;
+						break main;
 					}else{						
 						if(icount==0){
 							//kein vorheriger Eintrag, Fehler !!!
@@ -477,7 +483,7 @@ public class GetOptZZZ extends AbstractObjectWithFlagZZZ{
 							//Der vorherige Eintrag ist kein Steuerzeichen, Fehler !!!
 							sReturn = "Error 40: Previous entry is no control character expecting an argument. Argument string: '" + saParamAll[icount] +"'";
 							break main;																			
-						}else if(! listaControlValue.contains(sControlPrevious)){
+						}else if(! listaControlWithValue.contains(sControlPrevious)){
 //							der vorherige Wert muss in der Liste der Steuerzeichen mit Argument sein
 							sReturn = "Error 50: Previous entry is not a valid control character. current string: '" + saParamAll[icount] + "'";
 							break main;													
@@ -486,12 +492,14 @@ public class GetOptZZZ extends AbstractObjectWithFlagZZZ{
 						sControlPrevious = "";
 					}
 				}else{
+					//Fall sParamCurrent ist leer
 					if(bNeedArgument==true){
-//						Leeres Argument fuer ein Steuerzeichen
-						bNeedArgument = false;
-						sControlPrevious = "";
+						sReturn = "Error 59: Last control character '" + sControlPrevious + "' has no argument.";
+						break main;						
 					}else{
 						//Leeres Steuerzeichen
+						bNeedArgument = false;
+						sControlPrevious = "";
 					}
 				}
 			}

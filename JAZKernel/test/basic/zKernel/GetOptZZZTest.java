@@ -267,12 +267,12 @@ public class GetOptZZZTest extends TestCase{
 			stemp="-a hallo -b -c"; //ist auch valid 'c' wird in diesem Fall als Wert und nicht als Steuerungszeichen erkannt.
 			sResult= objOptTest.proofArgument(stemp);
 			itemp = GetOptZZZ.computeCodeFromProofResult(sResult);
-			assertEquals(-1, itemp);
+			assertEquals(29, itemp);
 			
 			stemp="-a hallo -b -cc";
 			sResult = objOptTest.proofArgument(stemp);
 			itemp = GetOptZZZ.computeCodeFromProofResult(sResult);
-			assertEquals(-1, itemp);//Kein Fehler, weil -cc als Wert und nicht als Steuerzeichen erkannt wird, darum kein Fehler
+			assertEquals(29, itemp);//Kein Fehler, weil -cc als Wert und nicht als Steuerzeichen erkannt wird, darum kein Fehler
 			
 			//+++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			objOptTest.setPattern("a:b:c:");
@@ -409,24 +409,49 @@ public class GetOptZZZTest extends TestCase{
 			
 			
 			//++++++++++++++++++++++++++++++++++++++++++++++++++++
-			objOptTest.setPattern("a:b:c:");
-			stemp="-a hallo -b -c"; //ist auch valid 'c' wird in diesem Fall als Wert und nicht als Steuerungszeichen erkannt.
-			btemp = objOptTest.isArgumentValid(stemp);
-			assertTrue(btemp);
-			
-			stemp="-a hallo -b welt -c zwei"; //ist auch valid, Normalfall
-			btemp = objOptTest.isArgumentValid(stemp);
-			assertTrue(btemp);
-			
-			stemp="-a hallo -b welt -c zwei drei"; 
+			objOptTest.setPattern("a:b:c:d:");
+			stemp="-a hallo -b -c"; //ist nicht valid 'c' wird in diesem Fall als Steuerungszeichen erkannt, aber vorher war auch ein Steuerzeichen, das ein Argument verlangt hat. Also fehlt etwas.
 			btemp = objOptTest.isArgumentValid(stemp);
 			assertFalse(btemp);
 			
-			//Falsche L�nge der Steuerungzeichen eingeben
-			stemp="-a hallo -b -cc"; //ist auch valid 'c' wird in diesem Fall als Wert und nicht als Steuerungszeichen erkannt.
+			stemp="-a hallo -b welt -c zwei"; //ist valid, Normalfall
 			btemp = objOptTest.isArgumentValid(stemp);
 			assertTrue(btemp);
 			
+			stemp="-a hallo -b welt -c zwei drei"; //nicht valid, 'drei' ist kein Steuerzeichen 
+			btemp = objOptTest.isArgumentValid(stemp);
+			assertFalse(btemp);
+			
+			stemp="-a hallo -b welt -c zwei -d drei"; //nun wird 'drei' als Argument erkannt
+			btemp = objOptTest.isArgumentValid(stemp);
+			assertTrue(btemp);
+			
+			//+++++++++++++++++++++++++++++++++++++++++
+			//+++ 
+			//+++++++++++++++++++++++++++++++++++++++++
+			//Laenge >1 der Steuerungzeichen eingeben
+			objOptTest.setPattern("a:b:cc:d:");
+			
+			stemp="-a hallo -b -cc"; //ist nicht valid 'cc' wird in diesem Fall als Steuerungszeichen erkannt, aber nix folgt.
+			btemp = objOptTest.isArgumentValid(stemp);
+			assertFalse(btemp);
+			
+			stemp="-a hallo -b welt -cc zwei"; //ist valid 'cc' wird in diesem Fall als Steuerungszeichen erkannt, und vorher war auch ein Steuerzeichen, das ein Argument verlangt hat. Das vorhanden war.
+			btemp = objOptTest.isArgumentValid(stemp);
+			assertTrue(btemp);
+			
+			
+			stemp="-a hallo -b welt -cc "; //ist nicht valid 'cc' wird in diesem Fall als Steuerungszeichen erkannt, aber. Aber es fehlt das Argument.
+			btemp = objOptTest.isArgumentValid(stemp);
+			assertFalse(btemp);
+			
+			stemp="-a hallo -b welt -cc zwei drei"; //ist nicht valid 'drei' wird als Argument erkannt. Aber es fehlt das Steuerzeichen
+			btemp = objOptTest.isArgumentValid(stemp);
+			assertFalse(btemp);
+			
+			stemp="-a hallo -b welt -cc zwei -d drei"; //ist valid 'drei' wird als Argument erkannt, von dem vorherigen Steuerzeichen -d
+			btemp = objOptTest.isArgumentValid(stemp);
+			assertTrue(btemp);
 			
 			//+++++++++++++++++++++++++++++
 			//+++
@@ -450,20 +475,20 @@ public class GetOptZZZTest extends TestCase{
 			objOptTest.setPattern("a:b:c:");
 			stemp="-a hallo -b -c "; //ist auch valid 'c' wird in diesem Fall als Wert und nicht als Steuerungszeichen erkannt.
 			btemp = objOptTest.isArgumentValid(stemp);
-			assertTrue(btemp);
+			assertFalse(btemp);
 			
 			stemp="-a hallo -b welt -c zwei"; //ist auch valid, Normalfall
 			btemp = objOptTest.isArgumentValid(stemp);
 			assertTrue(btemp);
 			
 			stemp="-a hallo -b welt -c zwei drei"; 
-			btemp = objOptTest.isArgumentValid(stemp);
+			btemp = objOptTest.isArgumentValid(stemp); //ist nicht valid 'drei' wird in diesem Fall als Argument ohne Steuerungszeichen erkannt.
 			assertFalse(btemp);
 			
 			//Falsche L�nge der Steuerungzeichen eingeben
-			stemp="-a hallo -b -cc"; //ist auch valid 'c' wird in diesem Fall als Wert und nicht als Steuerungszeichen erkannt.
+			stemp="-a hallo -b -cc"; //ist nicht valid 'cc' wird in diesem Fall als Steuerungszeichen ohne Wert erkannt.
 			btemp = objOptTest.isArgumentValid(stemp);
-			assertTrue(btemp);
+			assertFalse(btemp);
 			
 			
 			//##################################################
@@ -501,6 +526,15 @@ public class GetOptZZZTest extends TestCase{
 			stemp="-a hallo -b -cc"; //'cc' gibt es nicht
 			btemp = objOptTest.isArgumentValid(stemp);
 			assertFalse(btemp);
+			
+			
+			//++++++++++++++++++++++++++++++
+			//+++
+			//++++++++++++++++++++++++++++++
+			//Arbeiten mit einfachem HOCHKOMMATA (TODOGOON20230323)
+			stemp="-a hallo -b welt -c 'zwei drei' "; //nun wird 'zwei drei' als Argument erkannt
+			btemp = objOptTest.isArgumentValid(stemp);
+			assertTrue(btemp);
 			
 			
 		} catch (ExceptionZZZ e) {
