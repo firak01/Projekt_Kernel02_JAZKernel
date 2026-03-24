@@ -271,7 +271,7 @@ public class EnumMappedStatusLocalAvailableHelperZZZ  implements IConstantZZZ{
 	//private static ArrayList<IEnumSetMappedZZZ> searchEnumMappedList_(Class<?> cls, String sEnumName, boolean bScanInterfaceImmediate, boolean bScanSuperclassImmediate)  throws ExceptionZZZ {
 			//private static <E extends IEnumSetMappedZZZ> ArrayList<E> searchEnumMappedList_(Class<?> cls, String sEnumName, boolean bScanInterfaceImmediate, boolean bScanSuperclassImmediate)  throws ExceptionZZZ {
 			//Das ? ist unspezifisch, ohne ? funktioniert wenigstens der Compiler, ob es dann auch zur Laufzeit funktioniert????
-			static <E extends Enum<E> & IEnumSetMappedStatusLocalZZZ> ArrayList<IEnumSetMappedStatusLocalZZZ> searchEnumMappedList_(Class<?> cls, String sEnumName, boolean bScanInterfaceImmediate, boolean bScanSuperclassImmediate)  throws ExceptionZZZ {
+	private	static <E extends Enum<E> & IEnumSetMappedStatusLocalZZZ> ArrayList<IEnumSetMappedStatusLocalZZZ> searchEnumMappedList_(Class<?> cls, String sEnumName, boolean bScanInterfaceImmediate, boolean bScanSuperclassImmediate)  throws ExceptionZZZ {
 				ArrayList<IEnumSetMappedStatusLocalZZZ> listaeReturn = null;
 				main:{
 				if(cls==null) {
@@ -354,7 +354,8 @@ public class EnumMappedStatusLocalAvailableHelperZZZ  implements IConstantZZZ{
 						//ArrayList<E> listaeByClassSuperTemp = EnumAvailableHelperZZZ.searchEnumMappedList(objclsSuper,sEnumName, bScanInterfaceImmediate, bScanSuperclassImmediate);
 						ArrayList<IEnumSetMappedStatusLocalZZZ> listaeByClassSuperTemp = searchEnumMappedList(objclsSuper, sEnumName, bScanInterfaceImmediate);
 						//listaeByClassSuper = (ArrayList<IEnumSetMappedZZZ>) ArrayListUtilZZZ.join(listaeByClassSuper, listaeByClassSuperTemp);
-						listaeByClassSuper = (ArrayList<IEnumSetMappedStatusLocalZZZ>) ArrayListUtilZZZ.join(listaeByClassSuper, (ArrayList<E>) listaeByClassSuperTemp);
+						//listaeByClassSuper = (ArrayList<IEnumSetMappedStatusLocalZZZ>) ArrayListUtilZZZ.join(listaeByClassSuper, (ArrayList<E>) listaeByClassSuperTemp);
+						listaeByClassSuper = (ArrayList<IEnumSetMappedStatusLocalZZZ>) ArrayListUtilZZZ.join(listaeByClassSuper, listaeByClassSuperTemp);
 					}
 				}
 				
