@@ -39,6 +39,8 @@ import basic.zBasic.util.datatype.enums.EnumUtilZZZTest;
 import basic.zBasic.util.datatype.enums.EnumSetMappedStatusLocalUtilZZZTest;
 import basic.zBasic.util.datatype.integer.IntegerArrayZZZTest;
 import basic.zBasic.util.datatype.integer.IntegerZZZTest;
+import basic.zBasic.util.datatype.json.JsonArrayZZZTest;
+import basic.zBasic.util.datatype.json.JsonUtilZZZTest;
 import basic.zBasic.util.datatype.string.StringArrayZZZTest;
 import basic.zBasic.util.datatype.string.StringAnalyseUtilZZZ;
 import basic.zBasic.util.datatype.string.StringZZZTest;
@@ -187,6 +189,8 @@ public class KernelAllTestZZZ {
 		objReturn.addTestSuite(KernelJavaCallIniSolverZZZTest.class);
 		objReturn.addTestSuite(KernelCallIniSolverZZZTest.class);
 		
+		objReturn.addTestSuite(JsonUtilZZZTest.class);
+		objReturn.addTestSuite(JsonArrayZZZTest.class);
 		objReturn.addTestSuite(KernelJsonMapIniSolverZZZTest.class);
 		objReturn.addTestSuite(KernelJsonArrayIniSolverZZZTest.class);
 		objReturn.addTestSuite(KernelJsonIniSolverZZZTest.class);	

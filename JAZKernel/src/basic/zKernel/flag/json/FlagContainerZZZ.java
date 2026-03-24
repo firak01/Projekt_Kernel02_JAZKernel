@@ -51,14 +51,47 @@ public class FlagContainerZZZ implements IFlagContainerZZZ{
 	}
 
 	@Override
-	public boolean getFlag(String sFlag) {
-		return this.getHashMap().get(sFlag);
+	public boolean getFlag(String sFlag) throws ExceptionZZZ {
+		boolean bReturn = false;
+		main:{
+			if(StringZZZ.isEmpty(sFlag)) break main;
+			
+			HashMap<String, Boolean>hm = this.getHashMap();
+			if(hm==null) break main;
+			
+			//Normalerweise sind FlagZ immer caseinsensitiv
+			//Aber: Die Initialisierung per Gson kann das Flag auch anders gesetzt haben.
+			if(hm.containsKey(sFlag)){
+				bReturn = hm.get(sFlag);
+			}else {
+				//suche, caseinsensitv, wie FLAGZ halt sind
+				String sFlagLowercase = sFlag.toLowerCase();
+				if(hm.containsKey(sFlagLowercase)) {
+					bReturn = hm.get(sFlagLowercase);
+				}else{
+					//vielleicht als uppercase irgendwie
+					String sFlagUppercase = sFlag.toUpperCase();
+					if(hm.containsKey(sFlagUppercase)) {
+						bReturn = hm.get(sFlagUppercase);
+					}
+				};				
+			}
+						
+		}//end main:
+		return bReturn;
 	}
 
 	@Override
-	public void setFlag(String sFlag, boolean bValue) {
-		this.getHashMap().put(sFlag, bValue);
-		
+	public void setFlag(String sFlag, boolean bValue) throws ExceptionZZZ {		
+		main:{
+			if(StringZZZ.isEmpty(sFlag)) break main;
+			
+			HashMap<String, Boolean>hm = this.getHashMap();
+			if(hm==null) break main;
+			
+			//FlagZ sind immer caseinsensitv, darum als Lowercase abspeichern.
+			hm.put(sFlag.toLowerCase(), bValue);			
+		}//end main:	
 	}
 	
 }
