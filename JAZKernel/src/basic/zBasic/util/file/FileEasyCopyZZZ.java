@@ -14,7 +14,6 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zBasic.util.stream.IStreamZZZ;
 import basic.zBasic.util.stream.StreamZZZ;
 import basic.zKernel.KernelZZZ;
-import basic.zKernel.KernelZZZTest;
 
 public class FileEasyCopyZZZ extends AbstractObjectWithExceptionZZZ implements IFileEasyConstantsZZZ{
 	public static File copyFile(String sDirectorySourceIn, String sFilenameSourceIn, String sDirectoryTargetIn, String sFilenameTargetIn, boolean bOverwrite) throws ExceptionZZZ{
