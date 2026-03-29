@@ -691,33 +691,38 @@ public class ArrayUtilZZZ<T>{
     }
     
     public static <T> Map<T, T[]> splitByKeysToMap(T[] values, T[] keys, T firstKey, Class<T> clazz) throws ExceptionZZZ{
-
-        Map<T, T[]> result = new LinkedHashMap<T, T[]>();
-        Set<T> keySet = new HashSet<T>(Arrays.asList(keys));
-
-        List<T> currentList = new ArrayList<T>();
-        T currentKey = firstKey;
-        
-        for (T value : values) {
-        	
-            if (keySet.contains(value)) { //also neuen Separator gefunden            	
-            	
-            	//Wenn der Separator aber mehrmals vorkommt, muss man die neue ArrayList mit der vorherigen des Separators zusammenfassen.
-            	T[] aPrevious = result.get(currentKey);
-            	T[] aNew = ArrayListUtilZZZ.toArray(currentList, clazz);
-            	T[] a = ArrayUtilZZZ.joinUnique(aPrevious, aNew);
-            	result.put(currentKey, a);
-
-                currentKey = value;
-                currentList = new ArrayList<T>();
-            } else {
-            	 currentList.add(value); 
-            }
-        }
-        
-        //das letzte Array auch noch hinzufuegen
-        result.put(currentKey, ArrayListUtilZZZ.toArray(currentList, clazz));
-        return result;
+    	Map<T, T[]> objReturn = null;
+    	main:{
+    		if(values==null) break main;    		
+    		objReturn = new LinkedHashMap<T, T[]>();
+    		
+    		if(keys==null) break main;
+		    Set<T> keySet = new HashSet<T>(Arrays.asList(keys));
+		
+		    List<T> currentList = new ArrayList<T>();
+		    T currentKey = firstKey;
+		    
+		    for (T value : values) {
+		    	
+		        if (keySet.contains(value)) { //also neuen Separator gefunden            	
+		        	
+		        	//Wenn der Separator aber mehrmals vorkommt, muss man die neue ArrayList mit der vorherigen des Separators zusammenfassen.
+		        	T[] aPrevious = objReturn.get(currentKey);
+		        	T[] aNew = ArrayListUtilZZZ.toArray(currentList, clazz);
+		        	T[] a = ArrayUtilZZZ.joinUnique(aPrevious, aNew);
+		        	objReturn.put(currentKey, a);
+		
+		            currentKey = value;
+		            currentList = new ArrayList<T>();
+		        } else {
+		        	 currentList.add(value); 
+		        }
+		    }
+		    
+		    //das letzte Array auch noch hinzufuegen
+		    objReturn.put(currentKey, ArrayListUtilZZZ.toArray(currentList, clazz));
+    	}//end main:
+        return objReturn;
     }
 
 //    private static <T> T[] listToArray(List<T> list, Class<T> clazz) {
