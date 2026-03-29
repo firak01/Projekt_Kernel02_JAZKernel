@@ -113,6 +113,7 @@ public class JsonUtilZZZTest  extends TestCase implements IConstantZZZ {
 			//VARIANTE MIT DEM CONTAINEROBJEKT ARBEITEN, erfolgreich
 			HashMap<String,Boolean>elementsF=new HashMap<String,Boolean>();
 			elementsF.put("123", true);
+			elementsF.put("abc", true);
 			
 			FlagContainerZZZ objFlagContainerF = new FlagContainerZZZ();		
 			objFlagContainerF.setHashMap(elementsF);
@@ -121,7 +122,12 @@ public class JsonUtilZZZTest  extends TestCase implements IConstantZZZ {
 			Type gsonTypeF = new TypeToken<FlagContainerZZZ>(){}.getType();  //ja so kann man den TypeToken erzeugen. 
 			String gsonStringF = gsonF.toJson(objFlagContainerF,gsonTypeF);
 			System.out.println(gsonStringF);
-			assertEquals("{\"HmFlag\":{\"abc\":true,\"xyz\":true}}", gsonStringF);
+			
+			//Aber da keine Reihenfolge in der HashMap vorhanden ist, geht das so nicht: assertEquals("{\"HmFlag\":{\"123\":true,\"abc\":true}}", gsonStringF);			
+			assertTrue(gsonStringF.startsWith("{\"HmFlag\":{\""));
+			assertTrue(gsonStringF.contains("\"123\":true"));
+			assertTrue(gsonStringF.contains("\"abc\":true"));
+		
 		
 		//#############################
 		//### Ein Beispiel aus dem Web

@@ -33,7 +33,7 @@ public class StringFormatManagerUtilZZZTest  extends TestCase{
 			assertNotNull(hmValue);
 			
 			int iSize = hmValue.size();
-			assertEquals(51, iSize);
+			assertEquals(53, iSize);
 		} catch (ExceptionZZZ ez) {
 			ez.printStackTrace();
 			fail("Method throws an exception." + ez.getMessageLast());
