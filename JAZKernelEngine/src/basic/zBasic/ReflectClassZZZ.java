@@ -19,8 +19,8 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 public class ReflectClassZZZ implements IConstantZZZ{
 	public static final String sINDICATOR_CLASSNAME_INNER= "$"; //Innere Klassen haben ein $ in ihrem; objClassInstance.getClass().getName()
 
-	protected ReflectClassZZZ(){
-		//zum 'Verstecken" des Konstruktors, aber protected, damit andere Klassen daraus erben können.
+	public ReflectClassZZZ(){
+		//private zum 'Verstecken" des Konstruktors, aber protected, damit andere Klassen daraus erben können.
 	}//only static Methods
 	
 	
