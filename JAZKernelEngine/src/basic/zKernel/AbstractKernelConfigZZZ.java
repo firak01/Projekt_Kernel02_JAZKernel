@@ -102,6 +102,11 @@ public abstract class AbstractKernelConfigZZZ<T> extends AbstractObjectWithFlagZ
 				saArg = saArgIn;
 			}
 			
+			
+			TODOGOON20260402;//Wenn in dem Übergabestring Platzhalter für Umgebungsvariablen sind, z.B. ${sPATZZZ}, diese hiermit in den tatsächlichen Wert umwandeln
+			saArg = ReflectLaunchArgumentZZZ.replaceArgumentsWithEnvironmentValue(argv);
+			
+			
 			//Nun den konfigurierten String holen
 			String sPattern = this.getPatternStringDefault();
 			
