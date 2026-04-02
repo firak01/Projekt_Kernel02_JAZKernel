@@ -17,7 +17,13 @@ import basic.zBasic.util.datatype.string.StringZZZ;
  * 
  */
 public class ReflectCodeKernelZZZ implements IConstantZZZ{
-	public static String sREGEX_KERNEL_CLASS = "(ZZZ$|ZZZ(T|t)est)$"; //Also: Am Ende des Klassennamens soll ZZZ stehen, bzw. ZZZTest, aber nicht der Reflection-Klassenname 
+	public static String sREGEX_KERNEL_CLASS = "(ZZZ$|ZZZ(T|t)est)$"; //Also: Am Ende des Klassennamens soll ZZZ stehen, bzw. ZZZTest, aber nicht der Reflection-Klassenname
+	
+	private ReflectCodeKernelZZZ(){
+		//zum 'Verstecken" des Konstruktors
+	}//only static Methods
+	
+	
 	/**Gib ein Array der Methoden des Stacktrace zurück.
 	 * In der Form von Klassenname.Methodenname, so dass dieser String als einfacher Schlüssel, 
 	 * z.B. in einer HashMap verwendet werden kann.

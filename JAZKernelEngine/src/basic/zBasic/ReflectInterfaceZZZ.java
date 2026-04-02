@@ -24,6 +24,11 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 public class ReflectInterfaceZZZ extends ReflectClassZZZ implements IConstantZZZ{
 	public static final String sINDICATOR_CLASSNAME_INNER= ReflectClassZZZ.sINDICATOR_CLASSNAME_INNER;//Innere Klassen haben ein $ in ihrem; objClassInstance.getClass().getName()
 
+	private ReflectInterfaceZZZ(){
+		//zum 'Verstecken" des Konstruktors
+	}//only static Methods
+	
+	
     public static Field[] selectFields( Class cls, int mustHave, int mustNotHave ) {
     	return ReflectClassZZZ.selectFields(cls, mustHave, mustNotHave);
     }

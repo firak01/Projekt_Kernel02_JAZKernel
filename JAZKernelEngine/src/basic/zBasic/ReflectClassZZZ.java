@@ -19,6 +19,11 @@ import basic.zBasic.util.datatype.string.StringZZZ;
 public class ReflectClassZZZ implements IConstantZZZ{
 	public static final String sINDICATOR_CLASSNAME_INNER= "$"; //Innere Klassen haben ein $ in ihrem; objClassInstance.getClass().getName()
 
+	protected ReflectClassZZZ(){
+		//zum 'Verstecken" des Konstruktors, aber protected, damit andere Klassen daraus erben können.
+	}//only static Methods
+	
+	
 	/**
 	     * Produces an array of all the fields in a class, each of which has all of the 
 	     * modifiers indicated by the int parameter mustHave and none of the modifiers indicated

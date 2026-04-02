@@ -38,6 +38,10 @@ import basic.zKernel.AbstractKernelLogZZZ;
 
 public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 
+	private ReflectCodeZZZ(){
+		//zum 'Verstecken" des Konstruktors
+	}//only static Methods
+	
 	//+++ Fuer den Namen der .java - Datei
 	public static String getMethodCurrentFileName() throws ExceptionZZZ {
 		return getMethodCurrentFileName(1); //+1 weil man ja die Java Klasse der aufrufenden Methode haben will und nicht ReflectCodeZZZ selbst.)

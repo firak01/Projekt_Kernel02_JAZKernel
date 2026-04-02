@@ -12,6 +12,11 @@ import basic.zKernel.IKernelConfigZZZ;
 
 public class ReflectWorkspaceZZZ implements IConstantZZZ {
 	
+	private ReflectWorkspaceZZZ(){
+		//zum 'Verstecken" des Konstruktors
+	}//only static Methods
+	
+	
 	public static String computeWorkspaceRunningProjectPath() throws ExceptionZZZ {
 		String sReturn = null;
 //		try {

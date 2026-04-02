@@ -6,6 +6,13 @@ public class ReflectEnvironmentZZZ {
 	public static final String sJAVA6 = "1.6";
 	public static final String sJAVA7 = "1.7";
 	public static final String sJAVA8 = "1.8";
+	
+	
+	private ReflectEnvironmentZZZ(){
+		//zum 'Verstecken" des Konstruktors
+	}//only static Methods
+	
+	
 	public static String getJavaVersionCurrent(){
 		    return System.getProperty("java.runtime.version");
 	}

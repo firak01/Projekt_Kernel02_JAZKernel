@@ -14,6 +14,12 @@ import basic.zBasic.util.datatype.string.StringZZZ;
  * 
  */
 public class ReflectUtilZZZ implements IConstantZZZ{
+	
+	private ReflectUtilZZZ(){
+		//zum 'Verstecken" des Konstruktors
+	}//only static Methods
+	
+	
 	 /**
      * sucht eine Klasse anhand ihres Namens
      *

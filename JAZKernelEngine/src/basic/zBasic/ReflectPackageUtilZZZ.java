@@ -5,6 +5,12 @@ package basic.zBasic;
  * 
  */
 public class ReflectPackageUtilZZZ {
+	
+	private ReflectPackageUtilZZZ(){
+		//zum 'Verstecken" des Konstruktors
+	}//only static Methods
+	
+	
 	 public static String packageToPath(String basePackage) {
 	        return basePackage.replaceAll("\\.", "/") + "/";
 	 }

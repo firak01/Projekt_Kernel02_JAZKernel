@@ -4,6 +4,13 @@ import java.text.DecimalFormat;
 
 public class ReflectRuntimeZZZ {
 	static final DecimalFormat DF_2 = new DecimalFormat("#,##0.00");
+	
+	
+	private ReflectRuntimeZZZ(){
+		//zum 'Verstecken" des Konstruktors
+	}//only static Methods
+	
+	
 	static String ermittleDauer(long startZeitNanoSek) {
 		long dauerMs = (System.nanoTime() - startZeitNanoSek) / 1000 / 1000;
 		if (dauerMs < 1000)
