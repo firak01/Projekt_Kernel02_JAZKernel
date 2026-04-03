@@ -18,6 +18,9 @@ import basic.zKernel.file.ini.ZTagFormulaIni_NullZZZ;
  * Ich möchte diese Methoden aber z.B. in der Erstellung von Werten eines Enums verwenden.
  * Daher duerfen (wie generell bei Feld - Initialisierungen) keine checked Exceptions geworfen werden.
  * 
+ * Lösung: Rufe die Methoden der Klasse mit den Exceptions auf, fange diese aber einfach ab.
+ *         Private Methoden braucht es hier nicht.
+ * 
  * @author Fritz Lindhauer, 19.11.2025, 07:15:09
  * 
  */
