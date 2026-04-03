@@ -14,6 +14,11 @@ import basic.zBasic.ReflectCodeZZZ;
  * 
  */
 public class EnvironmentZZZ implements IConstantZZZ{
+	
+	private EnvironmentZZZ(){
+		//zum 'Verstecken" des Konstruktors
+	}//only static Methods
+	
 	public static String getHostName() throws ExceptionZZZ{
 		String sReturn = null;
 		try {			

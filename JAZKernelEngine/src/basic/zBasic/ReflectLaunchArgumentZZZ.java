@@ -1,5 +1,9 @@
 package basic.zBasic;
 
+import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
+import basic.zBasic.util.datatype.string.StringZZZ;
+import basic.zBasic.util.machine.EnvironmentPlaceholderZZZ;
+
 /** Mit AbstractKernelConfigZZZ - Klassen koennen ja Argumente entgegen genommen werden.
  *  Diese Klasse ist dem noch vorgelagert und wird von AbstractKernelConfigZZZ verwendet.
  *  
@@ -21,13 +25,30 @@ public class ReflectLaunchArgumentZZZ implements IReflectLaunchArgumentZZZ, ICon
 		//zum 'Verstecken" des Konstruktors
 	}//only static Methods
 	
-	public String[] replaceArgumentsWithEnvironmentValue(String[] argv) {
+	//hier ggfs. die entsprechenden Umgebungsvariablen holen mit system.getEnv(...)
+	public static String[] replaceArgumentsWithEnvironmentValue(String[] saArg) throws ExceptionZZZ{
+		String[] saReturn=saArg;
+		main:{
+			if(ArrayUtilZZZ.isEmpty(saArg)) break main;
+						
+			
+			//Idee: Versuche Placeholder-Objekte zu erstellen, wenn diese einen Content haben, 
+			//      deren Namen holen und sie dann den Wert holen lassen.
+			int iIndex=-1;
+			for(String sArg : saArg) {
+				iIndex++;
+				
+				String sContent = EnvironmentPlaceholderZZZ.readContent(sArg); //das spart das Erstellen des Objekts
+				if(!StringZZZ.isEmpty(sContent)) {
+					EnvironmentPlaceholderZZZ objPlaceholderTemp = new EnvironmentPlaceholderZZZ(sArg);
+					objPlaceholderTemp.setContent(sContent); //damit nutzen wir die Tatsache, das wir den Content schon errechnet haben.
+					
+					String sValue = objPlaceholderTemp.getValue();
+					saReturn[iIndex]=sValue;
+				}
+			}
 		
-		TODOGOON20260402;//hier wenn ein Wert mit ${ beginnt und mit } endet, die entsprechende Umgebungsvariable holen
-		//mit system.getEnv(...)
-		//Idee: EnvironmentZZZ einbinden um den Variablennamen aus dem Platzhalter zu exctrahieren.
-		//      oder neue Klasse EnvironmentBaseZZZ
-	
-		return argv;
+		}//end main:
+		return saReturn;
 	}
 }

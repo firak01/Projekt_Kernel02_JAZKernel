@@ -281,7 +281,7 @@ public class GetOptZZZ extends AbstractObjectWithFlagZZZ{
 			GetOpt objOption = new GetOpt(sPattern);
 			String a = objOption.getoptString(saArg);		
 			String sOption = a.trim();
-			sOption = StringZZZ.left(sOption + "|", "|");//ohne ein mögliches PIPE
+			sOption = StringZZZ.leftRespectingQuotes(sOption + "|", "|");//ohne ein mögliches PIPE
 			
 			//Fuer die Analyse, ob die Steuerungszeichen Argumente haben oder nicht			
 			ArrayList<String> listaControlSimple = GetOptZZZ.getPatternList4ControlSimple(sPattern);
@@ -424,14 +424,17 @@ public class GetOptZZZ extends AbstractObjectWithFlagZZZ{
             boolean bNeedArgument = false;
 			for(int icount=0; icount <= saParamAll.length-1;icount++){
 				String sParamCurrent = saParamAll[icount]; 
-				if(!StringZZZ.isEmpty(sParamCurrent)){
+				//20260403: null sollte wg. Ersetzung durch Umgebungsvariablen auch erlaubt sein (s. EnvironmentPlaceholderZZZ) if(!StringZZZ.isEmpty(sParamCurrent)){
+				if(StringZZZ.isNull(sParamCurrent)){
+				   
+				}else if(StringZZZ.isBlank(sParamCurrent)) {
 					String stemp = sParamCurrent.substring(0, 1);
 					if(stemp.equals("-") & sControlPrevious.equals("")){
 						String sParamTemp = StringZZZ.rightback(sParamCurrent, 1); //Wert ohne den Bindestrich
-						sParamTemp = StringZZZ.left(sParamTemp + "|", "|");                 //Wert ohne einen moeglichen PIPE.
+						sParamTemp = StringZZZ.leftRespectingQuotes(sParamTemp + "|", "|");                 //Wert ohne einen moeglichen PIPE.
 						listaControlFound.add(sParamTemp);  //Ohne den Bindestrich !!!						
 						sControlPrevious = StringZZZ.rightback(sParamCurrent, 1);	      //Das ist der Wert bis zum naechsten LEERZEICHEN
-						sControlPrevious = StringZZZ.left(sControlPrevious + "|", "|");                 //Wert ohne einen moeglichen PIPE.
+						sControlPrevious = StringZZZ.leftRespectingQuotes(sControlPrevious + "|", "|");                 //Wert ohne einen moeglichen PIPE.
 						
 						//Falls dieses gefundene zusaetzliche Steuerzeichen kein Zeichen hat, FEHLER
 						if(StringZZZ.isEmpty(sControlPrevious)){

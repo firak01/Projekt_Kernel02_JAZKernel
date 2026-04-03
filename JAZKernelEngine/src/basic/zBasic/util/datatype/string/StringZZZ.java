@@ -1505,6 +1505,52 @@ StringUtils.splitByWholeSeparator(...) kann das nicht, weil es keine Escape-/Quo
 		return sReturn;
 	}
 	
+	//####################################################
+	/**
+	 * Liefert den linken Teil eines Strings bis zum ersten Auftreten des Delimiters,
+	 * wobei Delimiter innerhalb von Hochkommas ignoriert werden.
+	 * 
+	 * Beispiel:
+	 * abc'def'gh|ijk     -> abc'def'gh
+	 * abc'd|ef'gh|ijk    -> abc'd|ef'gh
+	 * 
+	 * @param input
+	 * @param delimiter
+	 * @return
+	 */
+	public static String leftRespectingQuotes(String input, String delimiter) throws ExceptionZZZ {
+	    if (input == null || input.isEmpty()) {
+	        return "";
+	    }
+
+	    StringBuilder current = new StringBuilder();
+	    boolean inQuotes = false;
+	    int i = 0;
+
+	    while (i < input.length()) {
+	        char c = input.charAt(i);
+
+	        // Hochkomma toggelt Zustand
+	        if (c == '\'') {
+	            inQuotes = !inQuotes;
+	            current.append(c); // Wichtig: Quote behalten!
+	            i++;
+	            continue;
+	        }
+
+	        // Delimiter prüfen (nur außerhalb von Quotes)
+	        if (!inQuotes && input.startsWith(delimiter, i)) {
+	            return current.toString(); // sofort abbrechen
+	        }
+
+	        current.append(c);
+	        i++;
+	    }
+
+	    // Kein Delimiter gefunden → kompletter String
+	    return current.toString();
+	}
+	
 	//########################################################
 	
 	/** String, analog to LotusScript, returns the iLength number of strings from the right iPos Position. Null if sString is null or empty.

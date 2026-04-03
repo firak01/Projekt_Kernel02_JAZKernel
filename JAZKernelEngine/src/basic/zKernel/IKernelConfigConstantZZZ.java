@@ -14,8 +14,8 @@ public interface IKernelConfigConstantZZZ {
 	
 	//#####################################################################
 	//####### Reflektion zum Gesamtprojekt
-	final static String sPROJECT_NAME = "JAZKernel";
-	final static String sPROJECT_PATH = "Project_Kernel02_JAZKernel";
+	final static String sPROJECT_NAME = "JAZKernelEngine";
+	final static String sPROJECT_PATH = "Project_Kernel02_JAZKernelEngine";
 	
 	
 	//#####################################################################

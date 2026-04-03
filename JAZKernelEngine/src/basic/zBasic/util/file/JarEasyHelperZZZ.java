@@ -9,7 +9,7 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.ObjectZZZ;
 import basic.zBasic.ReflectCodeZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
-import basic.zBasic.util.machine.PlatformUtilsZZZ;
+import basic.zBasic.util.machine.PlatformZZZ;
 
 /**siehe
  *  https://stackoverflow.com/questions/320542/how-to-get-the-path-of-a-running-jar-file
@@ -137,7 +137,7 @@ public class JarEasyHelperZZZ {
 //			System.out.println(sLog);
 	    }
 	    try {
-	        if (PlatformUtilsZZZ.isWindows() && path.matches("file:[A-Za-z]:.*")) {
+	        if (PlatformZZZ.isWindows() && path.matches("file:[A-Za-z]:.*")) {
 	            path = "file:/" + path.substring(5);
 //	            sLog = ReflectCodeZZZ.getPositionCurrent()+": D2) path= '"+path+"'";
 //				System.out.println(sLog);

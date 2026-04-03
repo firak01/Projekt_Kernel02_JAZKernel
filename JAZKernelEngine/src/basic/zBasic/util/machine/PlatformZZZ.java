@@ -7,7 +7,13 @@ package basic.zBasic.util.machine;
  * @author Fritz Lindhauer, 06.08.2020, 09:24:40
  * 
  */
-public class PlatformUtilsZZZ {
+public class PlatformZZZ {
+	
+	private PlatformZZZ(){
+		//zum 'Verstecken" des Konstruktors
+	}//only static Methods
+	
+	
 	/** Whether the operating system is Windows-based. */
 	public static boolean isWindows() {
 		return osName().startsWith("Win");
