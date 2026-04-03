@@ -482,6 +482,10 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 		return getMethodCallingLine_(1); //1 Stacktraceposition weiter, steckt schon in "calling"
 	}
 	
+	public static int getMethodCurrentLine(int iStacktraceOffset) throws ExceptionZZZ {
+		return getMethodCallingLine_(iStacktraceOffset + 1); //1 Stacktraceposition weiter, steckt schon in "calling"
+	}
+	
 	public static int getMethodCurrentLine(int iStacktraceOffset, int iLineOffset) throws ExceptionZZZ {
 		int iLine = -1;
 	 
@@ -703,6 +707,10 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 		return ReflectCodeZZZ.getPositionCurrentSeparated_(null, 1);
 	}
 	
+	public static String  getPositionCurrent(int iStackTraceOffset) throws ExceptionZZZ {
+		return ReflectCodeZZZ.getPositionCurrentSeparated_(null, iStackTraceOffset+1);
+	}
+	
 	//++++++++++++++++++++++++++++++++++++++++++++
 	public static String  getPositionCalling() throws ExceptionZZZ {
 		return ReflectCodeZZZ.getPositionCurrentSeparated_(null, 2);
@@ -786,6 +794,10 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 		return getPositionCurrentSimple_(null, 1);
 	}
 	
+	public static String  getPositionCurrentSimple(int iStackTraceOffset) throws ExceptionZZZ {
+		return getPositionCurrentSimple_(null, iStackTraceOffset+1);
+	}
+	
 	private static String  getPositionCurrentSimple_(Class classObj, int iLevel) throws ExceptionZZZ {
 		String sReturn = null;
 		  main:{
@@ -822,6 +834,10 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 	//##########################
 	public static String  getPositionCallingSimple() throws ExceptionZZZ {
 		return ReflectCodeZZZ.getPositionCallingSimple_(2);
+	}
+	
+	public static String  getPositionCallingSimple(int iStackTraceOffset) throws ExceptionZZZ {
+		return ReflectCodeZZZ.getPositionCallingSimple_(iStackTraceOffset+2);
 	}
 	
 	private static String getPositionCallingSimple_(int iLevel) throws ExceptionZZZ {
@@ -1534,6 +1550,9 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 		return ReflectCodeZZZ.getClassMethodCallingString();//1 Stacktraceposition weiter steckt schon in "calling"
 	}
 	
+	public static String getClassMethodCurrentString(int iStackTraceOffset) throws ExceptionZZZ {
+		return ReflectCodeZZZ.getClassMethodCallingString(iStackTraceOffset);//1 Stacktraceposition weiter steckt schon in "calling"
+	}
 	
 	
 	
@@ -1705,6 +1724,11 @@ public class ReflectCodeZZZ  implements IReflectCodeZZZ, IConstantZZZ{
 	
 	public static String getStackTraceString() throws ExceptionZZZ {
 		StackTraceElement[]stacktrace=ReflectCodeZZZ.getStackTraceCalling__(1);
+		return ReflectCodeZZZ.stackTraceToString(stacktrace);
+	}
+	
+	public static String getStackTraceString(int iStackTraceOffset) throws ExceptionZZZ {
+		StackTraceElement[]stacktrace=ReflectCodeZZZ.getStackTraceCalling__(iStackTraceOffset+1);
 		return ReflectCodeZZZ.stackTraceToString(stacktrace);
 	}
 	
