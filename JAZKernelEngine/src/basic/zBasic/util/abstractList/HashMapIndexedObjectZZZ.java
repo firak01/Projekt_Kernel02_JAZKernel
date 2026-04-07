@@ -189,7 +189,7 @@ public class HashMapIndexedObjectZZZ<K,V>  extends AbstractObjectWithExceptionZZ
 		return intReturn;
 	}
 	
-	/** Object, Gibt den Wert der Hashtable f�r den ersten Key (gemaes der Sortierung) zurueck.
+	/** Object, Gibt den Wert der Hashtable fuer den ersten Key (gemaess der Sortierung) zurueck.
 	* Lindhauer; 27.04.2006 11:30:25
 	 * @return Object
 	 * @throws ExceptionZZZ 

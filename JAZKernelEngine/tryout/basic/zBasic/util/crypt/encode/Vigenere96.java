@@ -79,7 +79,7 @@ class Vigenere96 { 		// Vigenereverschluesselung
       								//		Die Buchstaben wurden durch natuerliche Zahlen ersetzt.
                                     //		Dann fiel eine Gesetzmaessigkeit auf (s. Seite 32 im Buch), die so ausgenutzt wurde.
       
-      //Gemaes Seite 35 noch 32 wieder draufaddieren, das ist das Leerzeichen "blank".
+      //Gemaess Seite 35 noch 32 wieder draufaddieren, das ist das Leerzeichen "blank".
       //c = c +32;
       ppure[i] = c;				// nur wegen abspeichern  
       System.out.print("i="+i+", c='"+c+"'"); 

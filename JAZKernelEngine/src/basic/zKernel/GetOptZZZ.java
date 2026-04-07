@@ -9,6 +9,7 @@ import basic.zBasic.IConstantZZZ;
 import basic.zBasic.IObjectZZZ;
 import basic.zBasic.AbstractObjectWithFlagZZZ;
 import basic.zBasic.ReflectCodeZZZ;
+import basic.zBasic.util.abstractArray.ArrayUtilZZZ;
 import basic.zBasic.util.abstractList.ArrayListUtilZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
@@ -105,10 +106,32 @@ public class GetOptZZZ extends AbstractObjectWithFlagZZZ{
 		this.bFlagIsLoaded = false;	
 	}	
 	
-	/**Hier sollen alle Steueranweisungen enthalten sein, also auch die ohne Argumente
-	 * Problem: Seit der Einfuehrung von Steueranweisungen mit mehr als 1 Zeichen (z.B. flagz ) 
-	 *          funktioniert das so nicht mehr. 
-	 * Lösungsidee: Steueranweisungen ohne Argumente müssen am Schluss sein, d.h. ohne abschliessenden Doppelpunkt.
+	/** Hier sollen alle Steueranweisungen sein, die gemaess GetOpt.sCOMMAND_PREFX ein Kommando sind
+	 * 
+	 */
+	public static ArrayList<String> getList4ControlAny(String[] saArgument) throws ExceptionZZZ{
+		ArrayList<String> listasReturn = null;
+		main:{
+			if(ArrayUtilZZZ.isNull(saArgument))break main;
+			listasReturn = new ArrayList<String>();
+			
+			//Gehe das Array durch. 
+			//Jeder String der mit einem Kommando-Prefix versehen ist, wird in die Returnliste uebernommen.
+			for(String sArgument : saArgument) {
+				if(StringZZZ.startsWith(sArgument, GetOpt.sCOMMAND_PREFIX)) {
+					listasReturn.add(StringZZZ.stripLeft(sArgument, 1));
+				}
+			}
+			
+		}//end main:
+		return listasReturn;
+	}
+	
+	
+	/** Hier sollen alle Steueranweisungen sein, die im Pattern enthalten sind, also auch die ohne Argumente
+	 *  Problem: Seit der Einfuehrung von Steueranweisungen mit mehr als 1 Zeichen (z.B. flagz ) 
+	 *           funktioniert das so nicht mehr. 
+	 *  Lösungsidee: Steueranweisungen ohne Argumente müssen am Schluss sein, d.h. ohne abschliessenden Doppelpunkt.
 	 * 
 	 * @param sPattern
 	 * @return
@@ -408,13 +431,29 @@ public class GetOptZZZ extends AbstractObjectWithFlagZZZ{
 			
 			//#### Die Pruefung des Argumentarrays
 			if(saParamAll==null|saParamAll.length==0) break main;
-					
-//			Die Liste der Steuerzeichen
+
+            //Die Liste aller moeglichen Steuerzeichen, gemaess fuehrendem Bindestrich GetOpt.sCOMMAND_PREFIX
+			ArrayList<String> listaControlAny = GetOptZZZ.getList4ControlAny(saParamAll);
+			
+			//Die Liste der Steuerzeichen, gemaess Pattern
 			ArrayList<String> listaControlWithValue = GetOptZZZ.getPatternList4ControlWithValue(sPattern);
 			ArrayList<String> listaControlWithoutValue = GetOptZZZ.getPatternList4ControlSimple(sPattern);
             ArrayList<String> listaControlAll = GetOptZZZ.getPatternList4ControlAll(sPattern);     
             
-          
+            //... Fehler, wenn Steuerzeichen ohne Pattern in der Liste sind
+            ArrayList<String> listaControlWithoutPattern = ArrayListUtilZZZ.difference(listaControlAny, listaControlAll);
+            if(listaControlWithoutPattern.size()>=1) {
+            	String sControlNotInPattern="";
+            	for(String sControl : listaControlWithoutPattern) {
+            		if(!sControlNotInPattern.equals("")) {
+            			sControlNotInPattern = sControlNotInPattern + ", ";
+            		}else {
+            			sControlNotInPattern = sControlNotInPattern + sControl;	
+            		}            		
+            	}
+            	sReturn = "Error 09: Control characters found ('" + sControlNotInPattern + "'), which are not in Pattern ('" + sPattern + "')";
+            	break main;
+            } 
 			
 			//Nun die Argumentliste pruefen:
             //Es muss immer ein Steuerzeichen sein,
@@ -429,7 +468,7 @@ public class GetOptZZZ extends AbstractObjectWithFlagZZZ{
 				   
 				}else if(StringZZZ.isBlank(sParamCurrent)) {
 					String stemp = sParamCurrent.substring(0, 1);
-					if(stemp.equals("-") & sControlPrevious.equals("")){
+					if(stemp.equals(GetOpt.sCOMMAND_PREFIX) & sControlPrevious.equals("")){
 						String sParamTemp = StringZZZ.rightback(sParamCurrent, 1); //Wert ohne den Bindestrich
 						sParamTemp = StringZZZ.leftRespectingQuotes(sParamTemp + "|", "|");                 //Wert ohne einen moeglichen PIPE.
 						listaControlFound.add(sParamTemp);  //Ohne den Bindestrich !!!						
@@ -465,7 +504,7 @@ public class GetOptZZZ extends AbstractObjectWithFlagZZZ{
 							bNeedArgument = false; //Das ist Kein Steuerzeichen mit Doppelpunkt
 							sControlPrevious = "";
 						}
-					}else if(stemp.equals("-") & ! listaControlWithValue.contains(sControlPrevious)){
+					}else if(stemp.equals(GetOpt.sCOMMAND_PREFIX) & ! listaControlWithValue.contains(sControlPrevious)){
 						//Der vorherige Eintrag des Pattern endete nicht mit einem Doppelpunkt, dann ist das jetzt ein Steuerzeichen
 						sControlPrevious = StringZZZ.rightback(sParamCurrent, 1);	 //saParamAll[icount].substring(1);
 						stemp = StringZZZ.rightback(sParamCurrent, 1);
@@ -476,7 +515,7 @@ public class GetOptZZZ extends AbstractObjectWithFlagZZZ{
 							bNeedArgument = false; //Das ist Kein Steuerzeichen mit Doppelpunkt
 							sControlPrevious = "";
 						}
-					}else if(stemp.equals("-") & bNeedArgument){
+					}else if(stemp.equals(GetOpt.sCOMMAND_PREFIX) & bNeedArgument){
 						//Der vorherige Eintrag des Pattern endete mit einem Doppelpunkt, aber jetz kommt ein Steuerzeichen. 
 						//D.h. es fehlt etwas
 						sReturn = "Error 29: Previous control character needs an argument, but this is: '" + sParamCurrent + "'. Ergo: Missing argument for controlcharacter '"+sControlPrevious+"'." ;

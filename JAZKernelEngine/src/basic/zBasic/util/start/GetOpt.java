@@ -9,10 +9,16 @@ import basic.zBasic.util.datatype.string.StringZZZ;
  * based on the standard UNIX getopt(3) program.
  * @version $Id$
  * 
- * 			//20210331: Jetzt sind aber Optionsparameter mit mehr als 1 Zeichen gewünscht.
-			//          Das ist gescheitert, da zuviel zu ändern ist.
+ * 
+ * FGL:
+ * - Optionsparameter mit mehr als 1 Zeichen sind möglich
+ * - Konstante definiert für "-". Damit kann ich nach COMMANDS suchen, die nicht im Pattern sind.
+ *   Wird dann in GetOptZZZ benoetigt.
+ * 
  */
 public class GetOpt {
+	public final static String sCOMMAND_PREFIX="-"; //FGL 20260407 Damit werden Kommandos definiert. Muss public sein, damit GetOptZZZ dies lesen kann.
+	
 	/** The set of characters to look for */
 	protected String pattern;
 	/** Where we are in the options */
@@ -60,14 +66,14 @@ public class GetOpt {
 			return DONE;
 		}
 
-		// Pick off the next command line argument, check if it starts "-".
+		// Pick off the next command line argument, check if it starts sCOMMAND_PREFIX.
 		// If so look it up in the list.
 		String thisArg = argv[optind++];
-		if (thisArg.startsWith("-")) {
+		if (thisArg.startsWith(sCOMMAND_PREFIX)) {
 			optarg = null;
 			for (int i=0; i<pattern.length(); i++) {
 				char c = pattern.charAt(i);
-				if (thisArg.equals("-"+c)) {	// we found it
+				if (thisArg.equals(sCOMMAND_PREFIX+c)) {	// we found it
 					// If it needs an option argument, get it.
 					if (i+1 < pattern.length() && 
 						pattern.charAt(i+1)==':' &&
@@ -96,16 +102,16 @@ public class GetOpt {
 			return CharZZZ.toString(DONE);
 		}
 
-		// Pick off the next command line argument, check if it starts "-".
+		// Pick off the next command line argument, check if it starts sCOMMAND_PREFIX.
 		// If so look it up in the list.
 		String thisArg = argv[optind++];
-		if (thisArg.startsWith("-")) {
+		if (thisArg.startsWith(sCOMMAND_PREFIX)) {
 			optarg = null;
 			
 			if(thisArg.length()>=2 && thisArg.length() < 3) {
 				for (int i=0; i<pattern.length(); i++) {
 					char c = pattern.charAt(i);
-					if (thisArg.equals("-"+c)) {	// we found it
+					if (thisArg.equals(sCOMMAND_PREFIX+c)) {	// we found it
 						// If it needs an option argument, get it.
 						if (i+1 < pattern.length() && 
 							pattern.charAt(i+1)==':' &&
@@ -126,7 +132,7 @@ public class GetOpt {
 				}
 				
 				//return new String(thisArg);
-				return thisArg.substring(1,thisArg.length()); //Rueckgabewerte wie bei dem 1 Zeichen Argument ohne "-"
+				return thisArg.substring(1,thisArg.length()); //Rueckgabewerte wie bei dem 1 Zeichen Argument ohne sCOMMAND_PREFIX
 			} else {
 				// Found non-argument non-option word in argv: end of options.
 				optind--;

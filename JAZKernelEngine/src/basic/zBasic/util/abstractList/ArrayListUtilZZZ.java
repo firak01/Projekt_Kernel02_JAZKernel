@@ -2,9 +2,13 @@ package basic.zBasic.util.abstractList;
 
 import java.awt.Component;
 import java.io.File;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.zip.ZipEntry;
 
 import basic.zBasic.ExceptionZZZ;
@@ -27,6 +31,33 @@ public class ArrayListUtilZZZ<T>  extends ListUtilZZZ {
 	private ArrayListUtilZZZ() { 
 		//Zum Verstecken des Konsruktors
 	} //static methods only
+	
+	/** Variante bei kleinen Listen, die aber list1 verändert:
+	 *   // Erstellen einer Kopie von list1, um das Original nicht zu verändern
+        List<String> difference = new ArrayList<String>(list1);
+        // removeAll entfernt alle Elemente aus 'difference', 
+        // die auch in 'list2' enthalten sind.
+        difference.removeAll(list2);
+	 *   
+	 *  Variante hier, Umwandlung in HashSet... soll performanter sein
+	 * @param list01
+	 * @param list02
+	 * @return
+	 * @throws ExceptionZZZ
+	 */
+	public static <T> ArrayList<T> difference(ArrayList<T> list01, ArrayList<T> list02) throws ExceptionZZZ{
+		ArrayList<T>listaReturn = null;
+		main:{
+			if(list01==null || list02==null)break main;
+			
+		    Set<T> set2 = new LinkedHashSet<T>(list02); // Schnellere Suche
+		    ArrayList<T> difference = new ArrayList<T>(list01);
+		    difference.removeAll(set2);
+		    
+		    listaReturn = difference;
+		}//End main:
+		return listaReturn;
+	}	
 	
 	public static <T> boolean isEmpty(ArrayList<T> objAL) throws ExceptionZZZ{
 		boolean bReturn = false;
@@ -147,6 +178,67 @@ public class ArrayListUtilZZZ<T>  extends ListUtilZZZ {
 		return sReturn;
 	}
 	
+	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	public static <T> ArrayList<T> intersectOrNotNull(ArrayList<T> list01, ArrayList<T> list02) throws ExceptionZZZ{
+		ArrayList<T>listaReturn = null;
+		main:{
+			if(list01==null && list02==null)break main;
+			if(list01==null) {
+				if(list02.size()==0) break main;
+				
+				listaReturn = list02;
+				break main;
+			}
+			
+			
+			if(list02==null) {
+				if(list01.size()==0) break main;
+				
+				listaReturn = list01;
+				break main;
+			}
+			
+			
+			listaReturn = ArrayListUtilZZZ.intersect(list01, list02);
+		}//End main:
+		return listaReturn;
+	}	
+	
+	/** Variante bei kleinen Listen, die aber list1 verändert:
+	 *   list1.retainAll(list2);
+	 *   
+	 *  Variante hier, Umwandlung in HashSet... soll performanter sein
+	 * @param list01
+	 * @param list02
+	 * @return
+	 * @throws ExceptionZZZ
+	 */
+	public static <T> ArrayList<T> intersect(ArrayList<T> list01, ArrayList<T> list02) throws ExceptionZZZ{
+		ArrayList<T>listaReturn = null;
+		main:{
+			if(list01==null || list02==null)break main;
+			
+			
+		    Set<T> set1 = new LinkedHashSet<T>(list01);
+		    Set<T> resultSet = new LinkedHashSet<T>();
+
+		    for (T element : list01) {
+		        set1.add(element);
+		    }
+
+		    for (T element : list02) {
+		        if (set1.contains(element)) {
+		            resultSet.add(element);
+		        }
+		    }
+		    
+		    listaReturn = new ArrayList<T>(resultSet);
+		}//End main:
+		return listaReturn;
+	}	
+	
+	
+	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	
 	/* Gibt für die Elemente der Liste die instanceof - Werte zurück.
 	 * Also nicht instanceof der Liste selbst...

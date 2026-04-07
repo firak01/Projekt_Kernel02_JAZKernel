@@ -4998,6 +4998,48 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 	}
 	
 	
+	public static String trimLeft(String sStringIn, int iNumberOfCharacters2beRemoved) throws ExceptionZZZ {
+		String sReturn = sStringIn;
+		main:{
+			if(StringZZZ.isEmpty(sStringIn)) break main;
+			if(iNumberOfCharacters2beRemoved<=0) break main;
+			
+			String sString = sStringIn;
+			sReturn = StringZZZ.trimLeft(sString, iNumberOfCharacters2beRemoved, 0);
+			sReturn = sString;
+		}//end main:
+		return sReturn;
+	}
+	
+	public static String trimLeft(String sStringIn, int iNumberOfCharacters2beRemoved, int iStringLengthMinRemainingIn) throws ExceptionZZZ {
+		String sReturn = sStringIn;
+		main:{
+			if(StringZZZ.isEmpty(sStringIn)) break main;
+			if(iNumberOfCharacters2beRemoved<=0) break main;
+			int iStringLengthMinRemaining;
+			if(iStringLengthMinRemainingIn<0){
+				iStringLengthMinRemaining = 0;
+			}else{
+				iStringLengthMinRemaining = iStringLengthMinRemainingIn;
+			}
+			
+			String sString = sStringIn;
+			sReturn = StringZZZ.rightback(sReturn, iNumberOfCharacters2beRemoved);
+			if(StringZZZ.isEmpty(sReturn)) {
+				sReturn = StringZZZ.right(sString, 1);
+				break main;
+			}
+			
+			if(sReturn.length()< iNumberOfCharacters2beRemoved) {
+				sReturn = StringZZZ.right(sString, 1);
+				break main;
+			}
+			
+		}//end main:
+		return sReturn;
+	}
+	
+	//++++++++++++++++++++++++++++++++++++++++++++++++++++
 	public static String trimLeft(String sStringIn, String[] saStringToBeTrimmed) throws ExceptionZZZ {
 		String sReturn = sStringIn;
 		main:{
@@ -5336,6 +5378,17 @@ plain = matcher.replaceAll("<a href=\"$1\">$1</a>");
 	 */
 	public static String stripQuotationMarked(String sString) throws ExceptionZZZ {
 		return StringZZZ.stripDoubleQuoteMarked(sString);		
+	}
+	
+	/** Entferne den String von links kommend, entsprechend der Anzahl der Zeichen.
+	 *  Lasse mindestens 1 Zeichen übrig.
+	 *  Ohne ein Zeichen übrig zu lassen StringZZZ.trimLeft(s,i,0)
+	 * @param sString
+	 * @param sStringToBeStripped
+	 * @return
+	 */
+	public static String stripLeft(String sString, int i) throws ExceptionZZZ {
+		return StringZZZ.trimLeft(sString,1, 1);
 	}
 	
 	/** Entferne den String von links kommend, lasse mindestens 1 Zeichen übrig.
