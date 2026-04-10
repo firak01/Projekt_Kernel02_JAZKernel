@@ -82,7 +82,7 @@ public class UrlLogicZZZ  extends UrlLogicBaseZZZ{
 					sReturn = objUrl.getHost();
 				}else{
 					//Dann ist der Host der String rechts vom "/" !!!
-					sReturn = StringZZZ.left(sUrl, "/");
+					sReturn = StringZZZ.left(sUrl, UrlLogicZZZ.sURL_SEPARATOR_PATH);
 				}
 			
 			}catch(MalformedURLException urle){
