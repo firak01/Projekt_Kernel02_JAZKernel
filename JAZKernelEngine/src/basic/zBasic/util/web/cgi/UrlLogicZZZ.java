@@ -37,6 +37,7 @@ Protokoll
  */
 public class UrlLogicZZZ  extends UrlLogicBaseZZZ{	
 	public static final String sURL_SEPARATOR_PATH = "/";
+	public static final String sURL_SEPARATOR_PROTOCOL = ":" + sURL_SEPARATOR_PATH + sURL_SEPARATOR_PATH;
 	public static final String sURL_SEPARATOR_QUERY = "?";
 	public static final String sURL_SEPARATOR_PARAM = "&";
 	public static final String sURL_SEPARATOR_VALUE = "=";
