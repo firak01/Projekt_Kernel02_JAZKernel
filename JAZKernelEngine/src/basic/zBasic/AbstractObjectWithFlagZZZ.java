@@ -192,69 +192,6 @@ public abstract class AbstractObjectWithFlagZZZ<T> extends AbstractObjectWithExc
 		
 		return bFunction;	
 	}
-//	@Override
-//	public boolean getFlag(String sFlagName) {
-		//Version Vor Java 1.6
-//		boolean bFunction = false;
-//	main:{
-//		if(StringZZZ.isEmpty(sFlagName)) break main;
-//		
-//		// hier keine Superclass aufrufen, ist ja schon ObjectZZZ
-//		// bFunction = super.getFlag(sFlagName);
-//		// if(bFunction == true) break main;
-//		
-//		// Die Flags dieser Klasse setzen
-//		String stemp = sFlagName.toLowerCase();
-//		if(stemp.equals("debug")){
-//			bFunction = this.bFlagDebug;
-//			break main;
-//		}else if(stemp.equals("init")){
-//			bFunction = this.bFlagInit;
-//			break main;
-//		}else{
-//			bFunction = false;
-//		}		
-//	}	// end main:
-//	
-//	return bFunction;	
-//		return this.getFlag(sFlagName);
-//	}
-//	@Override
-//	public boolean setFlag(String sFlagName, boolean bFlagValue) {
-//		//Version Vor Java 1.6
-//		boolean bFunction = true;
-//		main:{
-//			if(StringZZZ.isEmpty(sFlagName)) break main;
-//			
-//			// hier keine Superclass aufrufen, ist ja schon ObjectZZZ
-//			// bFunction = super.setFlag(sFlagName, bFlagValue);
-//			// if(bFunction == true) break main;
-//			
-//			// Die Flags dieser Klasse setzen
-//			String stemp = sFlagName.toLowerCase();
-//			if(stemp.equals("debug")){
-//				this.bFlagDebug = bFlagValue;
-//				bFunction = true;                            //durch diesen return wert kann man "reflexiv" ermitteln, ob es in dem ganzen hierarchie-strang das flag �berhaupt gibt !!!
-//				break main;
-//			}else if(stemp.equals("init")){
-//				this.bFlagInit = bFlagValue;
-//				bFunction = true;
-//				break main;
-//			}else{
-//				bFunction = false;
-//			}	
-//			
-//		}	// end main:
-//		
-//		return bFunction;	
-//		try {
-//			return this.setFlag(sFlagName, bFlagValue);
-//		} catch (ExceptionZZZ e) {
-//			System.out.println("ExceptionZZZ (aus compatibilitaetgruenden mit Version vor Java 6 nicht weitergereicht) : " + e.getDetailAllLast());
-//			return false;
-//		}
-//	}
-	
 	
 	@Override
 	public boolean[] setFlag(String[] saFlagName, boolean bFlagValue) throws ExceptionZZZ {
