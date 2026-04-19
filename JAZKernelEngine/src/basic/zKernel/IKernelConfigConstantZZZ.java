@@ -24,7 +24,15 @@ public interface IKernelConfigConstantZZZ {
 	//        Moeglich ist auch ein Pipe "|" nachfolgend. D.h. es gibt dazu keinen Wert.
 	//        Entsprechend wird ein Wert ohne "|" gesehen.
 	//Merke2: Es ist auch moeglich Argumente mit mehr als 2 Zeichen zu definieren.
-	final static String sPATTERN_DEFAULT="k:s:f:d:lf:ld:z:";	
+	
+	//Merke3: Die Flags sind für alle Objekte, die Flags behandeln gedacht. Hier definiert zur Vereinheitlichung.
+	final static String sPATTERN4FLAG_DEFAULT="z:zlocal:"; 
+										//z = Flags, die dann JSON aehnlich uebergeben werden
+										//zlocal = Lokale Flags, die dann JSON aehnlich uebergeben werden
+	
+	//Mereke4: Die Angaben zum Kernel sind nur für Kernel Objekte gedacht. Das ist nicht in allen meinen Appliaktionen notwendig. 
+	final static String sPATTERN4KERNEL_DEFAULT="k:s:f:d:lf:ld:";
+	final static String sPATTERN_DEFAULT= sPATTERN4KERNEL_DEFAULT + sPATTERN4FLAG_DEFAULT;	
 	final static String sFLAGZ_DEFAULT="{}"; //leerer JSON ähnlicher String für zu setztende Flags, z.B. gefüllt {"DEBUGUI_PANELLABEL_ON":true}
 	
 	

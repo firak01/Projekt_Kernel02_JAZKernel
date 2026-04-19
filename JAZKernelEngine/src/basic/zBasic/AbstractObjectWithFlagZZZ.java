@@ -623,7 +623,8 @@ public abstract class AbstractObjectWithFlagZZZ<T> extends AbstractObjectWithExc
 		boolean bReturn = false;
 		main:{
 			if(StringZZZ.isEmpty(sFlagName))break main;
-			bReturn = FlagZHelperZZZ.proofFlagZDirectExists(this.getClass(), sFlagName);				
+			//bReturn = FlagZHelperZZZ.proofFlagZDirectExists(this.getClass(), sFlagName);				
+			bReturn = FlagZHelperZZZ.proofFlagZLocalExists(this.getClass(), sFlagName);
 		}//end main:
 		return bReturn;
 	}

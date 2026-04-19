@@ -127,8 +127,10 @@ public class GetOpt {
 				int iPositionBehind = StringZZZ.indexOfFirstBehind(pattern, sThisArgWithoutMinus);
 				char cBehind = pattern.charAt(iPositionBehind); 
 				boolean bIsColon = cBehind==':'; 
-				if (iPositionBehind+1 < pattern.length() && bIsColon && optind < argv.length) {
-						optarg = argv[optind++]; 
+				//if (iPositionBehind+1 < pattern.length() && bIsColon && optind < argv.length) {
+				//also die Abfrage der Pattern Länge ist Blödsinn
+				if (bIsColon && optind < argv.length) {
+						optarg = argv[optind++]; //das ist also der errechnete Wert für eine -Kommandoanweisung 
 				}
 				
 				//return new String(thisArg);
