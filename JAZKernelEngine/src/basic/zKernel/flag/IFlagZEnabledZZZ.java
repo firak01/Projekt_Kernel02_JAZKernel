@@ -21,8 +21,15 @@ public interface IFlagZEnabledZZZ{
 	public final String sERROR_FLAG_UNAVAILABLE = "this flag is not available: ";
 	public final int iERROR_FLAG_UNAVAILABLE = 50;
 
+	//Leer, da dies für die unterste Vererbungsebene der Vererbungshierarchie gedacht ist.
+	public enum FLAGZLOCAL{
+	}
 	
+	//Leer, da dies für die Konkrete Applikationsklassen der Vererbungshierarchie gedacht ist.
+	public enum FLAGZCUSTOM{			
+	}
 	
+	//Allgemeine Flags
 	public enum FLAGZ{
 		DEBUG, INIT ; //20170307 - Verschoben aus ObjectZZZ, weil nicht alle Klassen von ObjectZZZ erben können (weil sie schon von einer anderen Java spezifischen Klasse erben).
 	}

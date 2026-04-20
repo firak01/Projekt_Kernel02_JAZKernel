@@ -641,6 +641,10 @@ public abstract class AbstractObjectWithFlagZZZ<T> extends AbstractObjectWithExc
 		}
 		return bReturn;
 	}
+	
+	
+	
+	
 				
 	
 	
@@ -938,5 +942,8 @@ public abstract class AbstractObjectWithFlagZZZ<T> extends AbstractObjectWithExc
 		return bReturn;
 	}
 	
-	//++++++++++++++++++++++++
+	
+
+
+	
 }
