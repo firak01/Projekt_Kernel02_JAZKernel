@@ -526,7 +526,7 @@ public abstract class AbstractObjectWithFlagZZZ<T> extends AbstractObjectWithExc
 				int iCounter=-1;
 				for(String sFlag:saFlag) {
 					iCounter++;
-					boolean bReturn = this.setFlag(sFlag, bValue);
+					boolean bReturn = this.setFlagCustom(sFlag, bValue);
 					baReturn[iCounter]=bReturn;
 				}
 				
@@ -540,12 +540,12 @@ public abstract class AbstractObjectWithFlagZZZ<T> extends AbstractObjectWithExc
 				
 	@Override
 	public HashMap<String, Boolean>getHashMapFlagCustom(){
-		return this.hmFlagLocal;
+		return this.hmFlagCustom;
 	}
 	
 	@Override
-	public void setHashMapFlagCustom(HashMap<String, Boolean> hmFlagLocal) {
-		this.hmFlagLocal = hmFlagLocal;
+	public void setHashMapFlagCustom(HashMap<String, Boolean> hmFlagCustom) {
+		this.hmFlagCustom = hmFlagCustom;
 	}
 	
 	/**Gibt alle möglichen FlagZ Werte als Array zurück. 
@@ -690,7 +690,7 @@ public abstract class AbstractObjectWithFlagZZZ<T> extends AbstractObjectWithExc
 				break main;
 			}
 						
-			bFunction = this.proofFlagCustomExists(sFlagName);															
+			bFunction = this.proofFlagLocalExists(sFlagName);															
 			if(bFunction == true){
 				
 				//Setze das Flag nun in die HashMap
