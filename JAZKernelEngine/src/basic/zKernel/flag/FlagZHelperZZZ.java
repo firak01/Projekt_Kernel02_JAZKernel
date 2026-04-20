@@ -43,7 +43,7 @@ public class FlagZHelperZZZ implements IConstantZZZ{
 //				}
 //			}
 			
-			//Die Klasse selbst und alle Elternklassen, sowie deren Interface. Achtung, Rekursion wird darin verwendet!
+			//Die Klasse selbst, sowie deren Interface. Achtung, Rekursion wird darin verwendet!
 			String[] saFlagAvailable = FlagZHelperZZZ.getFlagsZLocalAvailable(cls);//20210406 das reicht nicht .getFlagsZDirectAvailable(cls);
 			if(saFlagAvailable!=null) {
 				if(StringArrayZZZ.containsIgnoreCase(saFlagAvailable, sFlagName)) {
@@ -427,12 +427,26 @@ public class FlagZHelperZZZ implements IConstantZZZ{
 	public static String[] getFlagsZCustom(Class cls) throws ExceptionZZZ {
 		String[] saReturn = null;
 		main:{
+			if(cls==null) {
+				 ExceptionZZZ ez = new ExceptionZZZ( "Class", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), ""); 
+				 throw ez;
+			}
+	
+			ArrayList<String> listas = getFlagsZCustomListAvailable(cls);
+			saReturn = ArrayListUtilZZZ.toStringArray(listas);
+		}//end main:
+		return saReturn;
+	}
+	
+	public static String[] getFlagsZCustomAvailable(Class cls)  throws ExceptionZZZ {
+		String[] saReturn = null;
+		main:{
 		if(cls==null) {
 			 ExceptionZZZ ez = new ExceptionZZZ( "Class", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), ""); 
 			 throw ez;
 		}
-
-		ArrayList<String> listas = getFlagsZCustomListAvailable(cls);
+		
+		ArrayList<String> listas = FlagZHelperZZZ.getFlagsZCustomListAvailable(cls);					
 		saReturn = ArrayListUtilZZZ.toStringArray(listas);
 	}//end main:
 	return saReturn;
@@ -440,6 +454,40 @@ public class FlagZHelperZZZ implements IConstantZZZ{
 	
 	public static ArrayList<String> getFlagsZCustomListAvailable(Class<?> cls)  throws ExceptionZZZ {
 		return getFlagsZListAvailable_(cls, IFlagZEnabledZZZ.FLAGTYPEZZZ.CUSTOM);
+	}
+	
+	public static boolean proofFlagZCustomExists(Class<?> cls, String sFlagName) throws ExceptionZZZ {
+		boolean bReturn = false;
+		main:{
+			if(cls==null) {
+				 ExceptionZZZ ez = new ExceptionZZZ( "Class", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), ""); 
+				 throw ez;
+			}
+			
+			if(StringZZZ.isEmpty(sFlagName)) {
+				ExceptionZZZ ez = new ExceptionZZZ( "FlagString", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), ""); 
+				 throw ez;
+			}
+			
+			//NUR die Klasse selbst
+//			String[] saFlagAvailable = FlagZHelperZZZ.getFlagsZLocal(cls);
+//			if(saFlagAvailable!=null) {
+//				if(StringArrayZZZ.contains(saFlagAvailable, sFlagName)) {
+//					bReturn = true;	
+//					break main;
+//				}
+//			}
+			
+			//Die Klasse selbst, sowie deren Interface. Achtung, Rekursion wird darin verwendet!
+			String[] saFlagAvailable = FlagZHelperZZZ.getFlagsZCustomAvailable(cls);//20210406 das reicht nicht .getFlagsZDirectAvailable(cls);
+			if(saFlagAvailable!=null) {
+				if(StringArrayZZZ.containsIgnoreCase(saFlagAvailable, sFlagName)) {
+					bReturn = true;	
+					break main;
+				}
+			}												
+		}//end main:
+		return bReturn;
 	}
 	
 	
