@@ -119,10 +119,15 @@ public abstract class AbstractKernelConfigZZZ<T> extends AbstractObjectWithFlagZ
 			HashMap<String, Boolean> hmFlagZpassed = AbstractKernelConfigZZZ.computeHashMapFlagFromJSON(sJson);
 			this.setHashMapFlagPassed(hmFlagZpassed);
 			
+			//20260419: Nun als ergänzende HashMap die custom FlagZ Werte füllen
+			String sJsonCustom = this.objOpt.readValue("zcustom");
+			HashMap<String, Boolean> hmFlagZCustomPassed = AbstractKernelConfigZZZ.computeHashMapFlagFromJSON(sJsonCustom);
+			this.setHashMapFlagCustom(hmFlagZCustomPassed);
+			
 			//20260419: Nun als ergänzende HashMap die lokalen FlagZ Werte füllen
 			String sJsonLocal = this.objOpt.readValue("zlocal");
 			HashMap<String, Boolean> hmFlagZlocalPassed = AbstractKernelConfigZZZ.computeHashMapFlagFromJSON(sJsonLocal);
-			this.setHashMapFlagCustom(hmFlagZlocalPassed);
+			this.setHashMapFlagLocal(hmFlagZlocalPassed);
 			
 			
 			bReturn = true;
