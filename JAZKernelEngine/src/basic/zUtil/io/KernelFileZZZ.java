@@ -23,7 +23,7 @@ import basic.zBasic.util.math.MathZZZ;
 import basic.zKernel.IKernelUserZZZ;
 import basic.zKernel.IKernelZZZ;
 import basic.zKernel.flag.FlagZHelperZZZ;
-import basic.zKernel.flag.IFlagZLocalEnabledZZZ;
+import basic.zKernel.flag.IFlagZCustomEnabledZZZ;
 import basic.zKernel.flag.IFlagZEnabledZZZ;
 import basic.zKernel.flag.IFlagZEnabledZZZ.FLAGZ;
 import basic.zKernel.flag.util.FlagZFassadeZZZ;
@@ -42,7 +42,7 @@ This class extends File and not ObjectZZZ !!!
 TODO Einige static Methoden an basic.zBasic.Util.file.FileEasyZZZ abgeben  
  * @author Lindhauer
  */
-public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFileExpansionEnabledZZZ, IFileExpansionProxyZZZ, IFlagZEnabledZZZ, IFlagZLocalEnabledZZZ{
+public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFileExpansionEnabledZZZ, IFileExpansionProxyZZZ, IFlagZEnabledZZZ, IFlagZCustomEnabledZZZ{
 	private static final long serialVersionUID = 2355847392852232484L;
 	
 	private IFileExpansionZZZ objExpansion=null;
@@ -475,12 +475,12 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 				 * - Public Default Konstruktor der Klasse, damit die Klasse instanziiert werden kann.
 				 * - Innere Klassen m�ssen auch public deklariert werden.(non-Javadoc)
 				 */
-				public boolean getFlagLocal(String sFlagName) throws ExceptionZZZ {
+				public boolean getFlagCustom(String sFlagName) throws ExceptionZZZ {
 					boolean bFunction = false;
 					main:{
 						if(StringZZZ.isEmpty(sFlagName)) break main;
 													
-						HashMap<String, Boolean> hmFlag = this.getHashMapFlagLocal();
+						HashMap<String, Boolean> hmFlag = this.getHashMapFlagCustom();
 						Boolean objBoolean = hmFlag.get(sFlagName.toUpperCase());
 						if(objBoolean==null){
 							bFunction = false;
@@ -503,7 +503,7 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 				 * @return
 				 * lindhaueradmin, 23.07.2013
 				 */
-				public boolean setFlagLocal(String sFlagName, boolean bFlagValue) throws ExceptionZZZ {
+				public boolean setFlagCustom(String sFlagName, boolean bFlagValue) throws ExceptionZZZ {
 					boolean bFunction = false;
 					main:{
 						if(StringZZZ.isEmpty(sFlagName)) {
@@ -511,11 +511,11 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 							break main;
 						}
 									
-						bFunction = this.proofFlagLocalExists(sFlagName);															
+						bFunction = this.proofFlagCustomExists(sFlagName);															
 						if(bFunction == true){
 							
 							//Setze das Flag nun in die HashMap
-							HashMap<String, Boolean> hmFlag = this.getHashMapFlagLocal();
+							HashMap<String, Boolean> hmFlag = this.getHashMapFlagCustom();
 							hmFlag.put(sFlagName.toUpperCase(), bFlagValue);
 							bFunction = true;								
 						}										
@@ -525,7 +525,7 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 				}
 				
 				@Override
-				public boolean[] setFlagLocal(String[] saFlag, boolean bValue) throws ExceptionZZZ {
+				public boolean[] setFlagCustom(String[] saFlag, boolean bValue) throws ExceptionZZZ {
 					boolean[] baReturn=null;
 					main:{
 						if(!StringArrayZZZ.isEmptyTrimmed(saFlag)) {
@@ -533,7 +533,7 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 							int iCounter=-1;
 							for(String sFlagName:saFlag) {
 								iCounter++;
-								boolean bReturn = this.setFlagLocal(sFlagName, bValue);
+								boolean bReturn = this.setFlagCustom(sFlagName, bValue);
 								baReturn[iCounter]=bReturn;
 							}
 						}
@@ -542,12 +542,12 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 				}
 					
 				@Override
-				public HashMap<String, Boolean>getHashMapFlagLocal(){
+				public HashMap<String, Boolean>getHashMapFlagCustom(){
 					return this.hmFlagLocal;
 				}
 				
 				@Override
-				public void setHashMapFlagLocal(HashMap<String, Boolean> hmFlagLocal) {
+				public void setHashMapFlagCustom(HashMap<String, Boolean> hmFlagLocal) {
 					this.hmFlagLocal = hmFlagLocal;
 				}
 				
@@ -555,7 +555,7 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 				 * @return
 				 * @throws ExceptionZZZ 
 				 */
-				public String[] getFlagZLocal() throws ExceptionZZZ{
+				public String[] getFlagZCustom() throws ExceptionZZZ{
 					String[] saReturn = null;
 					main:{	
 						saReturn = FlagZHelperZZZ.getFlagsZDirectAvailable(this.getClass());				
@@ -567,11 +567,11 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 				 * @return
 				 * @throws ExceptionZZZ 
 				 */
-				public String[] getFlagZLocal(boolean bValueToSearchFor) throws ExceptionZZZ{
+				public String[] getFlagZCustom(boolean bValueToSearchFor) throws ExceptionZZZ{
 					return this.getFlagZLocal_(bValueToSearchFor, false);
 				}
 				
-				public String[] getFlagZLocal(boolean bValueToSearchFor, boolean bLookupExplizitInHashMap) throws ExceptionZZZ{
+				public String[] getFlagZCustom(boolean bValueToSearchFor, boolean bLookupExplizitInHashMap) throws ExceptionZZZ{
 					return this.getFlagZLocal_(bValueToSearchFor, bLookupExplizitInHashMap);
 				}
 				
@@ -583,7 +583,7 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 						//FALLUNTERSCHEIDUNG: Alle gesetzten FlagZ werden in der HashMap gespeichert. Aber die noch nicht gesetzten FlagZ stehen dort nicht drin.
 						//                                  Diese kann man nur durch Einzelprüfung ermitteln.
 						if(bLookupExplizitInHashMap) {
-							HashMap<String,Boolean>hmFlag=this.getHashMapFlagLocal();
+							HashMap<String,Boolean>hmFlag=this.getHashMapFlagCustom();
 							if(hmFlag==null) break main;
 							
 							Set<String> setKey = hmFlag.keySet();
@@ -595,14 +595,14 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 							}
 						}else {
 							//So bekommt man alle Flags zurück, also auch die, die nicht explizit true oder false gesetzt wurden.						
-							String[]saFlagZ = this.getFlagZLocal();
+							String[]saFlagZ = this.getFlagZCustom();
 							
 							//20211201:
 							//Problem: Bei der Suche nach true ist das egal... aber bei der Suche nach false bekommt man jedes der Flags zurück,
 							//         auch wenn sie garnicht gesetzt wurden.
 							//Lösung:  Statt dessen explitzit über die HashMap der gesetzten Werte gehen....						
 							for(String sFlagZ : saFlagZ){
-								boolean btemp = this.getFlagLocal(sFlagZ);
+								boolean btemp = this.getFlagCustom(sFlagZ);
 								if(btemp==bValueToSearchFor ){ //also 'true'
 									listasTemp.add(sFlagZ);
 								}
@@ -621,7 +621,7 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 				 * lindhaueradmin, 23.07.2013
 				 * @throws ExceptionZZZ 
 				 */
-				public boolean proofFlagLocalExists(String sFlagName) throws ExceptionZZZ{
+				public boolean proofFlagCustomExists(String sFlagName) throws ExceptionZZZ{
 					boolean bReturn = false;
 					main:{
 						if(StringZZZ.isEmpty(sFlagName))break main;
@@ -631,7 +631,7 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 				}
 				
 				@Override
-				public boolean proofFlagLocalSetBefore(String sFlagName) throws ExceptionZZZ{
+				public boolean proofFlagCustomSetBefore(String sFlagName) throws ExceptionZZZ{
 					boolean bReturn = false;
 					main:{
 						if(StringZZZ.isEmpty(sFlagName))break main;

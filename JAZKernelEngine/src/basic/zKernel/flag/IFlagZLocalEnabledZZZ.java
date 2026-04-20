@@ -11,8 +11,10 @@ import basic.zBasic.ExceptionZZZ;
  * 
  */
 public interface IFlagZLocalEnabledZZZ{
+	
+	//Fehlermeldungen
 	public final String sERROR_FLAG_UNAVAILABLE = "this LOCAL flag is not available: ";
-	public final int iERROR_FLAG_UNAVAILABLE = 51;
+	public final int iERROR_FLAG_UNAVAILABLE = 52;
 	
 	//Beispiel für das einzubinde Enum als Flag, das NUR in der konkreten Klasse direkt eingebunden werden kann
 	//s. KernelJPanelCascadedZZZ

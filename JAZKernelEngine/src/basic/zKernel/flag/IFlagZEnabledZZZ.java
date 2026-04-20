@@ -5,13 +5,24 @@ import basic.zBasic.ExceptionZZZ;
 import basic.zBasic.util.crypt.code.ICharacterPoolEnabledZZZ;
 
 public interface IFlagZEnabledZZZ{
-	
+
 	//#############################################################
 	//### FLAGZ und FLAG - BASIS METHODEN
-	//#############################################################	
+	//#############################################################
+	
+	//Die Typen der Flags
+	public enum FLAGTYPEZZZ{
+		NORMAL,   //Global, weren über alle Vererbungshierarchien zusammengesucht
+		CUSTOM,   //Anwendungsspezifisch, werden über alle Vererbungshierarhien zusammegesucht
+		LOCAL;    //Werden nicht über alle Vererbungshierarchieebenen zusammengesucht
+	}
+	
+	//Fehlermeldungen
 	public final String sERROR_FLAG_UNAVAILABLE = "this flag is not available: ";
 	public final int iERROR_FLAG_UNAVAILABLE = 50;
 
+	
+	
 	public enum FLAGZ{
 		DEBUG, INIT ; //20170307 - Verschoben aus ObjectZZZ, weil nicht alle Klassen von ObjectZZZ erben können (weil sie schon von einer anderen Java spezifischen Klasse erben).
 	}

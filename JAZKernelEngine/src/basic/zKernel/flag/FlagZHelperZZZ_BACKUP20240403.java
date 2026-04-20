@@ -52,7 +52,7 @@ public class FlagZHelperZZZ_BACKUP20240403 implements IConstantZZZ{
 		return bReturn;
 	}
 	
-	public static boolean proofFlagZLocalSetBefore(IFlagZLocalEnabledZZZ obj, String sFlagName) throws ExceptionZZZ {
+	public static boolean proofFlagZLocalSetBefore(IFlagZCustomEnabledZZZ obj, String sFlagName) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
 
@@ -67,7 +67,7 @@ public class FlagZHelperZZZ_BACKUP20240403 implements IConstantZZZ{
 				}
 				
 				//Hole die HashMap aller gesetzten Flags
-				HashMap<String,Boolean> hmFlag = obj.getHashMapFlagLocal();
+				HashMap<String,Boolean> hmFlag = obj.getHashMapFlagCustom();
 				bReturn = hmFlag.containsKey(sFlagName);
 		}//end main:
 		return bReturn;

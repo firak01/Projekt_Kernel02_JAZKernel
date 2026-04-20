@@ -55,7 +55,7 @@ public class FlagZHelperZZZ implements IConstantZZZ{
 		return bReturn;
 	}
 	
-	public static boolean proofFlagZLocalSetBefore(IFlagZLocalEnabledZZZ obj, String sFlagName) throws ExceptionZZZ {
+	public static boolean proofFlagZLocalSetBefore(IFlagZCustomEnabledZZZ obj, String sFlagName) throws ExceptionZZZ {
 		boolean bReturn = false;
 		main:{
 
@@ -70,7 +70,7 @@ public class FlagZHelperZZZ implements IConstantZZZ{
 				}
 				
 				//Hole die HashMap aller gesetzten Flags
-				HashMap<String,Boolean> hmFlag = obj.getHashMapFlagLocal();
+				HashMap<String,Boolean> hmFlag = obj.getHashMapFlagCustom();
 				bReturn = hmFlag.containsKey(sFlagName);
 		}//end main:
 		return bReturn;
@@ -347,21 +347,26 @@ public class FlagZHelperZZZ implements IConstantZZZ{
 	
 	
 	public static ArrayList<String> getFlagsZListAvailable(Class<?> cls)  throws ExceptionZZZ {
-		return getFlagsZListAvailable_(cls, false);
+		return getFlagsZListAvailable_(cls,IFlagZEnabledZZZ.FLAGTYPEZZZ.NORMAL);
 	}
 	
 	public static ArrayList<String> getFlagsZLocalListAvailable(Class<?> cls)  throws ExceptionZZZ {
-		return getFlagsZListAvailable_(cls, true);
+		return getFlagsZListAvailable_(cls, IFlagZEnabledZZZ.FLAGTYPEZZZ.LOCAL);
 	}
 	
-	private static ArrayList<String> getFlagsZListAvailable_(Class<?> cls, boolean bLocal)  throws ExceptionZZZ {
+	private static ArrayList<String> getFlagsZListAvailable_(Class<?> cls, IFlagZEnabledZZZ.FLAGTYPEZZZ enumFlagType)  throws ExceptionZZZ {
 		ArrayList<String> listasReturn = new ArrayList<String>();
 		main:{			
 			//20240403: Ersetze alles durch eine zentralere Enum-Klassen-Utility
-			if(bLocal) {
+			if(enumFlagType.equals(IFlagZEnabledZZZ.FLAGTYPEZZZ.LOCAL)) {
 				listasReturn = EnumAvailableHelperZZZ.searchList(cls, "FLAGZLOCAL");
-			}else {
+			}else if(enumFlagType.equals(IFlagZEnabledZZZ.FLAGTYPEZZZ.NORMAL)){
 				listasReturn = EnumAvailableHelperZZZ.searchList(cls, "FLAGZ");
+			}else if(enumFlagType.equals(IFlagZEnabledZZZ.FLAGTYPEZZZ.CUSTOM)) {
+				listasReturn = EnumAvailableHelperZZZ.searchList(cls, "FLAGZCUSTOM");
+			}else {
+				 ExceptionZZZ ez = new ExceptionZZZ( "Nicht behandelter FlagType", iERROR_PARAMETER_VALUE, ReflectCodeZZZ.getMethodCurrentName(), ""); 
+				 throw ez;
 			}
 	}//end main:
 	return listasReturn;
@@ -403,6 +408,28 @@ public class FlagZHelperZZZ implements IConstantZZZ{
 	return saReturn;
 	}
 	
+	
+	//############ FLAG CUSTOM
+	public static String[] getFlagsZCustom(Class cls) throws ExceptionZZZ {
+		String[] saReturn = null;
+		main:{
+		if(cls==null) {
+			 ExceptionZZZ ez = new ExceptionZZZ( "Class", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), ""); 
+			 throw ez;
+		}
+
+		ArrayList<String> listas = getFlagsZCustomListAvailable(cls);
+		saReturn = ArrayListUtilZZZ.toStringArray(listas);
+	}//end main:
+	return saReturn;
+	}
+	
+	public static ArrayList<String> getFlagsZCustomListAvailable(Class<?> cls)  throws ExceptionZZZ {
+		return getFlagsZListAvailable_(cls, IFlagZEnabledZZZ.FLAGTYPEZZZ.CUSTOM);
+	}
+	
+	
+	//############### FLAG LOCAL
 	public static String[] getFlagsZLocal(Class cls) throws ExceptionZZZ {
 		String[] saReturn = null;
 		main:{

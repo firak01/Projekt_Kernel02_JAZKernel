@@ -11,8 +11,9 @@ import basic.zBasic.util.datatype.calling.ReferenceHashMapZZZ;
 import basic.zBasic.util.datatype.string.StringArrayZZZ;
 import basic.zBasic.util.datatype.string.StringZZZ;
 import basic.zKernel.flag.FlagZHelperZZZ;
-import basic.zKernel.flag.IFlagZLocalEnabledZZZ;
+import basic.zKernel.flag.IFlagZCustomEnabledZZZ;
 import basic.zKernel.flag.IFlagZEnabledZZZ;
+import basic.zKernel.flag.IFlagZLocalEnabledZZZ;
 import basic.zKernel.flag.event.EventObjectFlagZsetZZZ;
 import basic.zKernel.flag.event.IEventBrokerFlagZsetUserZZZ;
 import basic.zKernel.flag.event.IEventObjectFlagZsetZZZ;
@@ -21,7 +22,7 @@ import basic.zKernel.flag.event.ISenderObjectFlagZsetZZZ;
 import basic.zKernel.flag.event.KernelSenderObjectFlagZsetZZZ;
 import basic.zKernel.flag.util.FlagZFassadeZZZ;
 
-public abstract class AbstractObjectWithFlagZZZ<T> extends AbstractObjectWithExceptionZZZ<Object> implements IFlagZEnabledZZZ, IEventBrokerFlagZsetUserZZZ, IFlagZLocalEnabledZZZ{
+public abstract class AbstractObjectWithFlagZZZ<T> extends AbstractObjectWithExceptionZZZ<Object> implements IFlagZEnabledZZZ, IEventBrokerFlagZsetUserZZZ, IFlagZCustomEnabledZZZ, IFlagZLocalEnabledZZZ{
 	private static final long serialVersionUID = 1L;
 
 	/**20130721: Erweitert um HashMap und die Enum-Flags, Compiler auf 1.6 geändert
@@ -32,10 +33,12 @@ public abstract class AbstractObjectWithFlagZZZ<T> extends AbstractObjectWithExc
 //		DEBUG, INIT; //Verschoben nach IFlagZZZ, weil nicht alle Klassen von ObjectZZZ erben können (weil sie schon von einer anderen Klasse erben).
 //	}
 	
-	protected volatile HashMap<String, Boolean>hmFlag = new HashMap<String, Boolean>(); //Neu 20130721
-	protected volatile HashMap<String, Boolean>hmFlagPassed = new HashMap<String, Boolean>(); //Neu 20210402
-	protected HashMap<String, Boolean>hmFlagLocal = new HashMap<String, Boolean>(); //Neu 20220720
+	protected volatile HashMap<String, Boolean>hmFlag = new HashMap<String, Boolean>(); //Neu 20130721       //Normale Flags. Werden über Vererbungsinstanzen eingesammelt.
+	protected volatile HashMap<String, Boolean>hmFlagPassed = new HashMap<String, Boolean>(); //Neu 20210402 //Flags, die von anderen Objekten übergeben worden sind.
+	protected HashMap<String, Boolean>hmFlagCustom = new HashMap<String, Boolean>(); //Neu 20260419          //Wie normale Flags, nur anwendungspezifische. Werden über Vererbungsinstanzen eingesammelt. 
+	protected HashMap<String, Boolean>hmFlagLocal = new HashMap<String, Boolean>(); //Neu 20220720           //Wie normale Flags, nur anwendungspezifische. Werden NICHT über Vererbungsinstanzen eingesammelt.
 		
+	
 	protected ISenderObjectFlagZsetZZZ objEventFlagZBroker = null;//Das Broker Objekt, an dem sich andere Objekte regristrieren können, um ueber Aenderung eines Flags per Event informiert zu werden.
 	
 	
@@ -454,14 +457,200 @@ public abstract class AbstractObjectWithFlagZZZ<T> extends AbstractObjectWithExc
 		}
 		return bReturn;
 	}
-	//##################################################
 	
-	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-	//++++++++++++++++++++++++
+	//##################################################	
+	//### CUSTOM FLAGS
+	//##################################################
 	/* @see basic.zBasic.IFlagZZZ#getFlagZ(java.lang.String)
-	 * 	 Weteire Voraussetzungen:
+	 * 	 Weitere Voraussetzungen:
 	 * - Public Default Konstruktor der Klasse, damit die Klasse instanziiert werden kann.
 	 * - Innere Klassen m�ssen auch public deklariert werden.(non-Javadoc)
+	 */
+	@Override
+	public boolean getFlagCustom(String sFlagName) throws ExceptionZZZ {
+		boolean bFunction = false;
+		main:{
+			if(StringZZZ.isEmpty(sFlagName)) break main;
+										
+			HashMap<String, Boolean> hmFlag = this.getHashMapFlagCustom();
+			Boolean objBoolean = hmFlag.get(sFlagName.toUpperCase());
+			if(objBoolean==null){
+				bFunction = false;
+			}else{
+				bFunction = objBoolean.booleanValue();
+			}
+							
+		}	// end main:
+		
+		return bFunction;	
+	}
+			
+	/** DIESE METHODEN MUSS IN ALLEN KLASSEN VORHANDEN SEIN - über Vererbung -, DIE IHRE FLAGS SETZEN WOLLEN
+	 * Weitere Voraussetzungen:
+	 * - Public Default Konstruktor der Klasse, damit die Klasse instanziiert werden kann.
+	 * - Innere Klassen müssen auch public deklariert werden.
+	 * @param objClassParent
+	 * @param sFlagName
+	 * @param bFlagValue
+	 * @return
+	 * lindhaueradmin, 23.07.2013
+	 */
+	@Override
+	public boolean setFlagCustom(String sFlagName, boolean bFlagValue) throws ExceptionZZZ {
+		boolean bFunction = false;
+		main:{
+			if(StringZZZ.isEmpty(sFlagName)) {
+				bFunction = true;
+				break main;
+			}
+						
+			bFunction = this.proofFlagCustomExists(sFlagName);															
+			if(bFunction == true){
+				
+				//Setze das Flag nun in die HashMap
+				HashMap<String, Boolean> hmFlag = this.getHashMapFlagCustom();
+				hmFlag.put(sFlagName.toUpperCase(), bFlagValue);
+				bFunction = true;								
+			}										
+		}	// end main:
+		
+		return bFunction;	
+	}
+			
+	@Override
+	public boolean[] setFlagCustom(String[] saFlag, boolean bValue) throws ExceptionZZZ {
+		boolean[] baReturn=null;
+		main:{
+			if(!StringArrayZZZ.isEmptyTrimmed(saFlag)) {
+				baReturn = new boolean[saFlag.length];
+				int iCounter=-1;
+				for(String sFlag:saFlag) {
+					iCounter++;
+					boolean bReturn = this.setFlag(sFlag, bValue);
+					baReturn[iCounter]=bReturn;
+				}
+				
+				//!!! Ein mögliches init-Flag ist beim direkten setzen der Flags unlogisch.
+				//    Es wird entfernt.
+				this.setFlag(IFlagZEnabledZZZ.FLAGZ.INIT, false);
+			}
+		}//end main:
+		return baReturn;
+	}
+				
+	@Override
+	public HashMap<String, Boolean>getHashMapFlagCustom(){
+		return this.hmFlagLocal;
+	}
+	
+	@Override
+	public void setHashMapFlagCustom(HashMap<String, Boolean> hmFlagLocal) {
+		this.hmFlagLocal = hmFlagLocal;
+	}
+	
+	/**Gibt alle möglichen FlagZ Werte als Array zurück. 
+	 * @return
+	 * @throws ExceptionZZZ 
+	 */
+	@Override
+	public String[] getFlagZCustom() throws ExceptionZZZ{
+		String[] saReturn = null;
+		main:{	
+			saReturn = FlagZHelperZZZ.getFlagsZCustom(this.getClass());				
+		}//end main:
+		return saReturn;
+	}
+		
+	/**Gibt alle "true" gesetzten FlagZ - Werte als Array zurück. 
+	 * @return
+	 * @throws ExceptionZZZ 
+	 */
+	@Override
+	public String[] getFlagZCustom(boolean bValueToSearchFor) throws ExceptionZZZ{
+		return this.getFlagZCustom_(bValueToSearchFor, false);
+	}
+		
+	@Override
+	public String[] getFlagZCustom(boolean bValueToSearchFor, boolean bLookupExplizitInHashMap) throws ExceptionZZZ{
+		return this.getFlagZCustom_(bValueToSearchFor, bLookupExplizitInHashMap);
+	}
+			
+	private String[]getFlagZCustom_(boolean bValueToSearchFor, boolean bLookupExplizitInHashMap) throws ExceptionZZZ{
+		String[] saReturn = null;
+		main:{
+			ArrayList<String>listasTemp=new ArrayList<String>();
+			
+			//FALLUNTERSCHEIDUNG: Alle gesetzten FlagZ werden in der HashMap gespeichert. Aber die noch nicht gesetzten FlagZ stehen dort nicht drin.
+			//                                  Diese kann man nur durch Einzelprüfung ermitteln.
+			if(bLookupExplizitInHashMap) {
+				HashMap<String,Boolean>hmFlag=this.getHashMapFlagCustom();
+				if(hmFlag==null) break main;
+				
+				Set<String> setKey = hmFlag.keySet();
+				for(String sKey : setKey){
+					boolean btemp = hmFlag.get(sKey);
+					if(btemp==bValueToSearchFor){
+						listasTemp.add(sKey);
+					}
+				}
+			}else {
+				//So bekommt man alle Flags zurück, also auch die, die nicht explizit true oder false gesetzt wurden.						
+				String[]saFlagZ = this.getFlagZCustom();
+				
+				//20211201:
+				//Problem: Bei der Suche nach true ist das egal... aber bei der Suche nach false bekommt man jedes der Flags zurück,
+				//         auch wenn sie garnicht gesetzt wurden.
+				//Lösung:  Statt dessen explitzit über die HashMap der gesetzten Werte gehen....						
+				for(String sFlagZ : saFlagZ){
+					boolean btemp = this.getFlagCustom(sFlagZ);
+					if(btemp==bValueToSearchFor ){ //also 'true'
+						listasTemp.add(sFlagZ);
+					}
+				}
+			}
+			saReturn = listasTemp.toArray(new String[listasTemp.size()]);
+		}//end main:
+		return saReturn;
+	}
+			
+	/** DIESE METHODE MUSS IN ALLEN KLASSEN VORHANDEN SEIN - über Vererbung ODER Interface Implementierung -, DIE IHRE FLAGS SETZEN WOLLEN
+	 *  SIE WIRD PER METHOD.INVOKE(....) AUFGERUFEN.
+	 * @param name 
+	 * @param sFlagName
+	 * @return
+	 * lindhaueradmin, 23.07.2013
+	 * @throws ExceptionZZZ 
+	 */
+	@Override
+	public boolean proofFlagCustomExists(String sFlagName) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			if(StringZZZ.isEmpty(sFlagName))break main;
+			//bReturn = FlagZHelperZZZ.proofFlagZDirectExists(this.getClass(), sFlagName);				
+			bReturn = FlagZHelperZZZ.proofFlagZLocalExists(this.getClass(), sFlagName);
+		}//end main:
+		return bReturn;
+	}
+	
+	@Override
+	public boolean proofFlagCustomSetBefore(String sFlagName) throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			if(StringZZZ.isEmpty(sFlagName))break main;
+			bReturn = FlagZHelperZZZ.proofFlagZLocalSetBefore(this, sFlagName);
+		}
+		return bReturn;
+	}
+				
+	
+	
+	//##################################################	
+	//### LOCAL FLAGS
+	//##################################################
+	/* @see basic.zBasic.IFlagZLocalEnabledZZZ#getFlagZ(java.lang.String)
+	 * 	 Weitere Voraussetzungen:
+	 * - Public Default Konstruktor der Klasse, damit die Klasse instanziiert werden kann.
+	 * - Innere Klassen muessen auch public deklariert werden.(non-Javadoc)
 	 */
 	@Override
 	public boolean getFlagLocal(String sFlagName) throws ExceptionZZZ {
@@ -501,7 +690,7 @@ public abstract class AbstractObjectWithFlagZZZ<T> extends AbstractObjectWithExc
 				break main;
 			}
 						
-			bFunction = this.proofFlagLocalExists(sFlagName);															
+			bFunction = this.proofFlagCustomExists(sFlagName);															
 			if(bFunction == true){
 				
 				//Setze das Flag nun in die HashMap
@@ -523,7 +712,7 @@ public abstract class AbstractObjectWithFlagZZZ<T> extends AbstractObjectWithExc
 				int iCounter=-1;
 				for(String sFlag:saFlag) {
 					iCounter++;
-					boolean bReturn = this.setFlag(sFlag, bValue);
+					boolean bReturn = this.setFlagLocal(sFlag, bValue);
 					baReturn[iCounter]=bReturn;
 				}
 				
@@ -623,7 +812,7 @@ public abstract class AbstractObjectWithFlagZZZ<T> extends AbstractObjectWithExc
 		boolean bReturn = false;
 		main:{
 			if(StringZZZ.isEmpty(sFlagName))break main;
-			//bReturn = FlagZHelperZZZ.proofFlagZDirectExists(this.getClass(), sFlagName);				
+							
 			bReturn = FlagZHelperZZZ.proofFlagZLocalExists(this.getClass(), sFlagName);
 		}//end main:
 		return bReturn;
@@ -638,7 +827,10 @@ public abstract class AbstractObjectWithFlagZZZ<T> extends AbstractObjectWithExc
 		}
 		return bReturn;
 	}
-				
+
+	
+	//##########################################################
+	//+++ Benachrichtige über Veränderung der "normalen" Flags
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	
 	//### Aus dem Interface IEventBrokerFlagZUserZZZ
