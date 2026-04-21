@@ -294,54 +294,6 @@ public class FlagZHelperZZZ implements IConstantZZZ{
 	private static ArrayList<String> getFlagsZListDirectAvailable_(Class<?> cls, boolean bLocal)  throws ExceptionZZZ {
 		ArrayList<String> listasReturn = EnumAvailableHelperZZZ.searchListDirect(cls, FlagZHelperZZZ.sENUM_NAME);
 		return listasReturn;
-				
-		//20240404.. durch obiges ersetzt
-//		ArrayList<String> listasReturn = new ArrayList<String>();
-//		main:{
-//		if(cls==null) {
-//			 ExceptionZZZ ez = new ExceptionZZZ( "Class", iERROR_PARAMETER_MISSING, ReflectCodeZZZ.getMethodCurrentName(), ""); 
-//			 throw ez;
-//		}
-//		
-//		//1. von der Classe selbst implementiert
-//		Enum[] enuma = null;
-//		if(bLocal) {
-//			enuma = getEnumFlagZLocal(cls);
-//		}else {
-//			enuma = getEnumFlagZ(cls);
-//		}
-//		if(enuma!=null) {			
-//			for(Enum objEnum : enuma) {
-//				String sEnum = objEnum.name();
-//				if(!listasReturn.contains(sEnum)) {
-//					//System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sEnum= '" + sEnum + "' (" + cls.getName() + ")" );
-//					listasReturn.add(sEnum);
-//				}
-//			}			
-//		}
-//		
-//		//2. von den Interfaces der Klasse DIREKT implementiert
-//		Class<?>[] objclsaByInterface = cls.getInterfaces();
-//		for(Class<?> objclsByInterface : objclsaByInterface) {
-//			Enum[] enumaByInterface = null;
-//			if(bLocal) {
-//				enumaByInterface = getEnumFlagZLocal(objclsByInterface);
-//			}else {
-//				enumaByInterface = getEnumFlagZ(objclsByInterface);
-//			}
-//			if(enumaByInterface!=null) {			
-//				for(Enum objEnum : enumaByInterface) {
-//					String sEnum = objEnum.name();
-//					if(!listasReturn.contains(sEnum)) {
-//						//System.out.println(ReflectCodeZZZ.getPositionCurrent() + ": sEnum= '" + sEnum + "' (" + cls.getName() + ")" );
-//						listasReturn.add(sEnum);
-//					}
-//				}			
-//			}
-//		}
-//		
-//	}//end main:
-//	return listasReturn;
 	}
 	
 	
