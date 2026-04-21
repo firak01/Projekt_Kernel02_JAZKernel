@@ -22,10 +22,14 @@ public interface IFlagZEnabledZZZ{
 	public final int iERROR_FLAG_UNAVAILABLE = 50;
 
 	//Leer, da dies für die unterste Vererbungsebene der Vererbungshierarchie gedacht ist.
+	//und erst über das passende Interface eingebunden werden darf, 
+	//sonst meckert der Compiler wg.: is ambiguous... obwohl, ist vielleicht gut eine gewisse Struktur zu erzwingen.
 	public enum FLAGZLOCAL{
 	}
 	
 	//Leer, da dies für die Konkrete Applikationsklassen der Vererbungshierarchie gedacht ist.
+	//und erst über das passende Interface eingebunden werden darf, 
+	//sonst meckert der Compiler wg.: is ambiguous... obwohl, ist vielleicht gut eine gewisse Struktur zu erzwingen.
 	public enum FLAGZCUSTOM{			
 	}
 	
