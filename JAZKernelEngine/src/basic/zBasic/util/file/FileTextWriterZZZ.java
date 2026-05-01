@@ -1,5 +1,6 @@
 package basic.zBasic.util.file;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -12,18 +13,28 @@ import basic.zBasic.util.stream.IStreamZZZ;
 import basic.zBasic.util.stream.StreamZZZ;
 import basic.zKernel.AbstractKernelLogZZZ;
 
-public class FileTextWriterZZZ extends AbstractObjectWithExceptionZZZ{
+public class FileTextWriterZZZ extends AbstractFileTextZZZ{
 	public static final String sFILE_NAME_DEFAULT= "NewTextfile_default.txt";
-	private IStreamZZZ objStream = null;
-	private String sFileName = null;
 	
-	public FileTextWriterZZZ() {		
-	}
-	public FileTextWriterZZZ(String sFileName) {
-		this.setFileName(sFileName);
+	
+	public FileTextWriterZZZ() {
+		super();
 	}
 	
-	private boolean createStreamInternal(String sFileNameIn){
+	public FileTextWriterZZZ(String sFileName) throws ExceptionZZZ{
+		super(sFileName);
+	}
+	
+	public FileTextWriterZZZ(File objFile) throws ExceptionZZZ{
+		super(objFile);
+	}
+	
+	@Override
+	public String getFileNameDefault() throws ExceptionZZZ {
+		return FileTextWriterZZZ.sFILE_NAME_DEFAULT;
+	}
+	
+	private boolean createStreamInternal_(String sFileNameIn){
 		boolean bReturn = false;
 		try {
 			String sFileName;
@@ -32,7 +43,7 @@ public class FileTextWriterZZZ extends AbstractObjectWithExceptionZZZ{
 			}else{
 				sFileName = sFileNameIn;
 			}
-			this.objStream = new StreamZZZ(sFileName,1); //1 = Write //ggfs. noch das Encoding übergeben in dieser ZZZ-Klasse
+			this.objStream = new StreamZZZ(sFileName,1); //0 = Read, 1 = Write //ggfs. noch das Encoding übergeben in dieser ZZZ-Klasse
 			bReturn = true;
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -50,7 +61,7 @@ public class FileTextWriterZZZ extends AbstractObjectWithExceptionZZZ{
 	//##############################################################
 	public synchronized boolean writeLine(String stemp){
 		boolean bHasStream = true;
-		if(this.objStream==null) bHasStream = createStreamInternal("");
+		if(this.objStream==null) bHasStream = createStreamInternal_("");
 		if(bHasStream){
 			this.objStream.println(stemp);
 		}
@@ -60,21 +71,12 @@ public class FileTextWriterZZZ extends AbstractObjectWithExceptionZZZ{
 
 	public synchronized boolean write(String stemp){
 		boolean bHasStream = true;
-		if(this.objStream==null) bHasStream = createStreamInternal("");
+		if(this.objStream==null) bHasStream = createStreamInternal_("");
 		if(bHasStream){
 			this.objStream.print(stemp);
 		}
 		return bHasStream;
 	}
 	
-	//##### Getter / Setter ###################
-	public String getFileName() throws ExceptionZZZ {
-		if(StringZZZ.isEmpty(this.sFileName)) {
-			this.sFileName = FileTextWriterZZZ.sFILE_NAME_DEFAULT;
-		}		
-		return this.sFileName;
-	}
-	public void setFileName(String sFileName) {
-		this.sFileName = sFileName;
-	}
+	
 }
