@@ -116,7 +116,7 @@ public abstract class AbstractObjectWithFlagZZZ<T> extends AbstractObjectWithExc
 	//### FLAG HANDLING
 	//###############################################
 	
-	//### Aus IFlagUserZZZ ##########################
+	//### Aus IFlagZEnabledZZZ
 	@Override
 	public boolean getFlag(Enum enumFlag) throws ExceptionZZZ {
 		boolean bFunction = false;
@@ -221,6 +221,11 @@ public abstract class AbstractObjectWithFlagZZZ<T> extends AbstractObjectWithExc
 	@Override
 	public HashMap<String, Boolean>getHashMapFlag(){
 		return this.hmFlag;
+	}
+	
+	@Override
+	public void setHashMapFlag(HashMap<String, Boolean> hmFlag) {
+		this.hmFlag = hmFlag;
 	}
 		
 	@Override
@@ -642,6 +647,21 @@ public abstract class AbstractObjectWithFlagZZZ<T> extends AbstractObjectWithExc
 		return bReturn;
 	}
 	
+	@Override
+	public boolean resetFlagsCustom() throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			HashMap<String,Boolean> hm = this.getHashMapFlagCustom();
+			if(hm.isEmpty())break main;
+			
+			ReferenceHashMapZZZ<String,Boolean>objhmReturn=new ReferenceHashMapZZZ<String,Boolean>();
+			objhmReturn.set(hm);
+			
+			bReturn =FlagZHelperZZZ.resetFlags(objhmReturn); 			
+		}//end main:
+		return bReturn;
+	}
+	
 	
 	
 	
@@ -829,6 +849,21 @@ public abstract class AbstractObjectWithFlagZZZ<T> extends AbstractObjectWithExc
 			if(StringZZZ.isEmpty(sFlagName))break main;
 			bReturn = FlagZHelperZZZ.proofFlagZLocalSetBefore(this, sFlagName);
 		}
+		return bReturn;
+	}
+	
+	@Override
+	public boolean resetFlagsLocal() throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			HashMap<String,Boolean> hm = this.getHashMapFlagLocal();
+			if(hm.isEmpty())break main;
+			
+			ReferenceHashMapZZZ<String,Boolean>objhmReturn=new ReferenceHashMapZZZ<String,Boolean>();
+			objhmReturn.set(hm);
+			
+			bReturn =FlagZHelperZZZ.resetFlags(objhmReturn); 			
+		}//end main:
 		return bReturn;
 	}
 

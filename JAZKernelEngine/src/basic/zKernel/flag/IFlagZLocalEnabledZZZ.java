@@ -26,6 +26,7 @@ public interface IFlagZLocalEnabledZZZ{
 	//Das Z im Methodennamen ...FlagZ... wird nur für Methoden verwendet, die ein Array zurueckliefern.
 	public abstract HashMap<String, Boolean>getHashMapFlagLocal();
 	public abstract void setHashMapFlagLocal(HashMap<String, Boolean> hmFlagLocal);	
+	public abstract boolean resetFlagsLocal() throws ExceptionZZZ;
 	
 	public abstract boolean getFlagLocal(String sFlag) throws ExceptionZZZ;
 	public abstract boolean setFlagLocal(String sFlag, boolean bValue) throws ExceptionZZZ; //Holt sich zuerst alle Eltern/Superklassen, die IFlagZZZ implementieren. Pr�ft dann, ob diese Klasse das Flag in der Enumeration .getClassFLAGZ() hat.	

@@ -53,7 +53,7 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 	
 	private HashMap<String, Boolean>hmFlag = new HashMap<String, Boolean>();
 	private HashMap<String, Boolean>hmFlagPassed = new HashMap<String, Boolean>(); 
-	private HashMap<String, Boolean>hmFlagLocal = new HashMap<String, Boolean>();
+	private HashMap<String, Boolean>hmFlagCustom = new HashMap<String, Boolean>();
 	
 //	### Constructor ##########################
 	public KernelFileZZZ() throws ExceptionZZZ{
@@ -394,6 +394,11 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 	public HashMap<String, Boolean>getHashMapFlag(){
 		return this.hmFlag;
 	}
+	
+	@Override
+	public void setHashMapFlag(HashMap<String, Boolean> hmFlag) {
+		this.hmFlag = hmFlag;
+	}
 		
 	@Override
 	public HashMap<String, Boolean> getHashMapFlagPassed() {
@@ -543,12 +548,12 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 					
 				@Override
 				public HashMap<String, Boolean>getHashMapFlagCustom(){
-					return this.hmFlagLocal;
+					return this.hmFlagCustom;
 				}
 				
 				@Override
-				public void setHashMapFlagCustom(HashMap<String, Boolean> hmFlagLocal) {
-					this.hmFlagLocal = hmFlagLocal;
+				public void setHashMapFlagCustom(HashMap<String, Boolean> hmFlagCustom) {
+					this.hmFlagCustom = hmFlagCustom;
 				}
 				
 				/**Gibt alle möglichen FlagZ Werte als Array zurück. 
@@ -568,14 +573,14 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 				 * @throws ExceptionZZZ 
 				 */
 				public String[] getFlagZCustom(boolean bValueToSearchFor) throws ExceptionZZZ{
-					return this.getFlagZLocal_(bValueToSearchFor, false);
+					return this.getFlagZCustom_(bValueToSearchFor, false);
 				}
 				
 				public String[] getFlagZCustom(boolean bValueToSearchFor, boolean bLookupExplizitInHashMap) throws ExceptionZZZ{
-					return this.getFlagZLocal_(bValueToSearchFor, bLookupExplizitInHashMap);
+					return this.getFlagZCustom_(bValueToSearchFor, bLookupExplizitInHashMap);
 				}
 				
-				private String[]getFlagZLocal_(boolean bValueToSearchFor, boolean bLookupExplizitInHashMap) throws ExceptionZZZ{
+				private String[]getFlagZCustom_(boolean bValueToSearchFor, boolean bLookupExplizitInHashMap) throws ExceptionZZZ{
 					String[] saReturn = null;
 					main:{
 						ArrayList<String>listasTemp=new ArrayList<String>();
@@ -641,10 +646,10 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 				}
 				
 				@Override
-				public boolean resetFlags() throws ExceptionZZZ{
+				public boolean resetFlagsCustom() throws ExceptionZZZ{
 					boolean bReturn = false;
 					main:{
-						HashMap<String,Boolean> hm = this.getHashMapFlag();
+						HashMap<String,Boolean> hm = this.getHashMapFlagCustom();
 						if(hm.isEmpty())break main;
 						
 						ReferenceHashMapZZZ<String,Boolean>objhmReturn=new ReferenceHashMapZZZ<String,Boolean>();
@@ -654,6 +659,7 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 					}//end main:
 					return bReturn;
 				}
+				
 					
 				//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 				//++++++++++++++++++++++++
@@ -744,6 +750,22 @@ public class KernelFileZZZ extends File implements IConstantZZZ, IObjectZZZ, IFi
 		return bReturn;
 	}
 
+	@Override
+	public boolean resetFlags() throws ExceptionZZZ{
+		boolean bReturn = false;
+		main:{
+			HashMap<String,Boolean> hm = this.getHashMapFlag();
+			if(hm.isEmpty())break main;
+			
+			ReferenceHashMapZZZ<String,Boolean>objhmReturn=new ReferenceHashMapZZZ<String,Boolean>();
+			objhmReturn.set(hm);
+			
+			bReturn =FlagZHelperZZZ.resetFlags(objhmReturn); 			
+		}//end main:
+		return bReturn;
+	}
+	
+	
 	//### Functions #########################
 	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 

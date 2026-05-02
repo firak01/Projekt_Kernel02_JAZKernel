@@ -26,6 +26,7 @@ public interface IFlagZCustomEnabledZZZ{
 	//Das Z im Methodennamen ...FlagZ... wird nur für Methoden verwendet, die ein Array zurueckliefern.
 	public abstract HashMap<String, Boolean>getHashMapFlagCustom();
 	public abstract void setHashMapFlagCustom(HashMap<String, Boolean> hmFlagCustom);	
+	public abstract boolean resetFlagsCustom() throws ExceptionZZZ;
 	
 	public abstract boolean getFlagCustom(String sFlag) throws ExceptionZZZ;
 	public abstract boolean setFlagCustom(String sFlag, boolean bValue) throws ExceptionZZZ; //Holt sich zuerst alle Eltern/Superklassen, die IFlagZZZ implementieren. Pr�ft dann, ob diese Klasse das Flag in der Enumeration .getClassFLAGZ() hat.	

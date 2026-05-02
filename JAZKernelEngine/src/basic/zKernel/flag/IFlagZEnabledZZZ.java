@@ -38,6 +38,12 @@ public interface IFlagZEnabledZZZ{
 		DEBUG, INIT ; //20170307 - Verschoben aus ObjectZZZ, weil nicht alle Klassen von ObjectZZZ erben können (weil sie schon von einer anderen Java spezifischen Klasse erben).
 	}
 	
+	
+	public abstract HashMap<String, Boolean>getHashMapFlag();
+	public abstract void setHashMapFlag(HashMap<String, Boolean> hmFlag);
+	public abstract boolean resetFlags() throws ExceptionZZZ;
+	
+	
 	//KONVENTION: 
 	//Das Z im Methodennamen ...FlagZ... wird nur für Methoden verwendet, die ein Array zurueckliefern.
 	public abstract boolean getFlag(String sFlagName) throws ExceptionZZZ;
@@ -66,8 +72,6 @@ public interface IFlagZEnabledZZZ{
 	//public abstract void getFlag(IFlagUserZZZ.FLAGZ objEnumFlag);
 	//public abstract <T extends IFlagUserZZZ.FLAGZ> void setFlag(T objEnumFlag, boolean bValue);
 	
-	public abstract HashMap<String, Boolean>getHashMapFlag();
-	public abstract boolean resetFlags() throws ExceptionZZZ;
 	
 	public String[] getFlagZ(boolean bFlagValueToSearchFor) throws ExceptionZZZ; //20180712 - zur Weitergabe der Flags an andere Objekte)
 	public String[] getFlagZ(boolean bFlagValueToSearchFor, boolean bLookupExplizitInHashMap) throws ExceptionZZZ; //20180712 - zur Weitergabe der Flags an andere Objekte)
