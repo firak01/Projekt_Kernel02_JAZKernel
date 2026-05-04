@@ -1984,8 +1984,64 @@ StringUtils.splitByWholeSeparator(...) kann das nicht, weil es keine Escape-/Quo
 		return sReturn;
 	}
 	
+	//#########################################
 	
+	/**Aus dem String
+	 * https://github.com/firak01/Projekt_Kernel02_JAZDummy.git
+	 * 
+	 * soll firak01 geholt werden,
+	 * wenn github.com/
+	 * und  / übergeben wird
+	 * 
+	 * UND DAS AUCH wenn vielleicht ohne Projekt gearbeitet werden könnte und die URL für die Suche mit / erweitert wird.
+	 * https://github.com/firak01/Projekt_Kernel02_JAZDummy.git/
+	 * https://github.com/firak01/
+	 * 
+	 * @param sString
+	 * @param sRight
+	 * @param sLeft
+	 * @param bExactMatch
+	 * @return
+	 * @throws ExceptionZZZ
+	 */
+	public static String midRightLeft(String sString, String sLeft, String sRight) throws ExceptionZZZ {
+		return StringZZZ.midRightLeft(sString, sLeft, sRight, true);
+	}
 	
+	public static String midRightLeft(String sString, String sLeft, String sRight, boolean bExactMatch) throws ExceptionZZZ {
+		String sReturn = null;
+		main:{
+			if(StringZZZ.isEmpty(sString))break main;			
+			if(StringZZZ.isEmpty(sLeft) && StringZZZ.isEmpty(sRight))break main;
+								
+			if (StringZZZ.isEmpty(sLeft)){
+				sReturn = StringZZZ.leftback(sString, sRight, bExactMatch);
+				break main;
+			}
+			
+			if(StringZZZ.isEmpty(sRight)){
+				sReturn = StringZZZ.rightback(sString, sLeft, bExactMatch);
+				break main;
+			}
+			
+			//Merke: Nur nach links und rechts abzuprüfen wäre zwar logisch richtig. 
+			//       erwartet wird aber eigentlich das midLeftRightback Ergebnis....
+			//sReturn = StringZZZ.right(sString, sLeft, bExactMatch);
+			//sReturn = StringZZZ.left(sReturn, sRight, bExactMatch);
+
+			//sReturn = StringZZZ.rightback(sString, sLeft, bExactMatch);
+			//sReturn = StringZZZ.leftback(sReturn, sRight, bExactMatch);
+			
+			sReturn = StringZZZ.right(sString, sLeft, bExactMatch);
+			sReturn = StringZZZ.left(sReturn, sRight, bExactMatch);
+			
+
+		
+		}
+		return sReturn;
+	}
+	
+	//########################################
 	/** String,  analog to LotusScript, returns the substring right from the last  occurance of sToFind. Null if sString is null or empty or sToFind can not be found in the string.
 	 * Returns the empty String if sToFind is empty
 	 * 

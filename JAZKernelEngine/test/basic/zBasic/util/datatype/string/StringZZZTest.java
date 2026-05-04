@@ -895,6 +895,56 @@ public class StringZZZTest extends TestCase{
 		}
 	}
 	
+	public void testMidRightLeft(){
+		String stemp;
+		try {
+		 String sTest = "https://github.com/firak01/Projekt_Kernel02_JAZDummy.git";
+//			 * 
+//			 * soll firak01 geholt werden,
+//			 * wenn github.com/
+//			 * und  / übergeben wird
+//			 * 
+//			 * UND DAS AUCH wenn vielleicht ohne Projekt gearbeitet werden könnte und die URL für die Suche mit / erweitert wird.
+//			 * https://github.com/firak01/Projekt_Kernel02_JAZDummy.git/
+//			 * https://github.com/firak01/
+		 
+		 //#######################################
+		
+		 //Teste auf normal
+		 stemp = StringZZZ.midRightLeft(sTest, "github.com/", "/");
+		 assertNotNull(stemp);
+		 assertEquals("firak01", stemp);
+		 
+		 sTest = "https://github.com/firak01/";
+		 stemp = StringZZZ.midRightLeft(sTest, "github.com/", "/");
+		 assertNotNull(stemp);
+		 assertEquals("firak01", stemp);
+		
+		 //Wenn aber der rechte Teil nicht da ist, null
+		 sTest = "https://github.com/firak01";
+		 stemp = StringZZZ.midRightLeft(sTest, "github.com/", "/");
+		 assertNull(stemp);
+		 
+		 //Ausser die Angaben zu links oder rechts werden nicht angegeben...
+		 sTest = "https://github.com/firak01/Projekt_Kernel02_JAZDummy.git";
+		 stemp = StringZZZ.midRightLeft(sTest, "github.com/", "");
+		 assertEquals("firak01/Projekt_Kernel02_JAZDummy.git",stemp);
+
+		 
+		 sTest = "https://github.com/firak01/Projekt_Kernel02_JAZDummy.git";
+		 stemp = StringZZZ.midRightLeft(sTest, "", "/Projekt_Kernel02_JAZDummy");
+		 assertEquals("https://github.com/firak01",stemp);
+		 
+		 //Wenn beide Teile nicht angegeben werden aber null
+		 sTest = "https://github.com/firak01/Projekt_Kernel02_JAZDummy.git";
+		 stemp = StringZZZ.midRightLeft(sTest, "", "");
+		 assertNull(stemp);
+		 		
+		}catch(ExceptionZZZ ez){
+			ez.printStackTrace();
+			fail("Method throws an exception." + ez.getMessageLast());
+		}
+	}
 	
 	public void testStrLeft(){
 		 String stemp;
