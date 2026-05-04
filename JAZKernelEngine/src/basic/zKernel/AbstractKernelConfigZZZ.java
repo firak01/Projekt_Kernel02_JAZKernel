@@ -445,12 +445,12 @@ public abstract class AbstractKernelConfigZZZ<T> extends AbstractObjectWithFlagZ
 	}
 	
 	@Override
-	public String getPatternStringDefault() {
+	public String getPatternStringDefault() throws ExceptionZZZ {
 		return IKernelConfigZZZ.sPATTERN_DEFAULT;
 	}
 		
 	@Override
-	public String[] getArgumentArrayDefault() {
+	public String[] getArgumentArrayDefault() throws ExceptionZZZ {
 		String[] saArg = new String[14];
 		saArg[0] = "-k";
 		saArg[1] = this.getApplicationKeyDefault();
